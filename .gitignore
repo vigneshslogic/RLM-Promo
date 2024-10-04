@@ -10,5 +10,4 @@
 
 .env
 
-/public/images
-/public/images2
+# /public/images
