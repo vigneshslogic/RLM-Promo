@@ -1,0 +1,14 @@
+# dependencies
+/node_modules
+
+# nuxt.js
+/.nuxt/
+/dist/
+
+# production
+/build
+
+.env
+
+/public/images
+/public/images2
