@@ -9,10 +9,6 @@
               <div class="line"></div>
             </div>
 
-            <!-- <pre>
-              {{ catalogues[0] }}
-            </pre> -->
-
             <swiper
               :loop="true"
               :breakpoints="swiperOption.breakpoints"

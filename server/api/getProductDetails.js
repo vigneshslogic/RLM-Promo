@@ -20,7 +20,6 @@ export default defineEventHandler(async (event) => {
     
     return false;
   } catch (error) {
-    console.error('Error fetching Salesforce token:', error.response ? error.response.data : error.message);
     throw createError({
       statusCode: error.response ? error.response.status : 500,
       message: error.response ? error.response.data.error_description : error.message,

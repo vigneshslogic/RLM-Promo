@@ -66,25 +66,25 @@ export default {
           button: 'view more'
         },
         {
-          imagepath: '/images/tools/category/2.jpg',
+          imagepath: '/images/tools/category/1.jpg',
           title: 'engine & drivetrain',
           description: '<ul class="category-link"><li><a href="#">Watchmaking conglomerates</a></li><li><a href="#">Breitling SA</a></li><li><a href="#">Casio watches</a></li><li><a href="#">Citizen Watch</a></li></ul>',
           button: 'view more'
         },
         {
-          imagepath: '/images/tools/category/3.jpg',
+          imagepath: '/images/tools/category/1.jpg',
           title: 'exterior accesories',
           description: '<ul class="category-link"><li><a href="#">Watchmaking conglomerates</a></li><li><a href="#">Breitling SA</a></li><li><a href="#">Casio watches</a></li><li><a href="#">Citizen Watch</a></li></ul>',
           button: 'view more'
         },
         {
-          imagepath: '/images/tools/category/4.jpg',
+          imagepath: '/images/tools/category/1.jpg',
           title: 'other parts',
           description: '<ul class="category-link"><li><a href="#">Watchmaking conglomerates</a></li><li><a href="#">Breitling SA</a></li><li><a href="#">Casio watches</a></li><li><a href="#">Citizen Watch</a></li></ul>',
           button: 'view more'
         },
         {
-          imagepath: '/images/tools/category/5.jpg',
+          imagepath: '/images/tools/category/1.jpg',
           title: 'engine & drivetrain',
           description: '<ul class="category-link"><li><a href="#">Watchmaking conglomerates</a></li><li><a href="#">Breitling SA</a></li><li><a href="#">Casio watches</a></li><li><a href="#">Citizen Watch</a></li></ul>',
           button: 'view more'

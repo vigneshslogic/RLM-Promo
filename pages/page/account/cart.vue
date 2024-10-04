@@ -6,6 +6,9 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-12">
+            <pre>
+              {{cart}}
+            </pre>
             <table class="table cart-table table-responsive-xs" v-if="cart.length">
               <thead>
                 <tr class="table-head">
@@ -21,7 +24,8 @@
                 <tr>
                   <td>
                     <nuxt-link :to="{ path: '/product/sidebar/' + item.id }">
-                      <img :src="getImgUrl(item.images[0].src)" alt />
+                      <img src="/images/6.jpg" alt />
+                      <!-- <img :src="getImgUrl(item.images[0].src)" alt /> -->
                     </nuxt-link>
                   </td>
                   <td>
@@ -47,7 +51,7 @@
                         </div>
                       </div>
                       <div class="col-xs-3">
-                        <h2 class="td-color">{{ curr.symbol }}{{ item.price * curr.curr }}</h2>
+                        <h2 class="td-color">${{ item.price * curr.curr }}</h2>
                       </div>
                       <div class="col-xs-3">
                         <h2 class="td-color">
@@ -88,7 +92,7 @@
                   </td>
                   <td>
                     <h2 class="td-color">
-                      {{ curr.symbol }} {{ (item.price * curr.curr) * item.quantity }}</h2>
+                      $ {{ (item.price * curr.curr) * item.quantity }}</h2>
                   </td>
                 </tr>
               </tbody>
@@ -98,7 +102,7 @@
                 <tr>
                   <td>total price :</td>
                   <td>
-                    <h2>{{ curr.symbol }}{{ cartTotal * curr.curr }}</h2>
+                    <h2>${{ cartTotal * curr.curr }}</h2>
                   </td>
                 </tr>
               </tfoot>
@@ -128,9 +132,8 @@
   </div>
   <Footer />
 </template>
+
 <script>
-import { useStorage } from '@vueuse/core'
-import { mapState } from 'pinia'
 import { useProductStore } from '~~/store/products'
 import { useCartStore } from '~~/store/cart'
 export default {

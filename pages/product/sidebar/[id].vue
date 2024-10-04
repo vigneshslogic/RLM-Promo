@@ -19,66 +19,20 @@
                       :spaceBetween="20"
                       class="swiper-wrapper h-auto"
                     >
-                      <swiper-slide
-                        class="swiper-slide"
-                        >
-                        <!-- v-for="(product, index) in getDetail?.images ?? []"
-                        :key="index" -->
+                      <swiper-slide class="swiper-slide">
                         <img
                           class="img-fluid bg-img"
                           src="/images/6.jpg"
                           />
-                          <!-- :alt="product.alt" -->
-                        <!-- :src="getImgUrl(product.src)" -->
-                          <!-- :id="product.image_id" -->
+                          <!-- :src="getDetail?.displayUrl" -->
                       </swiper-slide>
                     </swiper>
-                    <div class="row">
-                      <div class="col-12 slider-nav-images">
-                        <swiper
-                          :slidesPerView="3"
-                          slide-active-class="true"
-                          :spaceBetween="20"
-                          class="swiper-wrapper"
-                        >
-                          <swiper-slide
-                            class="swiper-slide"
-                          >
-                            <!-- v-for="(product, index) in getDetail?.images"
-                            :key="index"
-                            :class="
-                              slideId == index ? 'product-slider-active' : ''
-                            " -->
-                            <!-- :src="getImgUrl(product.src)" -->
-                            <!-- :id="product.image_id" -->
-                            <img
-                            src="/images/6.jpg"
-                            class="img-fluid bg-img"
-                            alt="product.alt"
-                            @click="slideTo(index)"
-                            />
-                          </swiper-slide>
-                        </swiper>
-                      </div>
-                    </div>
                   </div>
                   <div class="col-lg-6 rtl-text">
                     <div class="product-right">
-                      <h2>{{ getDetail?.title }}</h2>
-                      <h4 v-if="getDetail?.sale">
-                        <del
-                          >{{ curr?.symbol
-                          }}{{ (getDetail?.price * curr?.curr).toFixed(2) }}</del
-                        >
-                        <span>{{ getDetail?.discount }}% off</span>
-                      </h4>
-                      <h3 v-if="getDetail?.sale">
-                        {{ curr?.symbol }}{{ discountedPrice(getDetail) }}
-                      </h3>
-                      <h3 v-else>
-                        {{ curr?.symbol
-                        }}{{ (getDetail?.price * curr?.curr).toFixed(2) }}
-                      </h3>
+                      <h2>{{ getDetail?.name }}</h2>
+
+                      <h3>${{ selectedPlan?.price }}</h3>
                       <ul class="color-variant">
                         <!-- <li
                           v-bind:class="{ active: activeColor == variant }"
@@ -100,7 +54,7 @@
                           ></a>
                         </li> -->
                       </ul>
-                      <div class="pro_inventory" v-if="getDetail?.stock < 8">
+                      <!-- <div class="pro_inventory" v-if="getDetail?.stock < 8">
                         <p class="active">
                           Hurry! We have only {{ getDetail?.stock }} product in
                           stock.
@@ -108,47 +62,37 @@
                         <div class="inventory-scroll">
                           <span style="width: 95%"></span>
                         </div>
-                      </div>
+                      </div> -->
+
+                      <!-- Manage a variants -->
                       <div class="product-description border-product">
-                        <h6 class="product-title size-text">
-                          select size
-                          <span>
-                            <a
-                              href="javascript:void(0)"
-                              data-bs-toggle="modal"
-                              data-bs-target="#modal-1"
-                              >size chart</a
-                            >
-                          </span>
-                        </h6>
+                        <h6 class="product-title size-text">select plan</h6>
                         <div class="size-box">
                           <ul>
                             <li
                               class="product-title"
-                              v-bind:class="{ active: selectedSize == size }"
-                              v-for="(size, index) in size"
+                              v-for="(price, index) in getDetail?.prices"
                               :key="index"
+                              v-bind:class="{
+                                active:
+                                  price?.priceBookEntryId ==
+                                  selectedPlan?.priceBookEntryId,
+                              }"
                             >
+                              <!-- v-for="(price, index) in prices" :key="index" -->
                               <a
+                                v-if="price?.pricingModel?.frequency"
                                 href="javascript:void(0)"
-                                @click="changeSizeVariant(size)"
-                                >{{ size }}</a
+                                @click="changeSizeVariant(price)"
                               >
+                                {{
+                                  Array.from(price?.pricingModel?.frequency)[0]
+                                }}
+                              </a>
                             </li>
                           </ul>
                         </div>
-                        <h5
-                          class="avalibility"
-                          >
-                          <!-- v-if="counter <= getDetail?.stock" -->
-                          <span>In Stock</span>
-                        </h5>
-                        <h5
-                          class="avalibility"
-                          >
-                          <!-- v-if="counter > getDetail?.stock" -->
-                          <span>Out of Stock</span>
-                        </h5>
+
                         <h6 class="product-title">quantity</h6>
                         <div class="qty-box">
                           <div class="input-group">
@@ -169,15 +113,15 @@
                               class="form-control input-number"
                               v-model="counter"
                             />
-                              <!-- :disabled="counter > getDetail?.stock" -->
+                            <!-- :disabled="counter > getDetail?.stock" -->
                             <span class="input-group-prepend">
                               <button
                                 type="button"
                                 class="btn quantity-right-plus"
                                 data-type="plus"
                                 data-field
-                                >
-                                <!-- @click="increment()" -->
+                                @click="increment()"
+                              >
                                 <i class="ti-angle-right"></i>
                               </button>
                             </span>
@@ -185,29 +129,31 @@
                         </div>
                       </div>
                       <div class="product-buttons">
-                        <nuxt-link :to="{ path: '/page/account/cart' }">
-                          <button
-                            class="btn btn-solid"
-                            title="Add to cart"
-                            >
-                            <!-- @click="addToCart(getDetail, counter)"
-                            :disabled="counter > getDetail?.stock" -->
-                            Add To Cart
-                          </button>
-                        </nuxt-link>
+                        <!-- <nuxt-link :to="{ path: '/page/account/cart' }"> -->
+                        <button
+                          class="btn btn-solid"
+                          title="Add to cart"
+                          @click="addToCart(getDetail, counter)"
+                        >
+                          <!-- :disabled="counter > getDetail?.stock" -->
+                          Add To Cart
+                        </button>
+                        <!-- </nuxt-link> -->
                         <button
                           class="btn btn-solid"
                           title="buy now"
-                          @click="buyNow(getDetail, counter)"
                           :disabled="counter > getDetail?.stock"
                         >
+                          <!-- @click="buyNow(getDetail, counter)" -->
                           Buy Now
                         </button>
                       </div>
                       <div class="border-product">
                         <h6 class="product-title">product details</h6>
                         <p>
-                          {{ getDetail?.description.substring(0, 200) + "...." }}
+                          {{
+                            getDetail?.description.substring(0, 200) + "...."
+                          }}
                         </p>
                       </div>
                       <div class="border-product">
@@ -253,7 +199,7 @@
                       </div>
                       <div class="border-product">
                         <h6 class="product-title">Time Reminder</h6>
-                        <WidgetsTimer date="December 30, 2023" />
+                        <WidgetsTimer date="December 30, 2024" />
                       </div>
                     </div>
                   </div>
@@ -499,68 +445,53 @@
         :productTYpe="productTYpe"
         :productId="productId"
       />
-      <div
-        class="modal fade"
-        id="modal-1"
-        aria-hidden="true"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="modal-cartLabel"
-      >
-        <div class="modal-dialog modal-md modal-dialog-centered">
-          <div class="modal-content">
-            <div class="row">
-              <div class="col-lg-12">
-                <button class="close" type="button" data-bs-dismiss="modal">
-                  <span>×</span>
-                </button>
-                {{ getDetail?.name }}
-                <div class="modal-header">
-                  <h5 class="modal-title">{{ getDetail?.title }}</h5>
-                  <button
-                    type="button"
-                    class="btn-close"
-                    aria-label="Close"
-                    data-bs-dismiss="modal"
-                  ></button>
-                </div>
-              </div>
-              <div>
-                <img
-                  src="/images/size-chart.jpg"
-                  alt="size-chart"
-                  class="img-fluid size-chart"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
   </div>
   <Footer />
 </template>
+
 <script setup>
-// import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
-// import { mapState } from "pinia";
 import { onMounted } from "vue";
 import { useProductStore } from "~~/store/products";
 import { useRoute } from "vue-router";
-// import { useCartStore } from "~~/store/cart";
+import { find } from "lodash";
+import { useCartStore } from "~~/store/cart";
 
 const getDetail = ref(null);
 const route = useRoute();
+const counter = ref(1);
+const selectedPlan = ref("");
 
 onMounted(async () => {
   getDetail.value = await useProductStore().getProductById(route.params.id);
-});
-// export default {
-//   components: {
-//     // Swiper,
-//     // SwiperSlide,
-//   },
 
+  selectedPlan.value =
+    find(getDetail?.value?.prices, { isDefault: true }) ?? "";
+});
+
+const increment = () => {
+  counter.value++;
+};
+
+const decrement = () => {
+  if (counter.value > 1) counter.value--;
+};
+
+const changeSizeVariant = (variant) => {
+  selectedPlan.value = variant;
+};
+
+const addToCart = (product, qty) => {
+  product.price = selectedPlan?.value?.price;
+  product.priceBookEntryId = selectedPlan?.value?.priceBookEntryId;
+  product.priceBookId = selectedPlan?.value?.priceBookId;
+  product.priceModelId = selectedPlan?.value?.pricingModel?.id;
+  product.quantity = qty || 1;
+  useCartStore().addToCart(product);
+};
+
+// export default {
 //   data() {
 //     return {
 //       // slideId: 0,
@@ -628,22 +559,10 @@ onMounted(async () => {
 //     //   }
 //     //   return uniqColor;
 //     // },
-//     // // add to cart
-//     // addToCart: function (product, qty) {
-//     //   product.quantity = qty || 1;
-//     //   useCartStore().addToCart(product);
-//     // },
 //     // buyNow: function (product, qty) {
 //     //   product.quantity = qty || 1;
 //     //   useCartStore().addToCart(product);
 //     //   this.$router.push("/page/account/checkout");
-//     // },
-//     // // Item Count
-//     // increment() {
-//     //   this.counter++;
-//     // },
-//     // decrement() {
-//     //   if (this.counter > 1) this.counter--;
 //     // },
 //     // // Change size variant
 //     // changeSizeVariant(variant) {

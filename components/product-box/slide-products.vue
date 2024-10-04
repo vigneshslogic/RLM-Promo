@@ -48,13 +48,21 @@
         <del>{{ (product.price * curr.curr).toFixed(2) }}</del>
       </h4>
       <h4 v-else>{{ curr.symbol }}{{ (product.price * curr.curr).toFixed(2) }}</h4> -->
+      <h4
+        v-if="getProductPrice"
+      >
+        $ {{ getProductPrice }} 
+      </h4>
     </div>
   </div>
 </template>
+
 <script>
-import { useCartStore } from '~~/store/cart'
-import { useProductStore } from '~~/store/products'
-import { mapState } from 'pinia'
+import { useCartStore } from '~~/store/cart';
+import { useProductStore } from '~~/store/products';
+import { mapState } from 'pinia';
+import { find } from 'lodash';
+
 export default {
   props: ['product', 'index'],
   data() {
@@ -75,6 +83,10 @@ export default {
     }),
     curr() {
       return useProductStore().changeCurrency
+    },
+    getProductPrice() {
+      const exists = find(this.product.prices, { isDefault: true });
+      return exists?.price;
     }
   },
   methods: {
@@ -110,7 +122,7 @@ export default {
     discountedPrice(product) {
       const price = (product.price - (product.price * product.discount / 100)) * this.curr.curr
       return price
-    }
+    },
   }
 }
 </script>
