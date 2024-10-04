@@ -455,8 +455,10 @@ import "swiper/css";
 import { onMounted } from "vue";
 import { useProductStore } from "~~/store/products";
 import { useRoute } from "vue-router";
-import find from "lodash/find";
 import { useCartStore } from "~~/store/cart";
+import pkg from 'lodash';
+
+const { find } = pkg;
 
 const getDetail = ref(null);
 const route = useRoute();

@@ -61,7 +61,8 @@
 import { useCartStore } from '~~/store/cart';
 import { useProductStore } from '~~/store/products';
 import { mapState } from 'pinia';
-import find from 'lodash/find';
+import pkg from 'lodash';
+const { find } = pkg;
 
 export default {
   props: ['product', 'index'],
