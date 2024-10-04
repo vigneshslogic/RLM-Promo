@@ -3,6 +3,7 @@
 
 # nuxt.js
 /.nuxt/
+/.output/
 /dist/
 
 # production
