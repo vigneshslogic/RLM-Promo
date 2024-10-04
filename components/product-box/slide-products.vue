@@ -61,7 +61,7 @@
 import { useCartStore } from '~~/store/cart';
 import { useProductStore } from '~~/store/products';
 import { mapState } from 'pinia';
-import { find } from 'lodash';
+import find from 'lodash/find';
 
 export default {
   props: ['product', 'index'],
