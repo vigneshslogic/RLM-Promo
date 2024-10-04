@@ -6,9 +6,6 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-12">
-            <pre>
-              {{cart}}
-            </pre>
             <table class="table cart-table table-responsive-xs" v-if="cart.length">
               <thead>
                 <tr class="table-head">
@@ -29,7 +26,7 @@
                     </nuxt-link>
                   </td>
                   <td>
-                    <nuxt-link :to="{ path: '/product/sidebar/' + item.id }">{{ item.title }}</nuxt-link>
+                    <nuxt-link :to="{ path: '/product/sidebar/' + item.id }">{{ item.name }}</nuxt-link>
                     <div class="mobile-cart-content row">
                       <div class="col-xs-3">
                         <div class="qty-box">
@@ -51,7 +48,7 @@
                         </div>
                       </div>
                       <div class="col-xs-3">
-                        <h2 class="td-color">${{ item.price * curr.curr }}</h2>
+                        <h2 class="td-color">${{ item.price }}</h2>
                       </div>
                       <div class="col-xs-3">
                         <h2 class="td-color">
@@ -63,7 +60,7 @@
                     </div>
                   </td>
                   <td>
-                    <h2>{{ item.price * curr.curr }}</h2>
+                    <h2>${{ item.price }}</h2>
                   </td>
                   <td>
                     <div class="qty-box">
@@ -102,7 +99,7 @@
                 <tr>
                   <td>total price :</td>
                   <td>
-                    <h2>${{ cartTotal * curr.curr }}</h2>
+                    <h2>${{ cartTotal }}</h2>
                   </td>
                 </tr>
               </tfoot>
