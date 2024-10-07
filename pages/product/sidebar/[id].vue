@@ -32,7 +32,7 @@
                     <div class="product-right">
                       <h2>{{ getDetail?.name }}</h2>
 
-                      <h3>${{ selectedPlan?.price }}</h3>
+                      <h3>£{{ selectedPlan?.price }}</h3>
                       <ul class="color-variant">
                         <!-- <li
                           v-bind:class="{ active: activeColor == variant }"
@@ -86,7 +86,7 @@
                                 @click="changeSizeVariant(price)"
                               >
                                 {{
-                                  Array.from(price?.pricingModel?.frequency)[0]
+                                  Array.from(price?.pricingModel?.frequency)[0] ?? 'O'
                                 }}
                               </a>
                             </li>

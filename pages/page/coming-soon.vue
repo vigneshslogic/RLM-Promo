@@ -57,7 +57,7 @@ export default {
     return {
       logoimage: '/images/icon/logo.png',
       title: 'Will be Opening Soon!',
-      copyright: '© 2018, Powered by Multikart.'
+      copyright: '© 2018, Powered by Nexus Global Holdings.'
     }
   }
 }

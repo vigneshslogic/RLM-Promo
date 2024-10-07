@@ -76,7 +76,7 @@ export default {
   },
   data() {
     return {
-      title: "top collection",
+      title: "Best Selling",
       showCart: false,
       showquickviewmodel: false,
       showcomapreModal: false,

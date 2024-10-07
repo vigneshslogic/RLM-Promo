@@ -4,7 +4,8 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event); 
 
   try {
-    const query = `SELECT Id, FirstName, LastName, Email FROM Contact WHERE Email='${body.user?.email}'`;
+    const query = `SELECT Id, FirstName, LastName, Email, Phone, Account.Id, Account.Name, Account.BillingStreet, Account.BillingCity, Account.BillingState, Account.BillingPostalCode, Account.BillingCountry, Account.ShippingStreet, Account.ShippingCity, Account.ShippingState, Account.ShippingPostalCode, Account.ShippingCountry FROM Contact WHERE Email='${body.user?.email}'`;
+    
     const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v58.0/query/?q=${encodeURIComponent(query)}`;
     const response = await axios.get(url, {
       headers: {

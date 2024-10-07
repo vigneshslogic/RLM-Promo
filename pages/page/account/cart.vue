@@ -48,7 +48,7 @@
                         </div>
                       </div>
                       <div class="col-xs-3">
-                        <h2 class="td-color">${{ item.price }}</h2>
+                        <h2 class="td-color">£{{ item.price }}</h2>
                       </div>
                       <div class="col-xs-3">
                         <h2 class="td-color">
@@ -60,7 +60,7 @@
                     </div>
                   </td>
                   <td>
-                    <h2>${{ item.price }}</h2>
+                    <h2>£{{ item.price }}</h2>
                   </td>
                   <td>
                     <div class="qty-box">
@@ -89,7 +89,7 @@
                   </td>
                   <td>
                     <h2 class="td-color">
-                      $ {{ (item.price * curr.curr) * item.quantity }}</h2>
+                      £ {{ (item.price * curr.curr) * item.quantity }}</h2>
                   </td>
                 </tr>
               </tbody>
@@ -99,7 +99,7 @@
                 <tr>
                   <td>total price :</td>
                   <td>
-                    <h2>${{ cartTotal }}</h2>
+                    <h2>£{{ cartTotal }}</h2>
                   </td>
                 </tr>
               </tfoot>
@@ -121,7 +121,13 @@
             <nuxt-link :to="{ path: '/' }" :class="'btn btn-solid'">continue shopping</nuxt-link>
           </div>
           <div class="col-6">
-            <nuxt-link :to="{ path: '/page/account/checkout' }" :class="'btn btn-solid'">Get Quote</nuxt-link>
+            <button
+              class="btn btn-solid"
+              title="Get Quote"
+              @click="handleGetQuote"
+            > Get Quote
+            </button>
+            
             <nuxt-link :to="{ path: '/page/account/checkout' }" :class="'btn btn-solid ms-2'">check out</nuxt-link>
           </div>
         </div>
@@ -129,6 +135,7 @@
     </section>
   </div>
   <Footer />
+  <CartModalQuoteModalPopup v-if="showQuoteModal" :openQuote="showQuoteModal" @closeQuote="closeQuoteModal" />
 </template>
 
 <script>
@@ -140,11 +147,12 @@ export default {
       counter: 1,
       // cartdata:useLocalStorage('product')
       // cart:[]
+      showQuoteModal: false,
     }
   },
   computed: {
     cart() {
-        return useCartStore().cartItems
+      return useCartStore().cartItems
     },
     cartTotal() {
       return useCartStore().cartTotalAmount
@@ -154,9 +162,6 @@ export default {
     }
   },
   methods: {
-    getImgUrl(path) {
-      return ('/images/' + path)
-    },
     removeCartItem(product) {
       useCartStore().removeCartItem(product)
     },
@@ -172,6 +177,12 @@ export default {
         product: product,
         qty: qty
       })
+    },
+    handleGetQuote() {
+      this.showQuoteModal = true;
+    },
+    closeQuoteModal() {
+      this.showQuoteModal = false;
     }
   },
 

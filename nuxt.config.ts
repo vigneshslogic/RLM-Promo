@@ -29,7 +29,7 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: 'Multikart Ecommerce | Vuejs shopping theme',
+      title: 'Nexus Global Holdings',
       meta: [
         { name: 'description', content: 'My amazing site.' }
       ],

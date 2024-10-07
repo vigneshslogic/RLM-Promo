@@ -2,7 +2,7 @@
 <Header/>
   <div>
     <WidgetsBreadcrumbs title="Checkout" />
-   <PaymentPage/>
+    <PaymentPage/>
   </div>
   <Footer />
 </template>

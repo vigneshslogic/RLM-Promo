@@ -85,14 +85,14 @@
                     </div>
                     <ul class="qty" v-if="cart.length">
                       <li v-for="(item, index) in cart" :key="index">
-                        {{ item.title || uppercase }} X {{ item.quantity }}
-                        <span>{{ (item.price * curr.curr) * item.quantity }}</span>
+                        {{ item.name || uppercase }} X {{ item.quantity }}
+                        <span>£ {{ item.price * item.quantity }}</span>
                       </li>
                     </ul>
                     <ul class="sub-total">
                       <li>
                         Subtotal
-                        <span class="count">{{ cartTotal * curr.curr }}</span>
+                        <span class="count">£ {{ cartTotal }}</span>
                       </li>
                       <li>Shipping
                         <div class="shipping">
@@ -110,7 +110,7 @@
                     <ul class="sub-total">
                       <li>
                         Total
-                        <span class="count">{{ cartTotal * curr.curr }}</span>
+                        <span class="count">£ {{ cartTotal }}</span>
                       </li>
                     </ul>
                   </div>
@@ -180,6 +180,7 @@ import { useProductStore } from '~~/store/products'
       }],
       selectedPayment: 'paypal',
       errors: [],
+      userInfo: useCookie('userInfo').value, 
       user: {
         firstName: { value: '', errormsg: '' },
         lastName: { value: '', errormsg: '' },
@@ -224,7 +225,7 @@ watch:{
     payWithStripe() {
       this.onSubmit()
 
-      this.isLogin = useCookie('userLogin').value
+      this.isLogin = useCookie('userLogin').value;
       if (!this.isLogin) {
 
         this.$router.replace('/page/account/login')
@@ -253,7 +254,7 @@ watch:{
           }
         });
         handler.open({
-          name: 'Multikart ',
+          name: 'Nexus Global Holdings',
           description: 'Your Choice Theme',
           amount: this.cartTotal * 100
         });
@@ -320,6 +321,7 @@ watch:{
   },
   
    mounted(){
+    console.log("useCookie('userInfo').value", useCookie('userInfo').value);
     window.paypal.Buttons({
 
     }).render('#paypal-button-container')

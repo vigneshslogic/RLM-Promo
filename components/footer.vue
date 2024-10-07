@@ -105,8 +105,7 @@
                 <div class="footer-contant">
                   <ul class="contact-list">
                     <li>
-                      <i class="fa fa-map-marker"></i>Multikart Demo Store, Demo store
-                      India 345-659
+                      <i class="fa fa-map-marker"></i>56 Technology Park, Suite 12B, London, EC1V 4AB, United Kingdom
                     </li>
                     <li>
                       <i class="fa fa-phone"></i>Call Us: 123-456-7898

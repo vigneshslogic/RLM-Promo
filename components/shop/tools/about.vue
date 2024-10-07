@@ -21,8 +21,8 @@
 export default {
   data() {
     return {
-      title: 'welcome to tool store',
-      text: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitaedicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.'
+      title: 'Welcome to Nexus Global Holdings Webshop!',
+      text: 'Explore our cutting-edge products designed to drive innovation and sustainability. As a diversified multinational corporation, we’re dedicated to providing advanced solutions across industries, connecting the world and shaping a better future. Discover how our technology can empower you today!',
     }
   }
 }

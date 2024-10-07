@@ -60,35 +60,23 @@ export default {
       },
       items: [
         {
-          imagepath: '/images/tools/category/1.jpg',
-          title: 'brakes & steering',
-          description: '<ul class="category-link"><li><a href="#">Watchmaking conglomerates</a></li><li><a href="#">Breitling SA</a></li><li><a href="#">Casio watches</a></li><li><a href="#">Citizen Watch</a></li></ul>',
+          imagepath: '/images/tools/category/Nexus_Technology_Solutions.png',
+          title: 'Nexus Technology Solutions',
+          description: `<ul class="category-link"><li><a href="#">AI-driven Digital Transformation</a></li><li><a href="#">Technology Consulting</a></li><li><a href="#">Enterprise Solutions</a></li></ul>`,
           button: 'view more'
         },
         {
-          imagepath: '/images/tools/category/1.jpg',
-          title: 'engine & drivetrain',
-          description: '<ul class="category-link"><li><a href="#">Watchmaking conglomerates</a></li><li><a href="#">Breitling SA</a></li><li><a href="#">Casio watches</a></li><li><a href="#">Citizen Watch</a></li></ul>',
+          imagepath: '/images/tools/category/Nexus_Financial_Services.png',
+          title: 'Nexus Financial Services',
+          description: `<ul class="category-link"><li><a href="#">FinTech Solutions</a></li><li><a href="#">Digital Banking</a></li><li><a href="#">Asset Management</a></li></ul>`,
           button: 'view more'
         },
         {
-          imagepath: '/images/tools/category/1.jpg',
-          title: 'exterior accesories',
-          description: '<ul class="category-link"><li><a href="#">Watchmaking conglomerates</a></li><li><a href="#">Breitling SA</a></li><li><a href="#">Casio watches</a></li><li><a href="#">Citizen Watch</a></li></ul>',
+          imagepath: '/images/tools/category/Nexus_Automotive_Technologies.png',
+          title: 'Nexus Automotive Technologies',
+          description: `<ul class="category-link"><li><a href="#">Electric Vehicle Design</a></li><li><a href="#">Autonomous Driving Technology</a></li><li><a href="#">Smart Automotive Solutions</a></li></ul>`,
           button: 'view more'
         },
-        {
-          imagepath: '/images/tools/category/1.jpg',
-          title: 'other parts',
-          description: '<ul class="category-link"><li><a href="#">Watchmaking conglomerates</a></li><li><a href="#">Breitling SA</a></li><li><a href="#">Casio watches</a></li><li><a href="#">Citizen Watch</a></li></ul>',
-          button: 'view more'
-        },
-        {
-          imagepath: '/images/tools/category/1.jpg',
-          title: 'engine & drivetrain',
-          description: '<ul class="category-link"><li><a href="#">Watchmaking conglomerates</a></li><li><a href="#">Breitling SA</a></li><li><a href="#">Casio watches</a></li><li><a href="#">Citizen Watch</a></li></ul>',
-          button: 'view more'
-        }
       ]
     }
   },

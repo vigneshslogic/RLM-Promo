@@ -51,7 +51,7 @@
       <h4
         v-if="getProductPrice"
       >
-        $ {{ getProductPrice }} 
+        £ {{ getProductPrice }} 
       </h4>
     </div>
   </div>
