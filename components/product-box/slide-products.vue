@@ -95,9 +95,15 @@ export default {
       return ('/images/' + path)
     },
     addToCart: function (product) {
+      console.log('product', product);
       this.cartval = true
       this.cartProduct = product
       this.$emit('opencartmodel', this.cartval, this.cartProduct)
+      product.price = product?.prices[0]?.price;
+      product.priceBookEntryId = product?.prices[0]?.priceBookEntryId;
+      product.priceBookId = product?.prices[0]?.priceBookId;
+      product.priceModelId = product?.prices[0]?.pricingModel?.id;
+      product.quantity = 1;
       useCartStore().addToCart(product)
     },
     addToWishlist: function (product) {

@@ -140,7 +140,7 @@
                         </button>
                         <!-- </nuxt-link> -->
                         <button
-                          class="btn btn-solid"
+                          class="btn btn-solid ms-2"
                           title="buy now"
                           :disabled="counter > getDetail?.stock"
                         >

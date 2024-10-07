@@ -121,7 +121,8 @@
             <nuxt-link :to="{ path: '/' }" :class="'btn btn-solid'">continue shopping</nuxt-link>
           </div>
           <div class="col-6">
-            <nuxt-link :to="{ path: '/page/account/checkout' }" :class="'btn btn-solid'">check out</nuxt-link>
+            <nuxt-link :to="{ path: '/page/account/checkout' }" :class="'btn btn-solid'">Get Quote</nuxt-link>
+            <nuxt-link :to="{ path: '/page/account/checkout' }" :class="'btn btn-solid ms-2'">check out</nuxt-link>
           </div>
         </div>
       </div>
@@ -142,7 +143,6 @@ export default {
     }
   },
   computed: {
-
     cart() {
         return useCartStore().cartItems
     },

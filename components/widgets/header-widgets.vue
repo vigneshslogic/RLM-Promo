@@ -107,7 +107,7 @@
                 </nuxt-link>
                 <div class="media-body">
                   <nuxt-link :to="{ path: '/product/sidebar/'+item.id}">
-                    <h4>{{item.title}}</h4>
+                    <h4>{{item.name}}</h4>
                   </nuxt-link>
                   <h4>
                     <span>{{item.quantity}} x {{ item.price || currency }}</span>
