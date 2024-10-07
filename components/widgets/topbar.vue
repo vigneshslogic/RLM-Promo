@@ -60,7 +60,7 @@ export default {
     }
   },
   created() {
-    this.isLogin = useCookie('userlogin').value
+    this.isLogin = useCookie('userLogin').value
   },
 }
 </script>

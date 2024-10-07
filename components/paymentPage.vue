@@ -224,7 +224,7 @@ watch:{
     payWithStripe() {
       this.onSubmit()
 
-      this.isLogin = useCookie('userlogin').value
+      this.isLogin = useCookie('userLogin').value
       if (!this.isLogin) {
 
         this.$router.replace('/page/account/login')
@@ -327,7 +327,7 @@ watch:{
 
 
 
-    this.isLogin = useCookie('userlogin').value
+    this.isLogin = useCookie('userLogin').value
 
     if (!this.isLogin) {
       this.$router.replace('/page/account/login')

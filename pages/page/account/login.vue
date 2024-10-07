@@ -81,7 +81,7 @@ export default {
                 this.errormsg = 'User does not exists on the platform. Can you register and try again?';
             } else {
                 UserAuth.localLogin(customer.data);
-                useCookie('userLogin').value === 'true';
+                useCookie('userLogin').value === true;
     
                 if (this.cart.length > 0) {
                     this.$router.replace('/page/account/checkout');
@@ -90,7 +90,7 @@ export default {
                     this.$router.replace('/');
                 }
 
-                useCookie('userLogin').value === 'true'
+                useCookie('userLogin').value === true
             }
 
         },
