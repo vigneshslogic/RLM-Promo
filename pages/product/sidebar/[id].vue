@@ -117,7 +117,7 @@
                         <h6 class="product-title">product details</h6>
                         <p>
                           {{
-                            getDetail?.description.substring(0, 200) + "...."
+                            getDetail?.description?.substring(0, 200) + "...."
                           }}
                         </p>
                       </div>
