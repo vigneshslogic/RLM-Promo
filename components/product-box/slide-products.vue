@@ -126,7 +126,7 @@ export default {
       product.priceModelId = product?.prices[0]?.pricingModel?.id;
       product.quantity = 1;
       product.periodBoundary =
-        product?.prices[0]?.pricingModel?.frequency ?? "One Time";
+        product?.prices[0]?.pricingModel?.frequency ?? "OneTime";
       useCartStore().addToCart(product);
     },
     addToWishlist: function (product) {

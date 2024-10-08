@@ -3,7 +3,7 @@
     <div class="container">
       <div class="checkout-page">
         <div class="checkout-form">
-          <form>
+          <!-- <form> -->
             <div class="row">
               <div class="col-lg-6 col-sm-12">
                 <div class="checkout-title">
@@ -60,15 +60,6 @@
                     >
                   </div>
                   <div class="form-group col-md-12 col-sm-12">
-                    <div class="field-label">Country</div>
-                    <select required>
-                      <option>India</option>
-                      <option selected>South Africa</option>
-                      <option>United State</option>
-                      <option>Australia</option>
-                    </select>
-                  </div>
-                  <div class="form-group col-md-12 col-sm-12">
                     <div class="field-label">Address</div>
                     <input
                       type="text"
@@ -116,8 +107,8 @@
                       >{{ user.pincode.errormsg }}</span
                     >
                   </div>
-                  <div class="form-group col-lg-12 col-md-12 col-sm-12">
-                    <nuxt-link v-if="useCookie('userLogin').value" :to="{ path: '/page/account/register' }"
+                  <div v-if="!useCookie('userLogin').value" class="form-group col-lg-12 col-md-12 col-sm-12">
+                    <nuxt-link :to="{ path: '/page/account/register' }"
                       >Create an Account?</nuxt-link
                     >
                   </div>
@@ -173,53 +164,41 @@
                     </ul>
                   </div>
                   <div class="payment-box">
-                    <div class="upper-box">
-                      <div class="payment-options">
-                        <ul>
-                          <li>
-                            <label class="d-block" for="edo-ani1">
-                              <input
-                                class="radio_animated"
-                                id="edo-ani1"
-                                value="stripe"
-                                v-model="selectedPayment"
-                                type="radio"
-                                name="rdo-ani"
-                                data-original-title=""
-                              />Stripe
-                            </label>
-                          </li>
-                          <li>
-                            <label class="d-block" for="edo-ani2">
-                              <input
-                                class="radio_anima ted"
-                                id="edo-ani2"
-                                value="paypal"
-                                v-model="selectedPayment"
-                                type="radio"
-                                name="rdo-ani"
-                                data-original-title=""
-                                title=""
-                              />PayPal
-                            </label>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="text-end">
-                      <div
-                        id="paypal-button-container"
-                        :class="[{ 'd-none': selectedPayment != 'paypal' }]"
-                      ></div>
-                      <div
-                        class="order-place"
-                        v-if="selectedPayment === 'stripe' && cart.length"
-                      >
-                        <button
-                          class="btn btn-primary"
-                          @click.prevent="payWithStripe"
+                    <div class="row check-out">
+                      <div class="form-group col-md-12 col-sm-12">
+                        <div class="field-label">Card Number</div>
+                        <input type="text" v-model="user.cardNumber.value" name="card_number" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" />
+                        <span
+                          class="validate-error"
+                          v-if="user.city.value.length === 0"
+                          >{{ user.city.errormsg }}</span
                         >
-                          Place Order
+                      </div>
+                      <div class="form-group col-md-6 col-sm-6">
+                        <div class="field-label">Expiry Date</div>
+                        <input type="text" v-model="user.expiryDate.value" name="expiry_date" placeholder="MM/YY" maxlength="5" />
+                        <span
+                          class="validate-error"
+                          v-if="user.city.value.length === 0"
+                          >{{ user.city.errormsg }}</span
+                        >
+                      </div>
+                      <div class="form-group col-md-6 col-sm-6">
+                        <div class="field-label">Security Code</div>
+                        <input type="password" v-model="user.securityCode.value" name="security_code" maxlength="3" placeholder="***" />
+                        <span
+                          class="validate-error"
+                          v-if="user.city.value.length === 0"
+                          >{{ user.city.errormsg }}</span
+                        >
+                      </div>
+                      <div class="form-group col-md-12 col-sm-12">
+                        <button
+                          v-if="useCookie('userLogin').value"
+                          class="btn btn-solid"
+                          title="Get Quote"
+                          @click="handlePlaceOrder"
+                        > Place Order
                         </button>
                       </div>
                     </div>
@@ -227,7 +206,7 @@
                 </div>
               </div>
             </div>
-          </form>
+          <!-- </form> -->
         </div>
       </div>
     </div>
@@ -260,14 +239,17 @@ export default {
       errors: [],
       // userInfo: useCookie("userInfo").value,
       user: {
-        firstName: { value: "", errormsg: "" },
-        lastName: { value: "", errormsg: "" },
-        phone: { value: "", errormsg: "" },
-        email: { value: "", errormsg: "" },
-        address: { value: "", errormsg: "" },
-        city: { value: "", errormsg: "" },
-        state: { value: "", errormsg: "" },
-        pincode: { value: "", errormsg: "" },
+        firstName: { value: "John", errormsg: "" },
+        lastName: { value: "Doe", errormsg: "" },
+        phone: { value: "+442079460958", errormsg: "" },
+        email: { value: "johndoe@example.com", errormsg: "" },
+        address: { value: "123 High Street", errormsg: "" },
+        city: { value: "London", errormsg: "" },
+        state: { value: "United Kingdom", errormsg: "" },
+        pincode: { value: "W1A 1AA", errormsg: "" },
+        cardNumber: { value: "4111 1111 1111 1111", errormsg: "" },
+        expiryDate: { value: "05/26", errormsg: "" },
+        securityCode: { value: "123", errormsg: "" },
       },
       isLogin: false,
       paypal: {
@@ -298,7 +280,7 @@ export default {
   },
 
   methods: {
-    payWithStripe() {
+    async handlePlaceOrder() {
       this.onSubmit();
 
       this.isLogin = useCookie("userLogin").value;
@@ -312,32 +294,24 @@ export default {
         this.user.state.errormsg != "" &&
         this.user.phone.errormsg != "" &&
         this.user.address.errormsg != "" &&
+        this.user.cardNumber.errormsg != "" &&
+        this.user.expiryDate.errormsg != "" &&
+        this.user.securityCode.errormsg != "" &&
         this.user.email.errormsg != ""
       ) {
         this.onSubmit();
       } else if (this.isLogin) {
         this.payment = false;
-        var handler = window.StripeCheckout.configure({
-          key: "PUBLISHBLE_KEY", // 'PUBLISHBLE_KEY'
-          locale: "auto",
-          closed: function () {
-            handler.close();
-          },
-          token: (token) => {
-            this.$store.dispatch("products/createOrder", {
-              product: this.cart,
-              userDetail: this.user,
-              token: token.id,
-              amt: this.cartTotal,
-            });
-            this.$router.push("/page/order-success");
-          },
-        });
-        handler.open({
-          name: "Nexus Global Holdings",
-          description: "Your Choice Theme",
-          amount: this.cartTotal * 100,
-        });
+        const status = await useCartStore().generateOrder(this.user);
+
+        if (status?.orderId) {
+          useNuxtApp().$showToast({ msg: "Order generated successfully.", type: "info" });
+          this.$router.replace("/");
+          useCartStore().setInitialCart([]);
+
+        } else {
+          useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
+        }
       }
     },
 
@@ -385,6 +359,21 @@ export default {
       } else {
         this.user.address.errormsg = "";
       }
+      if (!this.user.cardNumber.value) {
+        this.user.cardNumber.errormsg = "empty not allowed";
+      } else {
+        this.user.cardNumber.errormsg = "";
+      }
+      if (!this.user.expiryDate.value) {
+        this.user.expiryDate.errormsg = "empty not allowed";
+      } else {
+        this.user.expiryDate.errormsg = "";
+      }
+      if (!this.user.securityCode.value) {
+        this.user.securityCode.errormsg = "empty not allowed";
+      } else {
+        this.user.securityCode.errormsg = "";
+      }
       if (!this.user.email.value) {
         this.user.email.errormsg = "empty not allowed";
       } else if (!this.validEmail(this.user.email.value)) {
@@ -401,7 +390,6 @@ export default {
   },
 
   mounted() {
-    console.log("useCookie('userInfo').value", useCookie("userInfo").value);
     window.paypal.Buttons({}).render("#paypal-button-container");
 
     this.isLogin = useCookie("userLogin").value;

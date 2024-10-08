@@ -21,8 +21,7 @@
                 <tr>
                   <td>
                     <nuxt-link :to="{ path: '/product/sidebar/' + item.id }">
-                      <img src="/images/6.jpg" alt />
-                      <!-- <img :src="getImgUrl(item.images[0].src)" alt /> -->
+                    <img :src="getImage(item?.image)" alt />
                     </nuxt-link>
                   </td>
                   <td>
@@ -163,6 +162,9 @@ export default {
     }
   },
   methods: {
+    getImage(img) {
+      return img?.replace(/&amp;/g, '&') ?? '/images/6.jpg'
+    },
     removeCartItem(product) {
       useCartStore().removeCartItem(product)
     },

@@ -15,7 +15,7 @@ export const useCartStore = defineStore({
     addToCart(payload) {
       const cartItems = this.cart.find((item) => item.id === payload.id);
       const qty = payload.quantity ?? 1;
-      
+
       if (cartItems) {
         cartItems.quantity = qty;
       } else {
@@ -27,7 +27,7 @@ export const useCartStore = defineStore({
           priceBookEntryId: payload?.priceBookEntryId,
           priceBookId: payload?.priceBookId,
           priceModelId: payload?.pricingModel?.id,
-          periodBoundary: payload?.pricingModel?.frequency ?? 'One Time',
+          periodBoundary: payload?.pricingModel?.frequency ?? 'OneTime',
           quantity: qty,
         });
       }
@@ -79,6 +79,14 @@ export const useCartStore = defineStore({
         const { $generateQuote } = useNuxtApp();
         const getProducts = await $generateQuote(products, description);
         return getProducts;
+      }
+    },
+    generateOrder: (state) => {
+      return async (user) => {
+        const products = state.cart;
+        const { $placeOrder } = useNuxtApp();
+        const response = await $placeOrder(products);
+        return response;
       }
     },
   },

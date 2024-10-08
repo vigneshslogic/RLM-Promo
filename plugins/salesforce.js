@@ -82,6 +82,20 @@ export default defineNuxtPlugin(() => {
     return false;
   };
 
+  const placeOrder = async (products) => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const order = await axios.post("/api/placeOrder", {
+      accessToken: accessToken?.data?.access_token,
+      products
+    });
+
+    if (order.status === 200) {
+      return order.data;
+    }
+
+    return false;
+  };
+
   return {
     provide: {
       getProducts,
@@ -89,6 +103,7 @@ export default defineNuxtPlugin(() => {
       registerUser,
       loginUser,
       generateQuote,
+      placeOrder,
     },
   };
 });

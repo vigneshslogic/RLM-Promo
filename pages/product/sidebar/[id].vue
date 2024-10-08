@@ -457,7 +457,7 @@ const addToCart = (product, qty) => {
   product.priceBookId = selectedPlan?.value?.priceBookId;
   product.priceModelId = selectedPlan?.value?.pricingModel?.id;
   product.quantity = qty || 1;
-  product.periodBoundary = selectedPlan?.value?.pricingModel?.frequency ?? 'One Time';
+  product.periodBoundary = selectedPlan?.value?.pricingModel?.frequency ?? 'OneTime';
   useCartStore().addToCart(product);
 };
 

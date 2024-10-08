@@ -102,8 +102,7 @@
             <li v-for="(item,index) in cart" :key="index">
               <div class="media">
                 <nuxt-link :to="{ path: '/product/sidebar/'+item.id}">
-                  <img alt class="mr-3" src='/images/6.jpg'>
-                  <!-- <img alt class="mr-3" :src='getImgUrl(item.images[0].src)'> -->
+                  <img alt class="mr-3" :src='getImage(item?.image)'>
                 </nuxt-link>
                 <div class="media-body">
                   <nuxt-link :to="{ path: '/product/sidebar/'+item.id}">
@@ -194,8 +193,8 @@ export default {
     },
   },
   methods: {
-    getImgUrl(path) {
-      return ('/images/' + path)
+    getImage(img) {
+      return img?.replace(/&amp;/g, '&') ?? '/images/6.jpg'
     },
     openSearch() {
       this.search = true

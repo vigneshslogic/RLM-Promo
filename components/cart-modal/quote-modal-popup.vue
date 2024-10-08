@@ -14,7 +14,7 @@
     >
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-          <div class="modal-body modal1">
+          <div class="modal-body modal1 bg-gradient">
             <div class="container-fluid p-0">
               <div class="row cart-modal">
                 <div class="col-lg-12 position-relative">

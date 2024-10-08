@@ -6,7 +6,7 @@
             tabindex="-1" role="dialog" aria-labelledby="modal-cartLabel" v-if="showModal">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-body modal1">
+                    <div class="modal-body modal1 bg-gradient">
                         <div class="container-fluid p-0">
                             <div class="row">
                                 <div class="col-12">

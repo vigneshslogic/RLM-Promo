@@ -72,7 +72,7 @@ export default {
   },
   data() {
     return {
-      imagepath: '/images/parallax/21.jpg',
+      // imagepath: '/images/parallax/21.jpg',
       title: 'select your vehical',
       showCart: false,
       showquickviewmodel: false,
