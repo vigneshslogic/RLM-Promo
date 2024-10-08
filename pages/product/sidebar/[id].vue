@@ -33,38 +33,7 @@
                       <h2>{{ getDetail?.name }}</h2>
 
                       <h3>£{{ selectedPlan?.price }}</h3>
-                      <ul class="color-variant">
-                        <!-- <li
-                          v-bind:class="{ active: activeColor == variant }"
-                          v-for="(variant, variantIndex) in Color(
-                            getDetail?.variants
-                          ) ?? []"
-                          :key="variantIndex"
-                        >
-                          <a
-                            :class="[variant]"
-                            v-bind:style="{ 'background-color': variant }"
-                            @click="
-                              sizeVariant(
-                                getDetail?.variants[variantIndex].image_id,
-                                variantIndex,
-                                variant
-                              )
-                            "
-                          ></a>
-                        </li> -->
-                      </ul>
-                      <!-- <div class="pro_inventory" v-if="getDetail?.stock < 8">
-                        <p class="active">
-                          Hurry! We have only {{ getDetail?.stock }} product in
-                          stock.
-                        </p>
-                        <div class="inventory-scroll">
-                          <span style="width: 95%"></span>
-                        </div>
-                      </div> -->
-
-                      <!-- Manage a variants -->
+                                         
                       <div class="product-description border-product">
                         <h6 class="product-title size-text">select plan</h6>
                         <div class="size-box">
@@ -79,14 +48,13 @@
                                   selectedPlan?.priceBookEntryId,
                               }"
                             >
-                              <!-- v-for="(price, index) in prices" :key="index" -->
                               <a
-                                v-if="price?.pricingModel?.frequency"
+                                v-if="price?.pricingModel"
                                 href="javascript:void(0)"
                                 @click="changeSizeVariant(price)"
                               >
                                 {{
-                                  Array.from(price?.pricingModel?.frequency)[0] ?? 'O'
+                                  Array.from(price?.pricingModel?.frequency ?? ['O'])[0]
                                 }}
                               </a>
                             </li>
@@ -490,105 +458,8 @@ const addToCart = (product, qty) => {
   product.priceBookId = selectedPlan?.value?.priceBookId;
   product.priceModelId = selectedPlan?.value?.pricingModel?.id;
   product.quantity = qty || 1;
+  product.periodBoundary = selectedPlan?.value?.pricingModel?.frequency ?? 'One Time';
   useCartStore().addToCart(product);
 };
 
-// export default {
-//   data() {
-//     return {
-//       // slideId: 0,
-//       // counter: 1,
-//       // activeColor: "",
-//       // selectedSize: "",
-//       // qty: "",
-//       // size: [],
-//       // productTYpe: "",
-//       // productId: "",
-//       product: null,
-//     };
-//   },
-//   computed: {
-//     // ...mapState(useProductStore, {
-//     //   currency: "currency",
-//     // }),
-
-//     // curr() {
-//     //   return useProductStore().changeCurrency;
-//     // },
-//     // getDetail: function () {
-//     //   return useProductStore().getProductById(this.$route.params.id);
-//     // },
-//   },
-
-//   mounted() {
-//     this.product = useProductStore().getProductById(this.$route.params.id);
-//     // For displaying default color and size on pageload
-//     // this.uniqColor = this.getDetail?.variants[0].color;
-//     // this.sizeVariant(this.getDetail?.variants[0].image_id);
-//     // // Active default color
-//     // this.activeColor = this.uniqColor;
-//     // this.changeSizeVariant(this.getDetail?.variants[0].size);
-//     // // related product type
-//     // this.relatedProducts();
-//   },
-
-//   methods: {
-//     // onSwiper(swiper) {
-//     //   this.swiper = swiper;
-//     // },
-//     // priceCurrency: function () {
-//     //   useProductStore().changeCurrency();
-//     // },
-//     // addToWishlist: function (product) {
-//     //   useProductStore().addToWishlist(product);
-//     // },
-//     // discountedPrice(product) {
-//     //   const price =
-//     //     (product.price - (product.price * product.discount) / 100) *
-//     //     this.curr?.curr;
-//     //   return ponMountedProducts display
-//     // relatedProducts() {
-//     //   this.productTYpe = this.getDetail?.type;
-//     //   this.productId = this.getDetail?.id;
-//     // },
-//     // // Display Unique Color
-//     // Color(variants) {
-//     //   const uniqColor = [];
-//     //   for (let i = 0; i < Object.keys(variants).length; i++) {
-//     //     if (uniqColor.indexOf(variants[i].color) === -1) {
-//     //       uniqColor.push(variants[i].color);
-//     //     }
-//     //   }
-//     //   return uniqColor;
-//     // },
-//     // buyNow: function (product, qty) {
-//     //   product.quantity = qty || 1;
-//     //   useCartStore().addToCart(product);
-//     //   this.$router.push("/page/account/checkout");
-//     // },
-//     // // Change size variant
-//     // changeSizeVariant(variant) {
-//     //   this.selectedSize = variant;
-//     // },
-//     // getImgUrl(path) {
-//     //   return "/images/" + path;
-//     // },
-//     // slideTo(id) {
-//     //   this.swiper.slideTo(id);
-
-//     //   this.slideId = id;
-//     // },
-
-//     // sizeVariant(id, slideId, color) {
-//     //   this.swiper.slideTo(slideId);
-//     //   this.size = [];
-//     //   this.activeColor = color;
-//     //   this.getDetail?.variants.filter((item) => {
-//     //     if (id === item.image_id) {
-//     //       this.size.push(item.size);
-//     //     }
-//     //   });
-//     // },
-//   }
-// };
 </script>

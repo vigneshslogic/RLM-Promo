@@ -321,7 +321,6 @@ watch:{
   },
   
    mounted(){
-    console.log("useCookie('userInfo').value", useCookie('userInfo').value);
     window.paypal.Buttons({
 
     }).render('#paypal-button-container')

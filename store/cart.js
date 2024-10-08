@@ -1,6 +1,7 @@
 import products from "../data/products.json";
 
 import { defineStore } from "pinia";
+
 export const useCartStore = defineStore({
   id: "cart-store",
   state: () => {
@@ -13,8 +14,8 @@ export const useCartStore = defineStore({
   actions: {
     addToCart(payload) {
       const cartItems = this.cart.find((item) => item.id === payload.id);
-      console.log(this.cart, 'this.cart');
       const qty = payload.quantity ?? 1;
+      
       if (cartItems) {
         cartItems.quantity = qty;
       } else {
@@ -26,11 +27,10 @@ export const useCartStore = defineStore({
           priceBookEntryId: payload?.priceBookEntryId,
           priceBookId: payload?.priceBookId,
           priceModelId: payload?.pricingModel?.id,
+          periodBoundary: payload?.pricingModel?.frequency ?? 'One Time',
           quantity: qty,
         });
-        console.log('this.c', this.cart);
       }
-      // product.stock--
     },
     updateCartQuantity(payload) {
       function calculateStockCounts(product, quantity) {
@@ -72,6 +72,14 @@ export const useCartStore = defineStore({
       return state.cart.reduce((total, product) => {
         return total + product.price * product.quantity;
       }, 0);
+    },
+    getQuote: (state) => {
+      return async (description) => {
+        const products = state.cart;
+        const { $generateQuote } = useNuxtApp();
+        const getProducts = await $generateQuote(products, description);
+        return getProducts;
+      }
     },
   },
 });

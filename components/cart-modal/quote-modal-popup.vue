@@ -34,17 +34,23 @@
                           <div class="form-group col-md-12">
                             <label for="review">Add Quote text:</label>
                             <textarea
+                              v-model="description.value"
                               class="form-control"
                               placeholder="Write Your Testimonial Here"
                               id="exampleFormControlTextarea1"
                               rows="6"
+                              required
                             />
+                            <span class="validate-error" v-if="description.value.length === 0">{{
+                              description.errormsg
+                            }}</span>
                           </div>
                           
                           <div class="form-group col-md-12">
                             <button
                               class="btn btn-solid my-3"
                               title="Get Quote"
+                              @click.prevent="handleGetQuote"
                             > Get Quote
                             </button>
                           </div>
@@ -65,6 +71,8 @@
 <script>
 import { mapState } from "pinia";
 import { useProductStore } from "~~/store/products";
+import { useCartStore } from '~~/store/cart';
+
 export default {
   props: ["openQuote", "productData", "products", "category"],
   emits: ["closeCart"],
@@ -75,6 +83,11 @@ export default {
     curr() {
       return useProductStore().changeCurrency;
     },
+  },
+  data() {
+    return {
+      description: {value: '', errormsg: ''},
+    }
   },
   watch: {
     openQuote: {
@@ -106,6 +119,28 @@ export default {
         this.curr.curr;
       return price;
     },
+
+    async handleGetQuote() {
+      if (this.description.value.length <= 1 ) {
+        this.description.errormsg = 'empty not allowed'
+      } else {
+        this.description.errormsg = ''
+      }
+      
+      if (!this.description.errormsg) {
+        const status = await useCartStore().getQuote(this.description.value);
+        
+        if (status?.quoteId) {
+          useNuxtApp().$showToast({ msg: "Quote Is successfully generated.", type: "info" });
+        } else {
+          useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
+        }
+        this.$emit('closeQuote');
+      }
+      
+      
+
+    }
   },
 };
 </script>

@@ -7,8 +7,6 @@
       <ShopToolsCategory />
       <ShopToolsProductSlider :products="products" @openQuickview="showQuickview" @openCompare="showCoampre" @openCart="showCart" />
       <ShopToolsSelectVehical :products="products" :category="category" @openQuickview="showQuickview" @openCompare="showCoampre" @openCart="showCart" />
-      <!-- <ShopToolsProductTabSlider :products="products" :category="category" @openQuickview="showQuickview" @openCompare="showCoampre" @openCart="showCart" /> -->
-      <!-- <ShopToolsLogo_slider /> -->
       <Footer />
       <WidgetsQuickview :openModal="showquickviewmodel" :productData="quickviewproduct" @closeView="closeViewModal"/>
       <WidgetsComparePopup :openCompare="showcomparemodal" :productData="comapreproduct" @closeCompare="closeCompareModal" />

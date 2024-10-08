@@ -67,12 +67,28 @@ export default defineNuxtPlugin(() => {
     return false;
   };
 
+  const generateQuote = async (products, description) => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const quote = await axios.post("/api/getQuote", {
+      accessToken: accessToken?.data?.access_token,
+      products,
+      description
+    });
+
+    if (quote.status === 200) {
+      return quote.data;
+    }
+
+    return false;
+  };
+
   return {
     provide: {
       getProducts,
       getProductDetails,
       registerUser,
       loginUser,
+      generateQuote,
     },
   };
 });

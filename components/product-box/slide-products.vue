@@ -95,7 +95,6 @@ export default {
       return ('/images/' + path)
     },
     addToCart: function (product) {
-      console.log('product', product);
       this.cartval = true
       this.cartProduct = product
       this.$emit('opencartmodel', this.cartval, this.cartProduct)
@@ -104,6 +103,7 @@ export default {
       product.priceBookId = product?.prices[0]?.priceBookId;
       product.priceModelId = product?.prices[0]?.pricingModel?.id;
       product.quantity = 1;
+      product.periodBoundary = product?.prices[0]?.pricingModel?.frequency ?? 'One Time';
       useCartStore().addToCart(product)
     },
     addToWishlist: function (product) {
