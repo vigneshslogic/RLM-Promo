@@ -22,9 +22,8 @@
                       <swiper-slide class="swiper-slide">
                         <img
                           class="img-fluid bg-img"
-                          src="/images/6.jpg"
+                          :src="image"
                           />
-                          <!-- :src="getDetail?.displayUrl" -->
                       </swiper-slide>
                     </swiper>
                   </div>
@@ -81,7 +80,6 @@
                               class="form-control input-number"
                               v-model="counter"
                             />
-                            <!-- :disabled="counter > getDetail?.stock" -->
                             <span class="input-group-prepend">
                               <button
                                 type="button"
@@ -103,7 +101,6 @@
                           title="Add to cart"
                           @click="addToCart(getDetail, counter)"
                         >
-                          <!-- :disabled="counter > getDetail?.stock" -->
                           Add To Cart
                         </button>
                         <!-- </nuxt-link> -->
@@ -432,9 +429,11 @@ const getDetail = ref(null);
 const route = useRoute();
 const counter = ref(1);
 const selectedPlan = ref("");
+const image = ref('');
 
 onMounted(async () => {
   getDetail.value = await useProductStore().getProductById(route.params.id);
+  image.value = getDetail.value?.displayUrl?.replace(/&amp;/g, '&') ?? '/images/6.jpg';
 
   selectedPlan.value =
     find(getDetail?.value?.prices, { isDefault: true }) ?? "";

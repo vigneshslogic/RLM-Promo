@@ -4,29 +4,57 @@
       <div class="ribbon" v-if="product.new"><span>new</span></div>
       <div class="front">
         <nuxt-link :to="{ path: '/product/sidebar/' + product.id }">
-          <img src='/images/6.jpg' :id="product.id" class="img-fluid bg-img" :alt="product.name"
-            :key="index" />
+          <!-- src="/images/6.jpg" -->
+          <img
+            :src="image ?? '/images/6.jpg'"
+            :id="product?.id"
+            class="img-fluid bg-img"
+            :alt="product.name"
+            :key="index"
+          />
         </nuxt-link>
       </div>
       <div class="cart-info cart-wrap">
         <a href="javascript:void(0)" title="Add to Wishlist" tabindex="0">
-          <i class="fa fa-heart" aria-hidden="true" @click="addToWishlist(product)"></i>
+          <i
+            class="fa fa-heart"
+            aria-hidden="true"
+            @click="addToWishlist(product)"
+          ></i>
         </a>
-        <button data-toggle="modal" data-target="#addtocart" title="Add to cart" @click="addToCart(product)"
-          variant="primary">
+        <button
+          data-toggle="modal"
+          data-target="#addtocart"
+          title="Add to cart"
+          @click="addToCart(product)"
+          variant="primary"
+        >
           <i class="ti-shopping-cart"></i> Add to cart
         </button>
-        <a href="javascript:void(0)" title="Comapre" @click="addToCompare(product)" 
-          variant="primary">
+        <a
+          href="javascript:void(0)"
+          title="Comapre"
+          @click="addToCompare(product)"
+          variant="primary"
+        >
           <i class="fa fa-refresh" aria-hidden="true"></i>
         </a>
-        <a class="mobile-quick-view" title="Quick View" @click="showQuickview(product)" variant="primary">
+        <a
+          class="mobile-quick-view"
+          title="Quick View"
+          @click="showQuickview(product)"
+          variant="primary"
+        >
           <i class="ti-search" aria-hidden="true"></i>
         </a>
       </div>
       <div class="quick-view-part">
-        <a href="javascript:void(0)" title="Quick View" @click="showQuickview(product)" 
-          variant="primary">
+        <a
+          href="javascript:void(0)"
+          title="Quick View"
+          @click="showQuickview(product)"
+          variant="primary"
+        >
           <i class="ti-search" aria-hidden="true"></i>
         </a>
       </div>
@@ -48,24 +76,20 @@
         <del>{{ (product.price * curr.curr).toFixed(2) }}</del>
       </h4>
       <h4 v-else>{{ curr.symbol }}{{ (product.price * curr.curr).toFixed(2) }}</h4> -->
-      <h4
-        v-if="getProductPrice"
-      >
-        £ {{ getProductPrice }} 
-      </h4>
+      <h4 v-if="getProductPrice">£ {{ getProductPrice }}</h4>
     </div>
   </div>
 </template>
 
 <script>
-import { useCartStore } from '~~/store/cart';
-import { useProductStore } from '~~/store/products';
-import { mapState } from 'pinia';
-import pkg from 'lodash';
+import { useCartStore } from "~~/store/cart";
+import { useProductStore } from "~~/store/products";
+import { mapState } from "pinia";
+import pkg from "lodash";
 const { find } = pkg;
 
 export default {
-  props: ['product', 'index'],
+  props: ["product", "index"],
   data() {
     return {
       quickviewProduct: {},
@@ -75,61 +99,69 @@ export default {
       showCompareModal: false,
       cartval: false,
       dismissSecs: 5,
-      dismissCountDown: 0
-    }
+      dismissCountDown: 0,
+      image: this.product?.displayUrl?.replace(/&amp;/g, '&')
+    };
   },
   computed: {
     ...mapState(useProductStore, {
-      productslist: 'productslist'
+      productslist: "productslist",
     }),
     curr() {
-      return useProductStore().changeCurrency
+      return useProductStore().changeCurrency;
     },
     getProductPrice() {
       const exists = find(this.product.prices, { isDefault: true });
       return exists?.price;
-    }
+    },
   },
   methods: {
-    getImgUrl(path) {
-      return ('/images/' + path)
-    },
     addToCart: function (product) {
-      this.cartval = true
-      this.cartProduct = product
-      this.$emit('opencartmodel', this.cartval, this.cartProduct)
+      this.cartval = true;
+      this.cartProduct = product;
+      this.$emit("opencartmodel", this.cartval, this.cartProduct);
       product.price = product?.prices[0]?.price;
       product.priceBookEntryId = product?.prices[0]?.priceBookEntryId;
       product.priceBookId = product?.prices[0]?.priceBookId;
       product.priceModelId = product?.prices[0]?.pricingModel?.id;
       product.quantity = 1;
-      product.periodBoundary = product?.prices[0]?.pricingModel?.frequency ?? 'One Time';
-      useCartStore().addToCart(product)
+      product.periodBoundary =
+        product?.prices[0]?.pricingModel?.frequency ?? "One Time";
+      useCartStore().addToCart(product);
     },
     addToWishlist: function (product) {
-      this.dismissCountDown = this.dismissSecs
-      useNuxtApp().$showToast({ msg: "Product Is successfully added to your wishlist.", type: "info" })
-      useProductStore().addToWishlist(product)
+      this.dismissCountDown = this.dismissSecs;
+      useNuxtApp().$showToast({
+        msg: "Product Is successfully added to your wishlist.",
+        type: "info",
+      });
+      useProductStore().addToWishlist(product);
     },
     showQuickview: function (productData) {
-      this.showquickview = true
-      this.quickviewProduct = productData
-      this.$emit('openquickview', this.showquickview, this.quickviewProduct)
+      this.showquickview = true;
+      this.quickviewProduct = productData;
+      this.$emit("openquickview", this.showquickview, this.quickviewProduct);
     },
     addToCompare: function (product) {
-      this.showCompareModal = true
-      this.compareProduct = product
-      this.$emit('showCompareModal', this.showCompareModal, this.compareProduct)
-      useProductStore().addToCompare(product)
+      this.showCompareModal = true;
+      this.compareProduct = product;
+      this.$emit(
+        "showCompareModal",
+        this.showCompareModal,
+        this.compareProduct
+      );
+      useProductStore().addToCompare(product);
     },
     countDownChanged(dismissCountDown) {
-      this.dismissCountDown = dismissCountDown
-      this.$emit('alertseconds', this.dismissCountDown)
+      this.dismissCountDown = dismissCountDown;
+      this.$emit("alertseconds", this.dismissCountDown);
     },
     discountedPrice(product) {
-      const price = (product.price - (product.price * product.discount / 100)) * this.curr.curr
-      return price
+      const price =
+        (product.price - (product.price * product.discount) / 100) *
+        this.curr.curr;
+      return price;
     },
-  }
-}
+  },
+};
 </script>

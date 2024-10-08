@@ -49,19 +49,12 @@ export default {
 
       items: [
         {
-          imagepath: '/images/home-banner/49.jpg',
-          imagetool1: '/images/tools/1.png',
-          title: 'Auto parts',
-          subtitle: 'welcome to tools',
+          imagepath: '/images/home-banner/banner.png',
+          // imagetool1: '/images/tools/1.png',
+          title: 'Nexus Global Holdings Webshop',
+          subtitle: 'welcome to',
           alignclass: 'p-left'
         },
-        {
-          imagepath: '/images/home-banner/50.jpg',
-          imagetool1: '/images/tools/3.png',
-          title: 'car body parts',
-          subtitle: 'save 15% off',
-          alignclass: 'p-left'
-        }
       ]
     }
   },
