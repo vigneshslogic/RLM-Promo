@@ -12,29 +12,52 @@
                 <div class="row check-out">
                   <div class="form-group col-md-6 col-sm-6">
                     <div class="field-label">First Name</div>
-                    <input type="text" v-model="user.firstName.value" name="First name" />
-                    <span class="validate-error" v-if="user.firstName.value.length === 0">{{
-                      user.firstName.errormsg
-                    }}</span>
+                    <input
+                      type="text"
+                      v-model="user.firstName.value"
+                      name="First name"
+                    />
+                    <span
+                      class="validate-error"
+                      v-if="user.firstName.value.length === 0"
+                    >
+                      {{ user.firstName.errormsg }}
+                    </span>
                   </div>
                   <div class="form-group col-md-6 col-sm-6">
                     <div class="field-label">Last Name</div>
-                    <input type="text" v-model="user.lastName.value" name="Last name" />
-                    <span class="validate-error" v-if="user.lastName.value.length === 0">{{
-                      user.lastName.errormsg
-                    }}</span>
+                    <input
+                      type="text"
+                      v-model="user.lastName.value"
+                      name="Last name"
+                    />
+                    <span
+                      class="validate-error"
+                      v-if="user.lastName.value.length === 0"
+                      >{{ user.lastName.errormsg }}</span
+                    >
                   </div>
                   <div class="form-group col-md-6 col-sm-6">
                     <div class="field-label">Phone</div>
                     <input type="tel" v-model="user.phone.value" name="Phone" />
-                    <span class="validate-error" v-if="user.phone.value.length === 0">{{ user.phone.errormsg }}</span>
+                    <span
+                      class="validate-error"
+                      v-if="user.phone.value.length === 0"
+                      >{{ user.phone.errormsg }}</span
+                    >
                   </div>
                   <div class="form-group col-md-6 col-sm-6">
                     <div class="field-label">Email Address</div>
-                    <input type="email" v-model="user.email.value" name="Email Address" />
-                    <span class="validate-error" v-if="!user.email.value || !validEmail(user.email.value)">{{
-                      user.email.errormsg
-                    }}</span>
+                    <input
+                      type="email"
+                      v-model="user.email.value"
+                      name="Email Address"
+                    />
+                    <span
+                      class="validate-error"
+                      v-if="!user.email.value || !validEmail(user.email.value)"
+                      >{{ user.email.errormsg }}</span
+                    >
                   </div>
                   <div class="form-group col-md-12 col-sm-12">
                     <div class="field-label">Country</div>
@@ -47,30 +70,56 @@
                   </div>
                   <div class="form-group col-md-12 col-sm-12">
                     <div class="field-label">Address</div>
-                    <input type="text" v-model="user.address.value" name="Address" />
-                    <span class="validate-error" v-if="user.address.value.length === 0">{{
-                      user.address.errormsg
-                    }}</span>
+                    <input
+                      type="text"
+                      v-model="user.address.value"
+                      name="Address"
+                    />
+                    <span
+                      class="validate-error"
+                      v-if="user.address.value.length === 0"
+                      >{{ user.address.errormsg }}</span
+                    >
                   </div>
                   <div class="form-group col-md-12 col-sm-12">
                     <div class="field-label">Town/City</div>
                     <input type="text" v-model="user.city.value" name="City" />
-                    <span class="validate-error" v-if="user.city.value.length === 0">{{ user.city.errormsg }}</span>
+                    <span
+                      class="validate-error"
+                      v-if="user.city.value.length === 0"
+                      >{{ user.city.errormsg }}</span
+                    >
                   </div>
                   <div class="form-group col-md-12 col-sm-6">
                     <div class="field-label">State / County</div>
-                    <input type="text" v-model="user.state.value" name="State" />
-                    <span class="validate-error" v-if="user.state.value.length === 0">{{ user.state.errormsg }}</span>
+                    <input
+                      type="text"
+                      v-model="user.state.value"
+                      name="State"
+                    />
+                    <span
+                      class="validate-error"
+                      v-if="user.state.value.length === 0"
+                      >{{ user.state.errormsg }}</span
+                    >
                   </div>
                   <div class="form-group col-md-12 col-sm-6">
                     <div class="field-label">Postal Code</div>
-                    <input type="text" v-model="user.pincode.value" name="Postal Code" />
-                    <span class="validate-error" v-if="user.pincode.value.length === 0">{{
-                      user.pincode.errormsg
-                    }}</span>
+                    <input
+                      type="text"
+                      v-model="user.pincode.value"
+                      name="Postal Code"
+                    />
+                    <span
+                      class="validate-error"
+                      v-if="user.pincode.value.length === 0"
+                      >{{ user.pincode.errormsg }}</span
+                    >
                   </div>
                   <div class="form-group col-lg-12 col-md-12 col-sm-12">
-                    <nuxt-link :to="{ path: '/page/account/register' }">Create an Account?</nuxt-link>
+                    <nuxt-link v-if="useCookie('userLogin').value" :to="{ path: '/page/account/register' }"
+                      >Create an Account?</nuxt-link
+                    >
                   </div>
                 </div>
               </div>
@@ -94,14 +143,23 @@
                         Subtotal
                         <span class="count">£ {{ cartTotal }}</span>
                       </li>
-                      <li>Shipping
+                      <li>
+                        Shipping
                         <div class="shipping">
                           <div class="shopping-option">
-                            <input type="checkbox" name="free-shipping" id="free-shipping">
+                            <input
+                              type="checkbox"
+                              name="free-shipping"
+                              id="free-shipping"
+                            />
                             <label for="free-shipping">Free Shipping</label>
                           </div>
                           <div class="shopping-option">
-                            <input type="checkbox" name="local-pickup" id="local-pickup">
+                            <input
+                              type="checkbox"
+                              name="local-pickup"
+                              id="local-pickup"
+                            />
                             <label for="local-pickup">Local Pickup</label>
                           </div>
                         </div>
@@ -120,31 +178,49 @@
                         <ul>
                           <li>
                             <label class="d-block" for="edo-ani1">
-                              <input class="radio_animated" id="edo-ani1" value="stripe" v-model="selectedPayment"
-                                type="radio" name="rdo-ani" data-original-title="">Stripe
+                              <input
+                                class="radio_animated"
+                                id="edo-ani1"
+                                value="stripe"
+                                v-model="selectedPayment"
+                                type="radio"
+                                name="rdo-ani"
+                                data-original-title=""
+                              />Stripe
                             </label>
-
                           </li>
                           <li>
                             <label class="d-block" for="edo-ani2">
-
-                              <input class="radio_anima ted" id="edo-ani2" value="paypal" v-model="selectedPayment"
-                                type="radio" name="rdo-ani" data-original-title="" title="">PayPal
-
-
+                              <input
+                                class="radio_anima ted"
+                                id="edo-ani2"
+                                value="paypal"
+                                v-model="selectedPayment"
+                                type="radio"
+                                name="rdo-ani"
+                                data-original-title=""
+                                title=""
+                              />PayPal
                             </label>
-
                           </li>
                         </ul>
                       </div>
                     </div>
                     <div class="text-end">
-
-
-                      <div id="paypal-button-container" :class="[{ 'd-none': selectedPayment != 'paypal' }]"></div>
-                      <div class="order-place" v-if="selectedPayment === 'stripe' && cart.length">
-
-                        <button class="btn btn-primary" @click.prevent="payWithStripe">Place Order </button>
+                      <div
+                        id="paypal-button-container"
+                        :class="[{ 'd-none': selectedPayment != 'paypal' }]"
+                      ></div>
+                      <div
+                        class="order-place"
+                        v-if="selectedPayment === 'stripe' && cart.length"
+                      >
+                        <button
+                          class="btn btn-primary"
+                          @click.prevent="payWithStripe"
+                        >
+                          Place Order
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -158,186 +234,184 @@
   </section>
 </template>
 <script>
-import { useCartStore } from '~~/store/cart'
-import { useProductStore } from '~~/store/products'
-  export default {
+import { useCartStore } from "~~/store/cart";
+import { useProductStore } from "~~/store/products";
+export default {
   computed: {
-    cart(){
-      return useCartStore().cartItems
+    cart() {
+      return useCartStore().cartItems;
     },
-    cartTotal(){
-      return useCartStore().cartTotalAmount
+    cartTotal() {
+      return useCartStore().cartTotalAmount;
     },
-    curr(){
-      return useProductStore().changeCurrency
-    }
+    curr() {
+      return useProductStore().changeCurrency;
+    },
   },
   data() {
     return {
-      items: [{
-        stripePriceId: '1',
-        quantity: 5
-      }],
-      selectedPayment: 'paypal',
+      items: [
+        {
+          stripePriceId: "1",
+          quantity: 5,
+        },
+      ],
+      selectedPayment: "paypal",
       errors: [],
-      userInfo: useCookie('userInfo').value, 
+      // userInfo: useCookie("userInfo").value,
       user: {
-        firstName: { value: '', errormsg: '' },
-        lastName: { value: '', errormsg: '' },
-        phone: { value: '', errormsg: '' },
-        email: { value: '', errormsg: '' },
-        address: { value: '', errormsg: '' },
-        city: { value: '', errormsg: '' },
-        state: { value: '', errormsg: '' },
-        pincode: { value: '', errormsg: '' }
+        firstName: { value: "", errormsg: "" },
+        lastName: { value: "", errormsg: "" },
+        phone: { value: "", errormsg: "" },
+        email: { value: "", errormsg: "" },
+        address: { value: "", errormsg: "" },
+        city: { value: "", errormsg: "" },
+        state: { value: "", errormsg: "" },
+        pincode: { value: "", errormsg: "" },
       },
       isLogin: false,
       paypal: {
-        sandbox: 'Your_Sendbox_Key'
+        sandbox: "Your_Sendbox_Key",
       },
       payment: false,
-      environment: 'sandbox',
+      environment: "sandbox",
       button_style: {
-        label: 'checkout',
-        size: 'medium', // small | medium | large | responsive
-        shape: 'pill', // pill | rect
-        color: 'blue' // gold | blue | silver | black
+        label: "checkout",
+        size: "medium", // small | medium | large | responsive
+        shape: "pill", // pill | rect
+        color: "blue", // gold | blue | silver | black
       },
-      amtchar: ''
-    }
-  },
- 
-watch:{
-    cart:{
-      handler(value){
-        if(value.length==0){
-          useNuxtApp().$showToast({ msg: "Cart is Empty.", type: "error" })
-          this.$router.replace('/page/account/cart')
-        }
-        
-      },deep:true
-    }
+      amtchar: "",
+    };
   },
 
+  watch: {
+    cart: {
+      handler(value) {
+        if (value.length == 0) {
+          useNuxtApp().$showToast({ msg: "Cart is Empty.", type: "error" });
+          this.$router.replace("/page/account/cart");
+        }
+      },
+      deep: true,
+    },
+  },
 
   methods: {
-
     payWithStripe() {
-      this.onSubmit()
+      this.onSubmit();
 
-      this.isLogin = useCookie('userLogin').value;
+      this.isLogin = useCookie("userLogin").value;
       if (!this.isLogin) {
-
-        this.$router.replace('/page/account/login')
-      }
-      else if (this.user.firstName.errormsg != '' && this.user.lastName.errormsg != '' && this.user.city.errormsg != '' && this.user.pincode.errormsg != '' && this.user.state.errormsg != '' && this.user.phone.errormsg != '' && this.user.address.errormsg != '' && this.user.email.errormsg != '') {
-
-        this.onSubmit()
-      }
-      else if (this.isLogin) {
-
-        this.payment = false
-        var handler = (window).StripeCheckout.configure({
-          key: 'PUBLISHBLE_KEY', // 'PUBLISHBLE_KEY'
-          locale: 'auto',
+        this.$router.replace("/page/account/login");
+      } else if (
+        this.user.firstName.errormsg != "" &&
+        this.user.lastName.errormsg != "" &&
+        this.user.city.errormsg != "" &&
+        this.user.pincode.errormsg != "" &&
+        this.user.state.errormsg != "" &&
+        this.user.phone.errormsg != "" &&
+        this.user.address.errormsg != "" &&
+        this.user.email.errormsg != ""
+      ) {
+        this.onSubmit();
+      } else if (this.isLogin) {
+        this.payment = false;
+        var handler = window.StripeCheckout.configure({
+          key: "PUBLISHBLE_KEY", // 'PUBLISHBLE_KEY'
+          locale: "auto",
           closed: function () {
-            handler.close()
+            handler.close();
           },
           token: (token) => {
-            this.$store.dispatch('products/createOrder', {
+            this.$store.dispatch("products/createOrder", {
               product: this.cart,
               userDetail: this.user,
               token: token.id,
-              amt: this.cartTotal
-            })
-            this.$router.push('/page/order-success')
-          }
+              amt: this.cartTotal,
+            });
+            this.$router.push("/page/order-success");
+          },
         });
         handler.open({
-          name: 'Nexus Global Holdings',
-          description: 'Your Choice Theme',
-          amount: this.cartTotal * 100
+          name: "Nexus Global Holdings",
+          description: "Your Choice Theme",
+          amount: this.cartTotal * 100,
         });
       }
-
-
     },
 
     onSubmit() {
-
-      if (this.user.firstName.value.length <= 1 || this.user.firstName.value.length > 10) {
-        this.user.firstName.errormsg = 'empty not allowed'
+      if (
+        this.user.firstName.value.length <= 1 ||
+        this.user.firstName.value.length > 10
+      ) {
+        this.user.firstName.errormsg = "empty not allowed";
       } else {
-        this.user.firstName.errormsg = ''
+        this.user.firstName.errormsg = "";
       }
 
-      if (this.user.lastName.value.length <= 1 || this.user.lastName.value.length > 10) {
-        this.user.lastName.errormsg = 'empty not allowed'
+      if (
+        this.user.lastName.value.length <= 1 ||
+        this.user.lastName.value.length > 10
+      ) {
+        this.user.lastName.errormsg = "empty not allowed";
       } else {
-        this.user.lastName.errormsg = ''
+        this.user.lastName.errormsg = "";
       }
 
       if (this.user.city.value.length < 3 || this.user.city.value.length > 10) {
-        this.user.city.errormsg = 'empty not allowed'
+        this.user.city.errormsg = "empty not allowed";
       } else {
-        this.user.city.errormsg = ''
+        this.user.city.errormsg = "";
       }
       if (this.user.pincode.value.length < 4) {
-
-        this.user.pincode.errormsg = 'empty not  allowed'
+        this.user.pincode.errormsg = "empty not allowed";
       } else {
-        this.user.pincode.errormsg = ''
+        this.user.pincode.errormsg = "";
       }
       if (!this.user.state.value) {
-        this.user.state.errormsg = 'empty not allowed'
+        this.user.state.errormsg = "empty not allowed";
       } else {
-        this.user.state.errormsg = ''
+        this.user.state.errormsg = "";
       }
       if (!this.user.phone.value) {
-        this.user.phone.errormsg = 'empty not allowed'
+        this.user.phone.errormsg = "empty not allowed";
       } else {
-        this.user.phone.errormsg = ''
+        this.user.phone.errormsg = "";
       }
       if (!this.user.address.value) {
-        this.user.address.errormsg = 'empty not allowed'
+        this.user.address.errormsg = "empty not allowed";
       } else {
-        this.user.address.errormsg = ''
+        this.user.address.errormsg = "";
       }
       if (!this.user.email.value) {
-        this.user.email.errormsg = 'empty not allowed'
+        this.user.email.errormsg = "empty not allowed";
       } else if (!this.validEmail(this.user.email.value)) {
-
-        this.user.email.errormsg = 'Valid email required.'
-
+        this.user.email.errormsg = "Valid email required.";
       } else {
-        this.user.email.errormsg = ''
+        this.user.email.errormsg = "";
       }
-
     },
     validEmail: function (email) {
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      return re.test(email)
-    }
+      const re =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    },
   },
-  
-   mounted(){
-    window.paypal.Buttons({
 
-    }).render('#paypal-button-container')
+  mounted() {
+    console.log("useCookie('userInfo').value", useCookie("userInfo").value);
+    window.paypal.Buttons({}).render("#paypal-button-container");
 
-
-
-
-    this.isLogin = useCookie('userLogin').value
+    this.isLogin = useCookie("userLogin").value;
 
     if (!this.isLogin) {
-      this.$router.replace('/page/account/login')
+      this.$router.replace("/page/account/login");
+    } else if (this.isLogin && this.cart.length == 0) {
+      useNuxtApp().$showToast({ msg: "Cart is Empty.", type: "error" });
+      this.$router.replace("/page/account/cart");
     }
-    else if (this.isLogin && this.cart.length == 0) {
-      useNuxtApp().$showToast({ msg: "Cart is Empty.", type: "error" })
-      this.$router.replace('/page/account/cart')
-    }
-
   },
-}
+};
 </script>

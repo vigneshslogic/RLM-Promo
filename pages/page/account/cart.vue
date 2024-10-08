@@ -122,6 +122,7 @@
           </div>
           <div class="col-6">
             <button
+              v-if="useCookie('userLogin').value"
               class="btn btn-solid"
               title="Get Quote"
               @click="handleGetQuote"
