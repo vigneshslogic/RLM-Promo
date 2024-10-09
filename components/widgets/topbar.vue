@@ -5,7 +5,7 @@
         <div class="col-lg-6">
           <div class="header-contact">
             <ul>
-              <li>Welcome to Our store Multikart</li>
+              <li>Welcome to Our store Nexus Global Holdings Webshop</li>
               <li>
                 <i class="fa fa-phone" aria-hidden="true"></i>Call Us: 123 - 456 - 7890
               </li>
@@ -24,10 +24,9 @@
               <ul class="onhover-show-div">
                 <li  @click="logout">
                   <nuxt-link to="javascript:void(0)"> {{isLogin ? 'Logout':'Login'}} </nuxt-link>
-                  <!-- <nuxt-link v-else to="/page/account/login">Login</nuxt-link> -->
                 </li>
                 <li>
-                  <nuxt-link to="/page/account/dashboard">Dashboard</nuxt-link>
+                  <nuxt-link v-if="isLogin" to="/page/account/dashboard">Dashboard</nuxt-link>
                 </li>
               </ul>
             </li>

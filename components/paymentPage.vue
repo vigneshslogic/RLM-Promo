@@ -198,7 +198,13 @@
                           class="btn btn-solid"
                           title="Get Quote"
                           @click="handlePlaceOrder"
-                        > Place Order
+                        > 
+                          <div v-if="loading" class="spinner-border text-light" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div> 
+                          <span v-else> 
+                            Place Order
+                          </span>
                         </button>
                       </div>
                     </div>
@@ -237,6 +243,7 @@ export default {
       // ],
       // selectedPayment: "paypal",
       errors: [],
+      loading: false,
       // userInfo: useCookie("userInfo").value,
       user: {
         firstName: { value: "John", errormsg: "" },
@@ -281,6 +288,7 @@ export default {
 
   methods: {
     async handlePlaceOrder() {
+      this.loading = true;
       this.onSubmit();
 
       this.isLogin = useCookie("userLogin").value;
@@ -313,6 +321,7 @@ export default {
           useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
         }
       }
+      this.loading = false;
     },
 
     onSubmit() {

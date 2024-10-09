@@ -10,7 +10,7 @@
               </div>
               <div class="footer-contant">
                 <div class="footer-logo">
-                  <img src="/images/icon/layout4/footerlogo.png" alt="logo" />
+                  <img src="/images/icon/logo.png" alt="logo" />
                 </div>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                   et dolore magna aliqua. Ut enim ad minim veniam,</p>
