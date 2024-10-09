@@ -4,8 +4,8 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   try {
-    const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v60.0/commerce/sales-orders/actions/place`;
-    const rawPayload = {
+    const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/commerce/sales-orders/actions/place`;
+    let rawPayload = {
       pricingPref: "System",
       configurationInput: "RunAndAllowErrors",
       configurationOptions: {
@@ -24,11 +24,17 @@ export default defineEventHandler(async (event) => {
                 type: "Order",
                 method: "POST",
               },
-              AccountId: "001Pv00000XC7NkIAL", // define user accountId here
+              AccountId: body?.accountId, // define user accountId here
+              BillToContactId: body?.contactId,
               Name: "Test Order",
               EffectiveDate: "2024-02-01",
               Pricebook2Id: "01sPv000001FdriIAC",
               Status: "Draft",
+              BillingCity: body?.user?.city?.value,          // Billing city
+              BillingCountry: body?.user?.state?.value,                 // Billing country
+              BillingState: body?.user?.state?.value,                    // Billing state
+              BillingStreet: body?.user?.address?.value,        // Billing street
+              BillingPostalCode: body?.user?.pincode?.value,            // Billing postal code
             },
           },
           {
@@ -53,51 +59,50 @@ export default defineEventHandler(async (event) => {
               AppUsageType: "RevenueLifecycleManagement",
             },
           },
-          {
-            referenceId: "refOrderItem",
-            record: {
-              attributes: {
-                type: "OrderItem",
-                method: "POST",
-              },
-              OrderId: "@{refOrder.id}",
-              OrderActionId: "@{refOrderAction.id}",
-              Quantity: 1,
-              PricebookEntryId: "01uPv000002eJu1IAE", // product?.priceBookEntryId,
-              Product2Id: "01tPv000006qWMvIAM", // product?.id,
-              ListPrice: 2000.00, // product?.price,
-              UnitPrice: 2000.00, // product?.price,
-              NetUnitPrice: 2000.00, // product?.price,
-              PeriodBoundary: "Anniversary", // product?.periodBoundary,
-              ServiceDate: "2024-02-01",
-            },
-          }
         ],
       },
     };
 
-    // const products = body.products?.map((product) => ({
-    //   referenceId: "refOrderItem",
-    //   record: {
-    //     attributes: {
-    //       type: "OrderItem",
-    //       method: "POST",
-    //     },
-    //     OrderId: "@{refOrder.id}",
-    //     OrderActionId: "@{refOrderAction.id}",
-    //     Quantity: 1,
-    //     PricebookEntryId: "01uPv000002eJu1IAE", // product?.priceBookEntryId,
-    //     Product2Id: '01tPv000006qWMvIAM', // product?.id,
-    //     ListPrice: 2000.00, // product?.price,
-    //     UnitPrice: 2000.00, // product?.price,
-    //     NetUnitPrice: 2000.00, // product?.price,
-    //     PeriodBoundary: "Anniversary", // product?.periodBoundary,
-    //     ServiceDate: "2024-02-01",
-    //   },
-    // }));
+    const products = body.products?.map((product, index) => {
+      let prod = {
+        referenceId: `refOrderItem${index > 0 ? index : ''}`,
+        record: {
+          attributes: {
+            type: "OrderItem",
+            method: "POST",
+          },
+          OrderId: "@{refOrder.id}",
+          OrderActionId: "@{refOrderAction.id}",
+          Quantity: 1,
+          PricebookEntryId: product?.priceBookEntryId,
+          Product2Id: product?.id,
+          ListPrice: product?.price,
+          UnitPrice: product?.price,
+          NetUnitPrice: product?.price,
+          PeriodBoundary: "Anniversary", // product?.periodBoundary,
+          ServiceDate: "2024-02-01",
+        },
+      };
 
-    // if (products?.length) {
-      // rawPayload?.graph?.records.concat(products);
+      if (product?.periodBoundary !== 'OneTime') {
+        const date = new Date('2024-02-01');  // Convert to Date object
+        date.setMonth(date.getMonth() + 12); // Add months using date-fns
+        const endDate = date.toISOString().split('T')[0];
+
+        prod.record = {
+          ...prod.record,
+          EndDate: endDate,
+          PricingTermCount: 12.0,
+          TotalLineAmount: 12 * (product?.price),
+          BillingFrequency2: product?.periodBoundary,
+        }
+      }
+
+      return prod;
+    });
+
+    if (products?.length) {
+      rawPayload.graph.records = rawPayload?.graph?.records.concat(products);
 
       const response = await axios.post(url, rawPayload, {
         headers: {
@@ -109,7 +114,7 @@ export default defineEventHandler(async (event) => {
       if (response.status === 201 || response.status === 200) {
         return response.data;
       }
-    // }
+    }
 
     return false;
   } catch (error) {

@@ -2,7 +2,6 @@ import axios from 'axios';
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-
   try {
     const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/commerce/quotes/actions/place`;
     let rawPayload = {
@@ -24,11 +23,13 @@ export default defineEventHandler(async (event) => {
                             type: "Quote",
                             method: "POST"
                         },
-                        //AccountId: "001Pv00000XC7NkIAL",
                         Name: "Test Quote",
                         Pricebook2Id: "01sPv000001FdriIAC",
                         description: body?.description ?? '',
                         Source__c: "WebStore",
+                        ContactId: body?.contactId,
+                        BillToContactId: body?.contactId,
+                        AccountId__c: body?.accountId
                     }
                 },
                 {

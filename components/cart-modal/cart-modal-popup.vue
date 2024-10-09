@@ -39,7 +39,7 @@
                       <a href="#">
                           <!-- :src="getImgUrl(productData.images[0].src)" -->
                         <img
-                          src="/images/6.jpg"
+                          :src='getImage(productData?.displayUrl)'
                           class="img-fluid"
                           :alt="productData?.name"
                         />
@@ -160,9 +160,8 @@ export default {
     },
   },
   methods: {
-    // Get Image Url
-    getImgUrl(path) {
-      return "/images/" + path;
+    getImage(img) {
+      return img?.replace(/&amp;/g, '&') ?? '/images/6.jpg'
     },
     closeCart(val) {
       val = false;

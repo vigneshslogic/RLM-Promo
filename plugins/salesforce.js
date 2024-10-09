@@ -72,7 +72,9 @@ export default defineNuxtPlugin(() => {
     const quote = await axios.post("/api/getQuote", {
       accessToken: accessToken?.data?.access_token,
       products,
-      description
+      description,
+      contactId: useCookie('userInfo')?.value?.Id,
+      accountId: useCookie('userInfo')?.value?.Account?.Id,
     });
 
     if (quote.status === 200) {
@@ -82,11 +84,14 @@ export default defineNuxtPlugin(() => {
     return false;
   };
 
-  const placeOrder = async (products) => {
+  const placeOrder = async (products, user) => {
     const accessToken = await axios.post("/api/getAccessToken");
     const order = await axios.post("/api/placeOrder", {
       accessToken: accessToken?.data?.access_token,
-      products
+      products,
+      user,
+      contactId: useCookie('userInfo')?.value?.Id,
+      accountId: useCookie('userInfo')?.value?.Account?.Id,
     });
 
     if (order.status === 200) {

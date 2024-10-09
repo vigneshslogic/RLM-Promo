@@ -23,11 +23,11 @@ export const useCartStore = defineStore({
           id: payload?.id,
           name: payload?.name,
           image: payload?.displayUrl,
-          price: payload?.price,
-          priceBookEntryId: payload?.priceBookEntryId,
-          priceBookId: payload?.priceBookId,
-          priceModelId: payload?.pricingModel?.id,
-          periodBoundary: payload?.pricingModel?.frequency ?? 'OneTime',
+          price: payload?.prices[0]?.price,
+          priceBookEntryId: payload?.prices[0]?.priceBookEntryId,
+          priceBookId: payload?.prices[0]?.priceBookId,
+          priceModelId: payload?.prices[0]?.pricingModel?.id,
+          periodBoundary: payload?.prices[0]?.pricingModel?.frequency ?? 'OneTime',
           quantity: qty,
         });
       }
@@ -85,7 +85,7 @@ export const useCartStore = defineStore({
       return async (user) => {
         const products = state.cart;
         const { $placeOrder } = useNuxtApp();
-        const response = await $placeOrder(products);
+        const response = await $placeOrder(products, user);
         return response;
       }
     },
