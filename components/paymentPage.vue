@@ -229,13 +229,13 @@ export default {
   },
   data() {
     return {
-      items: [
-        {
-          stripePriceId: "1",
-          quantity: 5,
-        },
-      ],
-      selectedPayment: "paypal",
+      // items: [
+      //   {
+      //     stripePriceId: "1",
+      //     quantity: 5,
+      //   },
+      // ],
+      // selectedPayment: "paypal",
       errors: [],
       // userInfo: useCookie("userInfo").value,
       user: {
@@ -252,9 +252,9 @@ export default {
         securityCode: { value: "123", errormsg: "" },
       },
       isLogin: false,
-      paypal: {
-        sandbox: "Your_Sendbox_Key",
-      },
+      // paypal: {
+      //   sandbox: "Your_Sendbox_Key",
+      // },
       payment: false,
       environment: "sandbox",
       button_style: {
@@ -390,7 +390,7 @@ export default {
   },
 
   mounted() {
-    window.paypal.Buttons({}).render("#paypal-button-container");
+    // window.paypal.Buttons({}).render("#paypal-button-container");
 
     this.isLogin = useCookie("userLogin").value;
 
