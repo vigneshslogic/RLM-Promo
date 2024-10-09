@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
         },
       });
 
-      body.contactData.AccountId = accountResponse.data?.id; // Associate contact with the newly created account
+      body.user.AccountId = accountResponse.data?.id; // Associate contact with the newly created account
 
       const contactResponse = await axios.post(`${instanceURL}/Contact/`, body.user, {
         headers: {
