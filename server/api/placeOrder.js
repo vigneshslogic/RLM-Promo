@@ -86,7 +86,8 @@ export default defineEventHandler(async (event) => {
 
       if (product?.periodBoundary !== 'OneTime') {
         const date = new Date('2024-02-01');  // Convert to Date object
-        date.setMonth(date.getMonth() + 12); // Add months using date-fns
+        date.setMonth(date.getMonth() + 12);
+        date.setDate(date.getDate() - 1); // Add months using date-fns
         const endDate = date.toISOString().split('T')[0];
 
         prod.record = {
