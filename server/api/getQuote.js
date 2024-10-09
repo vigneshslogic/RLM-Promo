@@ -27,7 +27,8 @@ export default defineEventHandler(async (event) => {
                         //AccountId: "001Pv00000XC7NkIAL",
                         Name: "Test Quote",
                         Pricebook2Id: "01sPv000001FdriIAC",
-                        description: body?.description ?? ''
+                        description: body?.description ?? '',
+                        Source__c: "WebStore",
                     }
                 },
                 {
