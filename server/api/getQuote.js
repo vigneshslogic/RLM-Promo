@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/commerce/quotes/actions/place`;
-    const rawPayload = {
+    let rawPayload = {
         pricingPref: "System",
         configurationInput: "RunAndAllowErrors",
         configurationOptions: {
@@ -69,14 +69,15 @@ export default defineEventHandler(async (event) => {
             PricebookEntryId: product?.priceBookEntryId,
             Product2Id: product?.id,
             UnitPrice: product?.price,
-            PeriodBoundary: product?.periodBoundary,
+            PeriodBoundary: "anniversary",
             ServiceDate: "2024-02-01"
         }
     }));
 
-    if (products?.length) {
-        rawPayload?.graph?.records.concat(products);
     
+    if (products?.length) {
+        rawPayload.graph.records = rawPayload?.graph?.records.concat(products);
+
         const response = await axios.post(url, rawPayload, {
           headers: {
             Authorization: `Bearer ${body.accessToken}`,
