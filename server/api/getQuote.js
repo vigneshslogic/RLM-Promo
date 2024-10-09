@@ -56,8 +56,8 @@ export default defineEventHandler(async (event) => {
         }
     };
 
-    const products = body.products?.map((product) => ({
-        referenceId: "refOrderItem",
+    const products = body.products?.map((product, index) => ({
+        referenceId: `refOrderItem${index > 0 ? index : ''}`,
         record: {
             attributes: {
                 type: "QuoteLineItem",
@@ -69,7 +69,7 @@ export default defineEventHandler(async (event) => {
             PricebookEntryId: product?.priceBookEntryId,
             Product2Id: product?.id,
             UnitPrice: product?.price,
-            PeriodBoundary: "anniversary",
+            PeriodBoundary: "Anniversary", // product?.periodBoundary
             ServiceDate: "2024-02-01"
         }
     }));
