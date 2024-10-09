@@ -3,19 +3,16 @@
     {
       "title": "Home",
       "type": "link",
-      "active": true,
       "path": "/"
     },
     {
       "title": "Business Units",
       "type": "link",
-      "active": false,
       "path": "#"
     },
     {
       "title": "Our Offers",
       "type": "link",
-      "active": false,
       "path": "#"
     }
   ]

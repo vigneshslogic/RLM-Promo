@@ -170,8 +170,8 @@
                         <input type="text" v-model="user.cardNumber.value" name="card_number" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" />
                         <span
                           class="validate-error"
-                          v-if="user.city.value.length === 0"
-                          >{{ user.city.errormsg }}</span
+                          v-if="user.cardNumber.value.length === 0"
+                          >{{ user.cardNumber.errormsg }}</span
                         >
                       </div>
                       <div class="form-group col-md-6 col-sm-6">
@@ -179,8 +179,8 @@
                         <input type="text" v-model="user.expiryDate.value" name="expiry_date" placeholder="MM/YY" maxlength="5" />
                         <span
                           class="validate-error"
-                          v-if="user.city.value.length === 0"
-                          >{{ user.city.errormsg }}</span
+                          v-if="user.expiryDate.value.length === 0"
+                          >{{ user.expiryDate.errormsg }}</span
                         >
                       </div>
                       <div class="form-group col-md-6 col-sm-6">
@@ -188,8 +188,8 @@
                         <input type="password" v-model="user.securityCode.value" name="security_code" maxlength="3" placeholder="***" />
                         <span
                           class="validate-error"
-                          v-if="user.city.value.length === 0"
-                          >{{ user.city.errormsg }}</span
+                          v-if="user.securityCode.value.length === 0"
+                          >{{ user.securityCode.errormsg }}</span
                         >
                       </div>
                       <div class="form-group col-md-12 col-sm-12">
@@ -287,17 +287,17 @@ export default {
       if (!this.isLogin) {
         this.$router.replace("/page/account/login");
       } else if (
-        this.user.firstName.errormsg != "" &&
-        this.user.lastName.errormsg != "" &&
-        this.user.city.errormsg != "" &&
-        this.user.pincode.errormsg != "" &&
-        this.user.state.errormsg != "" &&
-        this.user.phone.errormsg != "" &&
-        this.user.address.errormsg != "" &&
-        this.user.cardNumber.errormsg != "" &&
-        this.user.expiryDate.errormsg != "" &&
-        this.user.securityCode.errormsg != "" &&
-        this.user.email.errormsg != ""
+        this.user.firstName.errormsg ||
+        this.user.lastName.errormsg ||
+        this.user.city.errormsg ||
+        this.user.pincode.errormsg ||
+        this.user.state.errormsg ||
+        this.user.phone.errormsg ||
+        this.user.email.errormsg ||
+        this.user.address.errormsg ||
+        this.user.cardNumber.errormsg ||
+        this.user.expiryDate.errormsg ||
+        this.user.securityCode.errormsg 
       ) {
         this.onSubmit();
       } else if (this.isLogin) {
