@@ -40,6 +40,22 @@
                   <li class="nav-item">
                     <a
                       data-bs-toggle="tab"
+                      data-bs-target="#assets"
+                      class="nav-link"
+                      >My Subscription/assets</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      data-bs-toggle="tab"
+                      data-bs-target="#invoices"
+                      class="nav-link"
+                      >My Invoices</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      data-bs-toggle="tab"
                       data-bs-target="#wishlist"
                       class="nav-link"
                       >Newsletter</a
@@ -230,62 +246,13 @@
                 </div>
               </div>
               <div class="tab-pane fade" id="orders">
-                <div class="dashboard-right">
-                  <div class="dashboard">
-                    <div class="page-title">
-                      <h2>My orders</h2>
-                    </div>
-                    <div class="welcome-msg">
-                      <p>Hello, MARK JECNO !</p>
-                      <p>
-                        From your Orders you have the ability to view your all
-                        orders and status of order.
-                      </p>
-                    </div>
-                    <div class="box-account box-info">
-                      <div class="box-head">
-                        <h2>Order Information</h2>
-                      </div>
-                      <div>
-                        <div class="box">
-                          <div class="box-title mb-3">
-                            <h3>orders list</h3>
-                            <p>
-                              Lorem Ipsum is simply dummy text of the printing
-                              and typesetting industry. Lorem Ipsum has been the
-                              industry's standard dummy text ever since the
-                              1500s,
-                            </p>
-                          </div>
-                          <div class="row">
-                            <div class="col-sm-6">
-                              <h4>Order no: 2105</h4>
-                              <h6>Slim Fit Cotton Shirt</h6>
-                            </div>
-                            <div class="col-sm-6">
-                              <h4>Order no: 1032</h4>
-                              <h6>Slim Fit Cotton Shirt</h6>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="box mt-2">
-                          <div class="row">
-                            <div class="col-sm-6">
-                              <h4>Order no: 2105</h4>
-                              <h6>Slim Fit Cotton Shirt</h6>
-                            </div>
-                            <div class="col-sm-6">
-                              <h4>Order no: 1032</h4>
-                              <h6>Slim Fit Cotton Shirt</h6>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <myOrders v-if="orders" :orders="orders?.records" :user="user"/>
+              </div>
+              <div class="tab-pane fade" id="assets">
+                <assets v-if="assets" :assets="assets?.records" :user="user"/>
+              </div>
+              <div class="tab-pane fade" id="invoices">
+                <myInvoices v-if="invoices" :invoices="invoices?.records" :user="user"/>
               </div>
               <div class="tab-pane fade" id="wishlist">
                 <div class="dashboard-right">
@@ -495,6 +462,41 @@
   </div>
   <Footer />
 </template>
+
 <script>
-export default {};
+import { useAuthStore } from '~~/store/auth'
+import myOrders from './myOrders.vue';
+import myInvoices from  "./myInvoices.vue";
+import assets from './assets.vue';
+
+export default {
+  components: { myOrders, myInvoices, assets },
+  data() {
+    return {
+      orders: null,
+      invoices: null,
+      assets: null,
+      user: {},
+    }
+  },
+  
+  methods: {
+    async getAuthOrders() {
+      this.orders = await useAuthStore().getOrders();
+    },
+    async getAuthInvoices() {
+      this.invoices = await useAuthStore().getInvoices();
+    },
+    async getAuthAssets() {
+      this.assets = await useAuthStore().getAssets();
+    }
+  },
+
+  mounted() {
+    this.user = useCookie('userInfo')
+    this.getAuthOrders();
+    this.getAuthInvoices();
+    this.getAuthAssets();
+  }
+}
 </script>

@@ -101,6 +101,48 @@ export default defineNuxtPlugin(() => {
     return false;
   };
 
+  const getOrders = async () => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const orders = await axios.post("/api/getOrders", {
+      accessToken: accessToken?.data?.access_token,
+      accountId: useCookie('userInfo')?.value?.Account?.Id,
+    });
+
+    if (orders.status === 200) {
+      return orders.data;
+    }
+
+    return false;
+  }
+
+  const getInvoices = async () => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const invoices = await axios.post("/api/getInvoices", {
+      accessToken: accessToken?.data?.access_token,
+      accountId: useCookie('userInfo')?.value?.Account?.Id,
+    });
+
+    if (invoices.status === 200) {
+      return invoices.data;
+    }
+
+    return false;
+  }
+
+  const getAssets = async () => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const invoices = await axios.post("/api/getAssets", {
+      accessToken: accessToken?.data?.access_token,
+      accountId: useCookie('userInfo')?.value?.Account?.Id,
+    });
+
+    if (invoices.status === 200) {
+      return invoices.data;
+    }
+
+    return false;
+  }
+
   return {
     provide: {
       getProducts,
@@ -109,6 +151,9 @@ export default defineNuxtPlugin(() => {
       loginUser,
       generateQuote,
       placeOrder,
+      getOrders,
+      getInvoices,
+      getAssets,
     },
   };
 });
