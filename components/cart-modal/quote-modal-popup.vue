@@ -51,7 +51,7 @@
                               class="btn btn-solid my-3"
                               title="Get Quote"
                               @click.prevent="handleGetQuote"
-                            > Get Quote
+                            > Request Quote
                             </button>
                           </div>
                         </div>
@@ -131,7 +131,7 @@ export default {
         const status = await useCartStore().getQuote(this.description.value);
         
         if (status?.quoteId) {
-          useNuxtApp().$showToast({ msg: "Quote Is successfully generated.", type: "info" });
+          useNuxtApp().$showToast({ msg: "Your quote request has been submitted. Our team will reach out to your shortly.", type: "info" });
         } else {
           useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
         }
