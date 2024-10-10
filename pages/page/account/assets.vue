@@ -1,0 +1,160 @@
+<template>
+  <div class="dashboard-right">
+    <div class="dashboard">
+      <div class="page-title">
+        <h2>My Subscription/ Assets</h2>
+      </div>
+      <div class="welcome-msg">
+        <p>Hello, {{ user?.FirstName }} {{ user?.LastName }}</p>
+        <p>
+          From your Orders you have the ability to view your all orders and
+          status of order.
+        </p>
+      </div>
+      <div class="box-account box-info">
+        <div>
+          <div class="box">
+            <div class="row mx-auto h-25">
+              <div
+                class="card my-3 p-0"
+                v-for="(item, index) in assets"
+                :key="index"
+              >
+                <div class="card-header">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div class="d-flex align-items-center">
+                      <span class="fw-bold">{{ item?.Product2?.Name }}</span>
+                      <button
+                        type="button"
+                        class="btn status-btn mx-3"
+                        :class="status === true ? 'active' : 'inactive'"
+                      >
+                        active
+                      </button>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <span class="mx-2 fw-bold">{{ item?.CurrentAmount }} / year</span>
+                      <div class="dropdown">
+                        <a
+                          class="btn btn-primary btn-sm dropdown-toggle text-white"
+                          href="#"
+                          role="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        ></a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item text-black" href="#">Upgrade</a></li>
+                          <li>
+                            <a class="dropdown-item text-black" @click="handleModal()" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#"
+                              >Change Quantity</a
+                            >
+                          </li>
+                          <li><a class="dropdown-item text-black" href="#">Renew</a></li>
+                          <li><a class="dropdown-item text-black" href="#">Cancel</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    {{ item?.CurrentQuantity }} Users | - | -
+                  </p>
+                  <div>
+                    <div class="row">
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Next Billing Date:</span>
+                        <span>-</span>
+                      </div>
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Next Payment Amount:</span>
+                        <span>-</span>
+                      </div>
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">You'll renew on:</span>
+                        <span>-</span>
+                      </div>
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Period:</span>
+                        <span>
+                          {{ dateFormat(item?.LifecycleStartDate)
+                          }}{{
+                            item?.LifecycleEndDate
+                              ? `- ${dateFormat(item?.LifecycleEndDate)}`
+                              : ''
+                          }}
+                        </span>
+                      </div>
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Open Balance:</span>
+                        <span>-</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <changeQuntModal/>
+  </div>
+</template>
+
+<script>
+import changeQuntModal from './changeQuntModal.vue';
+export default {
+  components: { changeQuntModal },
+  props: {
+    assets: {
+      type: Array,
+      default: () => [],
+    },
+    user: {
+      type: Object,
+      default: () => {},
+    },
+  },
+
+  data: () => ({
+    status: false,
+  }),
+
+  methods: {
+    dateFormat(dateString) {
+      if (dateString !== null) {
+        const date = new Date(dateString);
+
+        // Extract the day, month, and year
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+
+        // Format the date as DD/MM/YYYY
+        return `${day}/${month}/${year}`;
+      }
+    },
+
+    handleModal() {}
+  },
+};
+</script>
+
+<style scoped>
+.status-btn {
+  height: 22px;
+  padding: 0 10px;
+  color: white;
+  font-size: x-small;
+  border-radius: 10px;
+}
+.active {
+  background-color: green;
+}
+.inactive {
+  background-color: goldenrod;
+}
+</style>

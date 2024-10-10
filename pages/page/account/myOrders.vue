@@ -21,29 +21,45 @@
               <h3>orders list</h3>
             </div>
             <div class="row mx-auto">
-              <table v-if="orders.length" class="table cart-table table-responsive-xs">
-                <thead>
-                  <tr class="table-head">
-                    <th scope="col">Order ID</th>
-                    <th scope="col">User Name</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Total Amount</th>
-                  </tr>
-                </thead>
-                <tbody v-for="(item, i) in orders" :key="i">
-                  <tr>
-                    <td>{{ item?.Id }}</td>
-                    <td>{{ item?.BillToContact?.Name }}</td>
-                    <td>{{ item?.EffectiveDate }}</td>
-                    <td>£&nbsp;&nbsp;{{ item?.TotalAmount }}</td>
-                  </tr>
-                </tbody>
-              </table>
               <div class="col-sm-12 empty-cart-cls text-center" v-if="!orders.length">
                 <img src='/images/icon-empty-cart.png' class="img-fluid" alt="empty cart" />
                 <h3 class="mt-3">
                   <strong>You have no orders at the moment!</strong>
                 </h3>
+              </div>
+              <div v-if="orders.length">
+                <div class="card my-3" v-for="(item, index) in orders" :key="index">
+                  <div class="card-header">
+                    <div class="d-flex flex-column">
+                      <span class="fw-bold">Order</span>
+                      <span>{{ item?.Id }}</span> 
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Account Name</span>
+                        <span>{{ item?.BillToContact?.Name }}</span>
+                      </div>
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Contact Number</span>
+                        <span>-</span>
+                      </div>
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Order Start Date</span>
+                        <span>{{ item?.EffectiveDate }}</span>
+                      </div>
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Status</span>
+                        <span>-</span>
+                      </div>
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Order Amount</span>
+                        <span>£&nbsp;&nbsp;{{ item?.TotalAmount }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -17,6 +17,12 @@ export const useAuthStore = defineStore({
             const { $getInvoices } = useNuxtApp();
             const response = await $getInvoices();
             return response;
+        },
+
+        getAssets: async (state) => {
+            const { $getAssets } = useNuxtApp();
+            const response = await $getAssets();
+            return response;
         }
     }
 })

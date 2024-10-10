@@ -129,6 +129,20 @@ export default defineNuxtPlugin(() => {
     return false;
   }
 
+  const getAssets = async () => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const invoices = await axios.post("/api/getAssets", {
+      accessToken: accessToken?.data?.access_token,
+      accountId: useCookie('userInfo')?.value?.Account?.Id,
+    });
+
+    if (invoices.status === 200) {
+      return invoices.data;
+    }
+
+    return false;
+  }
+
   return {
     provide: {
       getProducts,
@@ -139,6 +153,7 @@ export default defineNuxtPlugin(() => {
       placeOrder,
       getOrders,
       getInvoices,
+      getAssets,
     },
   };
 });

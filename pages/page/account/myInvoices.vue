@@ -2,7 +2,7 @@
     <div class="dashboard-right">
       <div class="dashboard">
         <div class="page-title">
-          <h2>My orders</h2>
+          <h2>My Invoices</h2>
         </div>
         <div class="welcome-msg">
           <p>Hello, {{ user?.FirstName }} {{  user?.LastName }}</p>
@@ -12,31 +12,31 @@
           </p>
         </div>
         <div class="box-account box-info">
-          <div class="box-head">
-            <h2>Invoice Information</h2>
-          </div>
           <div>
             <div class="box">
-              <div class="box-title mb-3">
-                <h3>invoice list</h3>
-              </div>
               <div class="row mx-auto">
-                <table v-if="invoices.length" class="table cart-table table-responsive-xs">
-                  <thead>
-                    <tr class="table-head">
-                      <th scope="col">Document No</th>
-                      <th scope="col">Date</th>
-                      <th scope="col">Total Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody v-for="(item, i) in invoices" :key="i">
-                    <tr>
-                      <td>{{ item?.DocumentNumber }}</td>
-                      <td>{{ item?.InvoiceDate }}</td>
-                      <td>£&nbsp;&nbsp;{{ item?.TotalChargeAmountWithTax }}</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div v-if="invoices.length">
+                    <div class="card my-3" v-for="(item, index) in invoices" :key="index">
+                    <div class="card-header">
+                        <div class="d-flex flex-column">
+                        <span class="fw-bold">Document No</span>
+                        <span>{{ item?.DocumentNumber }}</span> 
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col d-flex flex-column">
+                            <span class="fw-bold">Date</span>
+                            <span>{{ item?.InvoiceDate }}</span>
+                        </div>
+                        <div class="col d-flex flex-column">
+                            <span class="fw-bold">Total Amount</span>
+                            <span>£&nbsp;&nbsp;{{ item?.TotalChargeAmountWithTax }}</span>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
                 <div class="col-sm-12 empty-cart-cls text-center" v-if="!invoices.length">
                   <img src='/images/icon-empty-cart.png' class="img-fluid" alt="empty cart" />
                   <h3 class="mt-3">

@@ -40,6 +40,14 @@
                   <li class="nav-item">
                     <a
                       data-bs-toggle="tab"
+                      data-bs-target="#assets"
+                      class="nav-link"
+                      >My Subscription/assets</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      data-bs-toggle="tab"
                       data-bs-target="#invoices"
                       class="nav-link"
                       >My Invoices</a
@@ -239,6 +247,9 @@
               </div>
               <div class="tab-pane fade" id="orders">
                 <myOrders v-if="orders" :orders="orders?.records" :user="user"/>
+              </div>
+              <div class="tab-pane fade" id="assets">
+                <assets v-if="assets" :assets="assets?.records" :user="user"/>
               </div>
               <div class="tab-pane fade" id="invoices">
                 <myInvoices v-if="invoices" :invoices="invoices?.records" :user="user"/>
@@ -456,13 +467,15 @@
 import { useAuthStore } from '~~/store/auth'
 import myOrders from './myOrders.vue';
 import myInvoices from  "./myInvoices.vue";
+import assets from './assets.vue';
 
 export default {
-  components: { myOrders, myInvoices },
+  components: { myOrders, myInvoices, assets },
   data() {
     return {
       orders: null,
       invoices: null,
+      assets: null,
       user: {},
     }
   },
@@ -473,7 +486,9 @@ export default {
     },
     async getAuthInvoices() {
       this.invoices = await useAuthStore().getInvoices();
-      console.log(this.invoices, 'invoices');
+    },
+    async getAuthAssets() {
+      this.assets = await useAuthStore().getAssets();
     }
   },
 
@@ -481,6 +496,7 @@ export default {
     this.user = useCookie('userInfo')
     this.getAuthOrders();
     this.getAuthInvoices();
+    this.getAuthAssets();
   }
 }
 </script>
