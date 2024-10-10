@@ -32,11 +32,11 @@
                       <form>
                         <div class="form-row row">
                           <div class="form-group col-md-12">
-                            <label for="review">Add Quote text:</label>
+                            <label for="review">Quote Request Details:</label>
                             <textarea
                               v-model="description.value"
                               class="form-control"
-                              placeholder="Write Your Testimonial Here"
+                              placeholder="Please add your request details here"
                               id="exampleFormControlTextarea1"
                               rows="6"
                               required
