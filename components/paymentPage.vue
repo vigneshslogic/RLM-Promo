@@ -254,9 +254,9 @@ export default {
         city: { value: "London", errormsg: "" },
         state: { value: "United Kingdom", errormsg: "" },
         pincode: { value: "W1A 1AA", errormsg: "" },
-        cardNumber: { value: "4111 1111 1111 1111", errormsg: "" },
-        expiryDate: { value: "05/26", errormsg: "" },
-        securityCode: { value: "123", errormsg: "" },
+        cardNumber: { value: "", errormsg: "" },
+        expiryDate: { value: "", errormsg: "" },
+        securityCode: { value: "", errormsg: "" },
       },
       isLogin: false,
       // paypal: {
@@ -313,9 +313,11 @@ export default {
         const status = await useCartStore().generateOrder(this.user);
 
         if (status?.orderId) {
-          useNuxtApp().$showToast({ msg: "Order generated successfully.", type: "info" });
-          this.$router.replace("/");
-          useCartStore().setInitialCart([]);
+          localStorage.setItem('order-success', JSON.stringify(status));
+          useProductStore().createOrder(status);
+          // useNuxtApp().$showToast({ msg: "Order generated successfully.", type: "info" });
+          this.$router.replace("/page/order-success");
+          // useCartStore().setInitialCart([]);
 
         } else {
           useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })

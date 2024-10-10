@@ -93,12 +93,12 @@
           <div>
             <img alt src="/images/icon/layout4/cart.png" class="img-fluid">
             <i class="ti-shopping-cart"></i>
-            <span class="cart_qty_cls">{{cart.length}}</span>
+            <span class="cart_qty_cls">{{cart?.length ?? 0}}</span>
           </div>
-          <ul class="show-div shopping-cart" v-if="!cart.length">
+          <ul class="show-div shopping-cart" v-if="!cart?.length">
             <li>Your cart is currently empty.</li>
           </ul>
-          <ul class="show-div shopping-cart" v-if="cart.length">
+          <ul class="show-div shopping-cart" v-if="cart?.length">
             <li v-for="(item,index) in cart" :key="index">
               <div class="media">
                 <nuxt-link :to="{ path: '/product/sidebar/'+item.id}">
