@@ -24,8 +24,8 @@
               <table v-if="orders.length" class="table cart-table table-responsive-xs">
                 <thead>
                   <tr class="table-head">
-                    <th scope="col">Product ID</th>
-                    <th scope="col">Product Name</th>
+                    <th scope="col">Order ID</th>
+                    <th scope="col">User Name</th>
                     <th scope="col">Date</th>
                     <th scope="col">Total Amount</th>
                   </tr>
