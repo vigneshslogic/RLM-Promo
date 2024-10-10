@@ -1,7 +1,9 @@
 <template>
   <div>
-    <section class="full-banner parallax small-slider tools-parallax-product"
-      v-bind:style="{ 'background-image': `url(${imagepath})` }">
+    <section
+      class="full-banner parallax small-slider tools-parallax-product"
+      v-bind:style="{ 'background-image': `url(${imagepath})` }"
+    >
       <div class="container">
         <div class="row">
           <div class="col-lg-4 col-12">
@@ -42,13 +44,43 @@
             </div>
           </div>
           <div class="col-lg-8 col-12 tools-grey ratio_square">
-            <swiper  :loop="true" :breakpoints="swiperOption.breakpoints" :slidesPerView="4" :spaceBetween="20"
-              class="swiper-wrapper" >
-              <swiper-slide class="swiper-slide" v-for="(product, index) in products" :key="index">
+            <swiper
+              :loop="true"
+              :breakpoints="swiperOption.breakpoints"
+              :slidesPerView="4"
+              :spaceBetween="20"
+              class="swiper-wrapper"
+            >
+              <!-- <swiper-slide
+                class="swiper-slide"
+                v-for="(product, index) in products"
+                :key="index"
+              >
                 <div class="product-box">
-                  <ProductBoxProductBox7 @opencartmodel="showCartModal" @showCompareModal="showcomparemodal"
-                    @openquickview="showquickview"   @alertseconds="alert" :product="product"
-                    :index="index" />
+                  <ProductBoxProductBox7
+                    @opencartmodel="showCartModal"
+                    @showCompareModal="showcomparemodal"
+                    @openquickview="showquickview"
+                    @alertseconds="alert"
+                    :product="product"
+                    :index="index"
+                  />
+                </div>
+              </swiper-slide> -->
+              <swiper-slide
+                class="swiper-slide"
+                v-for="(product, index) in catalogues"
+                :key="index"
+              >
+                <div class="product-box">
+                  <ProductBoxSlideProducts
+                    @opencartmodel="showCartModal"
+                    @showCompareModal="showcomparemodal"
+                    @openquickview="showquickview"
+                    @alertseconds="alert"
+                    :product="product"
+                    :index="index"
+                  />
                 </div>
               </swiper-slide>
             </swiper>
@@ -60,20 +92,18 @@
 </template>
 
 <script>
-import {
-  Swiper,
-  SwiperSlide
-} from "swiper/vue";
-import 'swiper/css';
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css";
 export default {
-  props: ['products'],
+  props: ["catalogues"],
   components: {
-     Swiper, SwiperSlide
+    Swiper,
+    SwiperSlide,
   },
   data() {
     return {
       // imagepath: '/images/parallax/21.jpg',
-      title: 'select your vehical',
+      title: "select your vehical",
       showCart: false,
       showquickviewmodel: false,
       showcomapreModal: false,
@@ -89,38 +119,42 @@ export default {
         breakpoints: {
           1200: {
             slidesPerView: 4,
-            spaceBetween: 20
+            spaceBetween: 20,
           },
           767: {
             slidesPerView: 3,
-            spaceBetween: 20
+            spaceBetween: 20,
           },
           0: {
             slidesPerView: 2,
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    };
   },
   methods: {
     alert(item) {
-      this.dismissCountDown = item
+      this.dismissCountDown = item;
     },
     showCartModal(item, productData) {
-      this.showCart = item
-      this.cartproduct = productData
-      this.$emit('openCart', this.showCart, this.cartproduct)
+      this.showCart = item;
+      this.cartproduct = productData;
+      this.$emit("openCart", this.showCart, this.cartproduct);
     },
     showquickview(item, productData) {
-      this.showquickviewmodel = item
-      this.quickviewproduct = productData
-      this.$emit('openQuickview', this.showquickviewmodel, this.quickviewproduct)
+      this.showquickviewmodel = item;
+      this.quickviewproduct = productData;
+      this.$emit(
+        "openQuickview",
+        this.showquickviewmodel,
+        this.quickviewproduct
+      );
     },
     showcomparemodal(item, productData) {
-      this.showcomapreModal = item
-      this.comapreproduct = productData
-      this.$emit('openCompare', this.showcomapreModal, this.comapreproduct)
-    }
-  }
-}
+      this.showcomapreModal = item;
+      this.comapreproduct = productData;
+      this.$emit("openCompare", this.showcomapreModal, this.comapreproduct);
+    },
+  },
+};
 </script>

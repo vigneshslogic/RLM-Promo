@@ -66,11 +66,10 @@
 <script>
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
-// import productBoxSlider from "../../product-box/product-box-slider";
+
 export default {
-  props: ["products"],
+  props: ["catalogues"],
   components: {
-    // productBoxSlider,
     Swiper,
     SwiperSlide,
   },
@@ -85,7 +84,6 @@ export default {
       cartproduct: {},
       dismissSecs: 5,
       dismissCountDown: 0,
-      catalogues: [],
       description:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.",
       swiperOption: {
@@ -112,15 +110,7 @@ export default {
       },
     };
   },
-  async mounted() {
-    // get products
-    this.catalogues = await this.getProducts();
-  },
   methods: {
-    async getProducts() {
-      const getProducts = await this.$getProducts();
-      return getProducts?.result ?? [];
-    },
     alert(item) {
       this.dismissCountDown = item;
     },

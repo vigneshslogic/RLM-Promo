@@ -33,14 +33,28 @@ export const useProductStore = defineStore({
       }
     },
     addToWishlist(payload) {
-      const product = this.products.find((item) => item.id === payload.id);
-      const wishlistItems = this.wishlist.find(
-        (item) => item.id === payload.id
-      );
-      if (wishlistItems) {
-      } else {
+      // const product = this.products.find((item) => item.id === payload.id);
+      // const wishlistItems = this.wishlist.find(
+      //   (item) => item.id === payload.id
+      // );
+      // if (wishlistItems) {
+      // } else {
+      //   this.wishlist.push({
+      //     ...product,
+      //   });
+      // }
+      const wishListItems = this.wishlist.find((item) => item.id === payload.id);
+
+      if (!wishListItems) {
         this.wishlist.push({
-          ...product,
+          id: payload?.id,
+          name: payload?.name,
+          image: payload?.displayUrl,
+          price: payload?.prices[0]?.price,
+          priceBookEntryId: payload?.prices[0]?.priceBookEntryId,
+          priceBookId: payload?.prices[0]?.priceBookId,
+          priceModelId: payload?.prices[0]?.pricingModel?.id,
+          periodBoundary: payload?.prices[0]?.pricingModel?.frequency ?? 'OneTime',
         });
       }
     },
