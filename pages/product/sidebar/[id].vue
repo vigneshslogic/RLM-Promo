@@ -151,15 +151,6 @@
                               </a>
                             </li>
                           </ul>
-                          <!-- <form class="d-inline-block">
-                            <button
-                              class="wishlist-btn"
-                              @click="addToWishlist(product)"
-                            >
-                              <i class="fa fa-heart"></i>
-                              <span class="title-font">Add To WishList</span>
-                            </button>
-                          </form> -->
                         </div>
                       </div>
                       <div class="border-product">

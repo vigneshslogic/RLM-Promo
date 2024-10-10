@@ -20,6 +20,7 @@
     />
     <Footer />
     <WidgetsQuickview
+      v-if="quickviewproduct && showquickviewmodel"
       :openModal="showquickviewmodel"
       :productData="quickviewproduct"
       @closeView="closeViewModal"
