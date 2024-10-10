@@ -103,6 +103,7 @@ export default {
     },
   },
   async mounted() {
+    localStorage.setItem('order-success', null);
     this.productsArray();
     this.catalogues = await this.getProducts();
   },

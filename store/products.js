@@ -50,7 +50,7 @@ export const useProductStore = defineStore({
           id: payload?.id,
           name: payload?.name,
           image: payload?.displayUrl,
-          price: payload?.prices[0]?.price,
+          price: payload?.prices[0]?.price : 0,
           priceBookEntryId: payload?.prices[0]?.priceBookEntryId,
           priceBookId: payload?.prices[0]?.priceBookId,
           priceModelId: payload?.prices[0]?.pricingModel?.id,
