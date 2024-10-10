@@ -30,9 +30,9 @@
               <div v-if="orders.length">
                 <div class="card my-3" v-for="(item, index) in orders" :key="index">
                   <div class="card-header">
-                    <div class="d-flex flex-column">
-                      <span class="fw-bold">Order</span>
-                      <span>{{ item?.Id }}</span> 
+                    <div>
+                      <span class="fw-bold pe-3">Order No:</span>
+                      <span>{{ item?.OrderNumber }}</span> 
                     </div>
                   </div>
                   <div class="card-body">
@@ -51,7 +51,7 @@
                       </div>
                       <div class="col d-flex flex-column">
                         <span class="fw-bold">Status</span>
-                        <span>-</span>
+                        <span>{{ item?.Status }}</span>
                       </div>
                       <div class="col d-flex flex-column">
                         <span class="fw-bold">Order Amount</span>

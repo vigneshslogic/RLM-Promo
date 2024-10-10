@@ -18,10 +18,10 @@
                 <div v-if="invoices.length">
                     <div class="card my-3" v-for="(item, index) in invoices" :key="index">
                     <div class="card-header">
-                        <div class="d-flex flex-column">
-                        <span class="fw-bold">Document No</span>
+                      <div>
+                        <span class="fw-bold pe-3">Order No:</span>
                         <span>{{ item?.DocumentNumber }}</span> 
-                        </div>
+                      </div>
                     </div>
                     <div class="card-body">
                         <div class="row">

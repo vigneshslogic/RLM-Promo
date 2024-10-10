@@ -3,7 +3,7 @@ import axios from 'axios';
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     try {
-        const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/query/?q=SELECT Id, EffectiveDate, BillToContact.Name, TotalAmount from Order where AccountId = '${body?.accountId}' order by CreatedDate`;
+        const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/query/?q=SELECT Id, OrderNumber, Status, EffectiveDate, BillToContact.Name, TotalAmount from Order where AccountId = '${body?.accountId}' order by CreatedDate`;
 
         const response = await axios.get(url,
             {
