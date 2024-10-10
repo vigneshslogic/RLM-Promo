@@ -1,6 +1,6 @@
 <template>
   <div>
-    <footer class="sticky-footer">
+    <footer class="sticky-footer bg-gradient">
       <section class="section-b-space darken-layout">
         <div class="container">
           <div class="row footer-theme partition-f">
