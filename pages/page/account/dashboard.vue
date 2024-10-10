@@ -40,6 +40,14 @@
                   <li class="nav-item">
                     <a
                       data-bs-toggle="tab"
+                      data-bs-target="#invoices"
+                      class="nav-link"
+                      >My Invoices</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      data-bs-toggle="tab"
                       data-bs-target="#wishlist"
                       class="nav-link"
                       >Newsletter</a
@@ -231,6 +239,9 @@
               </div>
               <div class="tab-pane fade" id="orders">
                 <myOrders v-if="orders" :orders="orders?.records" :user="user"/>
+              </div>
+              <div class="tab-pane fade" id="invoices">
+                <myInvoices v-if="invoices" :invoices="invoices?.records" :user="user"/>
               </div>
               <div class="tab-pane fade" id="wishlist">
                 <div class="dashboard-right">
@@ -444,12 +455,14 @@
 <script>
 import { useAuthStore } from '~~/store/auth'
 import myOrders from './myOrders.vue';
+import myInvoices from  "./myInvoices.vue";
 
 export default {
-  components: { myOrders },
+  components: { myOrders, myInvoices },
   data() {
     return {
       orders: null,
+      invoices: null,
       user: {},
     }
   },
@@ -457,12 +470,17 @@ export default {
   methods: {
     async getAuthOrders() {
       this.orders = await useAuthStore().getOrders();
+    },
+    async getAuthInvoices() {
+      this.invoices = await useAuthStore().getInvoices();
+      console.log(this.invoices, 'invoices');
     }
   },
 
   mounted() {
     this.user = useCookie('userInfo')
     this.getAuthOrders();
+    this.getAuthInvoices();
   }
 }
 </script>
