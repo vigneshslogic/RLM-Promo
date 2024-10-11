@@ -14,7 +14,7 @@
       <div class="box-account box-info">
         <div>
           <div class="box">
-            <div class="row mx-auto h-25">
+            <div class="row mx-auto h-25" v-if="assets.length">
               <div
                 class="card my-3 p-0"
                 v-for="(item, index) in assets"
@@ -95,6 +95,12 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="col-sm-12 empty-cart-cls text-center py-5" v-else>
+              <img src='/images/icon-empty-cart.png' class="img-fluid" alt="empty Assets" />
+              <h3 class="mt-3">
+                <strong>You have no assets at the moment!</strong>
+              </h3>
             </div>
           </div>
         </div>

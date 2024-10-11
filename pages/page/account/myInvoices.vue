@@ -37,10 +37,10 @@
                     </div>
                     </div>
                 </div>
-                <div class="col-sm-12 empty-cart-cls text-center" v-if="!invoices.length">
+                <div class="col-sm-12 empty-cart-cls text-center py-5" v-else>
                   <img src='/images/icon-empty-cart.png' class="img-fluid" alt="empty cart" />
                   <h3 class="mt-3">
-                    <strong>You have no orders at the moment!</strong>
+                    <strong>You have no invoices at the moment!</strong>
                   </h3>
                 </div>
               </div>
