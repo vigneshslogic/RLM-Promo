@@ -14,7 +14,7 @@
         class="sidebar-menu"
       >
         <li v-for="catalog in categories?.catalog">
-          <a href="javascript:void(0)" @click="setActive(`${catalog?.name}`)"> 
+          <a :href="getCategories(catalog?.name).length ? 'javascript:void(0)' : `/collection/catalog/${catalog?.id}`" @click="setActive(`${catalog?.name}`)"> 
             <span v-html="catalog?.name"></span>
             <span class="sub-arrow" v-if="getCategories(catalog?.name).length"></span>
           </a>
