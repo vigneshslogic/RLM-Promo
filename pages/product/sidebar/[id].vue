@@ -52,9 +52,7 @@
                                 href="javascript:void(0)"
                                 @click="changeSizeVariant(price)"
                               >
-                                {{
-                                  Array.from(price?.pricingModel?.frequency ?? ['O'])[0]
-                                }}
+                                {{ price?.pricingModel?.frequency ?? '' }}
                               </a>
                             </li>
                           </ul>
