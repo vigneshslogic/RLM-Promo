@@ -5,6 +5,10 @@ export default defineEventHandler(async (event) => {
 
   try {
     const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/commerce/sales-orders/actions/place`;
+
+    const productNames = body?.products?.map(product => product.name)?.join('-');
+    let today = new Date();
+
     let rawPayload = {
       pricingPref: "System",
       configurationInput: "RunAndAllowErrors",
@@ -26,7 +30,7 @@ export default defineEventHandler(async (event) => {
               },
               AccountId: body?.accountId, // define user accountId here
               BillToContactId: body?.contactId,
-              Name: "Test Order",
+              Name: `${body?.userName} - ${productNames}`, // make it with {{user}}-{{product_name}}
               EffectiveDate: "2024-02-01",
               Pricebook2Id: "01sPv000001FdriIAC",
               Status: "Draft",
@@ -79,31 +83,36 @@ export default defineEventHandler(async (event) => {
           ListPrice: product?.price,
           UnitPrice: product?.price,
           NetUnitPrice: product?.price,
-          PeriodBoundary: "Anniversary", // product?.periodBoundary,
-          ServiceDate: "2024-02-01",
+          PeriodBoundary: "Anniversary",
+          ServiceDate: today.toISOString().split('T')[0],
         },
       };
 
       if (product?.periodBoundary !== 'OneTime') {
-        const date = new Date('2024-02-01');  // Convert to Date object
+        const date = new Date(`${today.toISOString().split('T')[0]}`); 
         date.setMonth(date.getMonth() + 12);
-        date.setDate(date.getDate() - 1); // Add months using date-fns
+        date.setDate(date.getDate() - 1);
         const endDate = date.toISOString().split('T')[0];
+
+        console.log('product?.periodBoundary', product?.periodBoundary);
 
         prod.record = {
           ...prod.record,
           EndDate: endDate,
           PricingTermCount: 12.0,
           TotalLineAmount: 12 * (product?.price),
-          BillingFrequency2: product?.periodBoundary,
+          BillingFrequency2: product?.periodBoundary === 'Months' ? 'Monthly' : product?.periodBoundary,
         }
       }
+
 
       return prod;
     });
 
     if (products?.length) {
       rawPayload.graph.records = rawPayload?.graph?.records.concat(products);
+
+      // return rawPayload;
 
       const response = await axios.post(url, rawPayload, {
         headers: {

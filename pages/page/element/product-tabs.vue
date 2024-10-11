@@ -40,7 +40,7 @@
                                                     v-for="(product, index) in getCategoryProduct(category[0])"
                                                     :key="index">
                                                     <div class="product-box">
-                                                        <ProductBoxProductBox1 @opencartmodel="showCart"
+                                                        <ProductBoxProductList @opencartmodel="showCart"
                                                             @showCompareModal="showCoampre"
                                                             @openquickview="showQuickview"  
                                                             @alertseconds="alert" :product="product" :index="index" />
@@ -56,7 +56,7 @@
                                                     v-for="(product, index) in getCategoryProduct(category[1])"
                                                     :key="index">
                                                     <div class="product-box">
-                                                        <ProductBoxProductBox1 @opencartmodel="showCart"
+                                                        <ProductBoxProductList @opencartmodel="showCart"
                                                             @showCompareModal="showCoampre"
                                                             @openquickview="showQuickview"  
                                                             @alertseconds="alert" :product="product" :index="index" />
@@ -72,7 +72,7 @@
                                                     v-for="(product, index) in getCategoryProduct(category[2])"
                                                     :key="index">
                                                     <div class="product-box">
-                                                        <ProductBoxProductBox1 @opencartmodel="showCart"
+                                                        <ProductBoxProductList @opencartmodel="showCart"
                                                             @showCompareModal="showCoampre"
                                                             @openquickview="showQuickview"  
                                                             @alertseconds="alert" :product="product" :index="index" />
@@ -88,7 +88,7 @@
                                                     v-for="(product, index) in getCategoryProduct(category[3])"
                                                     :key="index">
                                                     <div class="product-box">
-                                                        <ProductBoxProductBox1 @opencartmodel="showCart"
+                                                        <ProductBoxProductList @opencartmodel="showCart"
                                                             @showCompareModal="showCoampre"
                                                             @openquickview="showQuickview"  
                                                             @alertseconds="alert" :product="product" :index="index" />

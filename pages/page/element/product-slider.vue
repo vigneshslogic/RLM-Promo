@@ -8,7 +8,7 @@
                     <swiper  :slidesPerView="4" :spaceBetween="20" :breakpoints="swiperOption.breakpoints" class="swiper-wrapper">
                         <swiper-slide class="swiper-slide" v-for="(product,index) in productslist" :key="index">
                             <div class="product-box">
-                                <ProductBoxProductBox1 @opencartmodel="showCart" @showCompareModal="showCoampre" @openquickview="showQuickview"   @alertseconds="alert" :product="product" :index="index" />
+                                <ProductBoxProductList @opencartmodel="showCart" @showCompareModal="showCoampre" @openquickview="showQuickview"   @alertseconds="alert" :product="product" :index="index" />
                             </div>
                         </swiper-slide>
                     </swiper>

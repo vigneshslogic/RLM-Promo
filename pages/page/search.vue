@@ -9,7 +9,7 @@
                 <div class="col-xl-2 col-md-4 col-sm-6" v-for="(product, index) in searchItems" :key="index">
                     <div class="product-box">
                         {{product.title}}
-                        <ProductBoxProductBox1 :product="product" :index="index" />
+                        <ProductBoxProductList :product="product" :index="index" />
                     </div>
                 </div>
             </div>

@@ -256,7 +256,7 @@
                   <div class="demo-text">
                     <h4>left sidebar</h4>
                     <div class="btn-group demo-btn" role="group" aria-label="Basic example">
-                      <nuxt-link :to="{ path: '/collection/leftsidebar/all' }" class="btn new-tab-btn"
+                      <nuxt-link :to="{ path: '/collection/catalog/all' }" class="btn new-tab-btn"
                         target="_blank">Preview</nuxt-link>
                     </div>
                   </div>

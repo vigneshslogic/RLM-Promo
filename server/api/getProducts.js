@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/connect/cpq/products`;
     const response = await axios.post(url, {
         'correlationId': 'corrId',
-        // 'catalogId': '0ZSPv0000001jr7OAA',
+        'catalogId': body?.getProducts ?? '',
         'priceBookId': '01sPv000001FdriIAC',
     }, {
       headers: {

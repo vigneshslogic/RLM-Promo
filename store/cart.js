@@ -13,7 +13,7 @@ export const useCartStore = defineStore({
   },
   actions: {
     addToCart(payload) {
-      const cartItems = this.cart.find((item) => item.id === payload.id);
+      const cartItems = this?.cart?.find((item) => item.id === payload.id);
       const qty = payload.quantity ?? 1;
 
       if (cartItems) {

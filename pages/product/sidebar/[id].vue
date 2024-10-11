@@ -48,7 +48,6 @@
                               }"
                             >
                               <a
-                                v-if="price?.pricingModel"
                                 href="javascript:void(0)"
                                 @click="changeSizeVariant(price)"
                               >
@@ -342,8 +341,12 @@ onMounted(async () => {
   getDetail.value = await useProductStore().getProductById(route.params.id);
   image.value = getDetail.value?.displayUrl?.replace(/&amp;/g, '&') ?? '/images/6.jpg';
 
-  selectedPlan.value =
-    find(getDetail?.value?.prices, { isDefault: true }) ?? "";
+  if (!find(getDetail?.value?.prices, { isDefault: true }) && getDetail?.value?.prices) {
+    selectedPlan.value = getDetail?.value?.prices[0];
+  } else {
+    selectedPlan.value =
+      find(getDetail?.value?.prices, { isDefault: true }) ?? "";
+  }
 });
 
 const increment = () => {

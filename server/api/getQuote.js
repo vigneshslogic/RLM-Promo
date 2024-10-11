@@ -4,6 +4,10 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   try {
     const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/commerce/quotes/actions/place`;
+
+    const productNames = body?.products?.map(product => product.name)?.join('-');
+    let today = new Date();
+
     let rawPayload = {
         pricingPref: "System",
         configurationInput: "RunAndAllowErrors",
@@ -23,7 +27,7 @@ export default defineEventHandler(async (event) => {
                             type: "Quote",
                             method: "POST"
                         },
-                        Name: "Test Quote",
+                        Name: `${body?.userName} - ${productNames}`,
                         Pricebook2Id: "01sPv000001FdriIAC",
                         description: body?.description ?? '',
                         Source__c: "WebStore",
@@ -72,7 +76,7 @@ export default defineEventHandler(async (event) => {
             Product2Id: product?.id,
             UnitPrice: product?.price,
             PeriodBoundary: "Anniversary", // product?.periodBoundary
-            ServiceDate: "2024-02-01"
+            ServiceDate: today.toISOString().split('T')[0],
         }
     }));
 
@@ -95,6 +99,7 @@ export default defineEventHandler(async (event) => {
     return false;
 
   } catch (error) {
+    console.log('error', error);
     throw createError({
       statusCode: error.response ? error.response.status : 500,
       message: error.response ? error.response.data.error_description : error.message,

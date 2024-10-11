@@ -42,7 +42,7 @@
                       data-bs-toggle="tab"
                       data-bs-target="#assets"
                       class="nav-link"
-                      >My Subscription/assets</a
+                      >My Subscriptions/ Assets</a
                     >
                   </li>
                   <li class="nav-item">

@@ -71,11 +71,6 @@
         <h6>{{ product.name }}</h6>
       </nuxt-link>
       <p>{{ product.description }}</p>
-      <!-- <h4 v-if="product.sale">
-        {{ curr.symbol }}{{ discountedPrice(product) }}
-        <del>{{ (product.price * curr.curr).toFixed(2) }}</del>
-      </h4>
-      <h4 v-else>{{ curr.symbol }}{{ (product.price * curr.curr).toFixed(2) }}</h4> -->
       <h4 v-if="getProductPrice">£ {{ getProductPrice }}</h4>
     </div>
   </div>

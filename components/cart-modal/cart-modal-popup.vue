@@ -21,11 +21,6 @@
                   <div class="modal-bg addtocart">
                     <div class="modal-header">
                       <h5 class="modal-title">{{productData?.name}}</h5>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        aria-label="Close"
-                      ></button>
                     </div>
                     <!-- trim dress -->
                     <button
@@ -37,7 +32,6 @@
                     </button>
                     <div class="media">
                       <a href="#">
-                          <!-- :src="getImgUrl(productData.images[0].src)" -->
                         <img
                           :src='getImage(productData?.displayUrl)'
                           class="img-fluid"
@@ -78,56 +72,6 @@
                         </div>
                       </div>
                     </div>
-                    <!-- <div class="product-section">
-                      <div class="col-12 product-upsell text-center">
-                        <h4>Customers who bought this item also.</h4>
-                      </div>
-                      <div class="row upsell_product">
-                        <div
-                          v-for="(product, index) in cartRelatedProducts(
-                            productData.collection[0],
-                            productData.id
-                          ).slice(0, 4)"
-                          :key="index"
-                          class="product-box col-sm-3 col-6"
-                        >
-                          <div class="img-wrapper">
-                            <div class="front">
-                              <nuxt-link
-                                :to="{ path: '/product/sidebar/' + product.id }"
-                              >
-                                <img
-                                  :src="getImgUrl(product.images[0].src)"
-                                  class="img-fluid"
-                                  :alt="product?.name"
-                                />
-                              </nuxt-link>
-                            </div>
-                            <div class="product-detail">
-                              <h6>
-                                <nuxt-link
-                                  :to="{
-                                    path: '/product/sidebar/' + product.id,
-                                  }"
-                                >
-                                  <span>{{ product?.name }}</span>
-                                </nuxt-link>
-                              </h6>
-                              <h4 v-if="product.sale">
-                                {{ curr.symbol }}{{ discountedPrice(product) }}
-                                <del>{{
-                                  (product.price * curr.curr).toFixed(2)
-                                }}</del>
-                              </h4>
-                              <h4 v-else>
-                                {{ curr.symbol
-                                }}{{ (product.price * curr.curr).toFixed(2) }}
-                              </h4>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div> -->
                   </div>
                 </div>
               </div>

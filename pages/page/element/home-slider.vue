@@ -16,7 +16,7 @@
                       <div>
                         <h4>{{ item.title }}</h4>
                         <h1>{{ item.subtitle }}</h1>
-                        <nuxt-link :to="{ path: '/collection/leftsidebar/all' }" class="btn btn-solid">shop
+                        <nuxt-link :to="{ path: '/collection/catalog/all' }" class="btn btn-solid">shop
                           now</nuxt-link>
                       </div>
                     </div>

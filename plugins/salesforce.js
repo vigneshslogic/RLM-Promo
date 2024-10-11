@@ -43,10 +43,11 @@ export default defineNuxtPlugin(() => {
     return getUserDetails(user, accessToken?.data?.access_token);
   };
 
-  const getProducts = async () => {
+  const getProducts = async (catalogId = null) => {
     const accessToken = await axios.post("/api/getAccessToken");
     const products = await axios.post("/api/getProducts", {
       accessToken: accessToken?.data?.access_token,
+      catalogId,
     });
 
     if (products.status === 200) {
@@ -78,6 +79,7 @@ export default defineNuxtPlugin(() => {
       description,
       contactId: useCookie('userInfo')?.value?.Id,
       accountId: useCookie('userInfo')?.value?.Account?.Id,
+      userName: `${useCookie('userInfo')?.value?.FirstName} ${useCookie('userInfo')?.value?.LastName}`
     });
 
     if (quote.status === 200) {
@@ -95,7 +97,11 @@ export default defineNuxtPlugin(() => {
       user,
       contactId: useCookie('userInfo')?.value?.Id,
       accountId: useCookie('userInfo')?.value?.Account?.Id,
+      userName: `${useCookie('userInfo')?.value?.FirstName} ${useCookie('userInfo')?.value?.LastName}`,
     });
+
+    // console.log('sales force', order);
+    // return false;
 
     if (order.status === 200) {
       return order.data;

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <footer class="sticky-footer bg-gradient">
+    <footer class="sticky-footer bg-gradient bg-black">
       <section class="section-b-space darken-layout">
         <div class="container">
           <div class="row footer-theme partition-f">
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-6 col-md-6">
               <div class="footer-title footer-mobile-title">
                 <h4>about</h4>
               </div>
@@ -39,32 +39,6 @@
                       <a href="#">
                         <i class="fa fa-rss" aria-hidden="true"></i>
                       </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="col offset-xl-1">
-              <div class="sub-title">
-                <div class="footer-title">
-                  <h4>my account</h4>
-                </div>
-                <div class="footer-contant">
-                  <ul>
-                    <li>
-                      <a href="#">mens</a>
-                    </li>
-                    <li>
-                      <a href="#">womens</a>
-                    </li>
-                    <li>
-                      <a href="#">clothing</a>
-                    </li>
-                    <li>
-                      <a href="#">accessories</a>
-                    </li>
-                    <li>
-                      <a href="#">featured</a>
                     </li>
                   </ul>
                 </div>

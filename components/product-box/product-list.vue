@@ -5,32 +5,18 @@
         <span class="lable4" v-if="product.sale">on sale</span>
       </div>
       <div class="front">
-        <nuxt-link :to="{ path: '/product/sidebar/'+product.id}" >
+        <nuxt-link :to="{ path: '/product/sidebar/' + product.id }">
+          <!-- src="/images/6.jpg" -->
           <img
-            :src='getImgUrl(imageSrc ? imageSrc : product.images[0].src )'
-            :id="product.id"
-            class="img-fluid bg-img media "
-            :alt="product.title"
+            :src="image ?? '/images/6.jpg'"
+            :id="product?.id"
+            class="img-fluid bg-img"
+            :alt="product.name"
             :key="index"
           />
         </nuxt-link>
       </div>
-      <div class="back" v-if="product.images.length>1">
-        <nuxt-link :to="{ path: '/product/sidebar/'+product.id}" >
-        <img :src='getImgUrl(imageSrc ? imageSrc : product.images[1].src )'  :key="index"  :id="product.id" alt="" class="img-fluid  m-auto media"> </nuxt-link></div>
-      <ul class="product-thumb-list">
-        <li
-          class="grid_thumb_img"
-          :class="{active: imageSrc === image.src}"
-          v-for="(image,index) in product.images"
-          :key="index"
-          @click="productVariantChange(image.src)"
-        >
-          <a href="javascript:void(0);">
-            <img :src="getImgUrl(image.src)" />
-          </a>
-        </li>
-      </ul>
+    
       <div class="cart-info cart-wrap">
           <button
             data-toggle="modal"
@@ -45,7 +31,7 @@
         <a href="javascript:void(0)" title="Wishlist">
           <i class="ti-heart" aria-hidden="true" @click="addToWishlist(product)"></i>
         </a>
-        <a href="javascript:void(0)" title="Quick View" @click="showQuickview(product)" variant="primary">
+        <a href="javascript:void(0)" title="Quick View" @click="showQuickView(product)" variant="primary">
           <i class="ti-search" aria-hidden="true"></i>
         </a>
         <a href="javascript:void(0)" title="Comapre" @click.prevent="addToCompare(product)"  variant="primary">
@@ -62,41 +48,33 @@
         <i class="fa fa-star"></i>
       </div>
       <nuxt-link :to="{ path: '/product/sidebar/'+product.id}">
-        <h6>{{ product.title }}</h6>
+        <h6>{{ product.name }}</h6>
       </nuxt-link>
       <p>{{ product.description }}</p>
-      <h4 v-if="product.sale">
-       {{curr.symbol}}{{ discountedPrice(product)}}
 
-        <del>{{curr.symbol}}{{ (product.price * curr.curr).toFixed(2)  }}</del>
-      </h4>
+      <h4 v-if="getProductPrice">£ {{ getProductPrice }}</h4>
+
       <h4 v-else>{{curr.symbol}}{{ (product.price * curr.curr).toFixed(2) }}</h4>
-      <ul class="color-variant" v-if="product.variants[0].color">
-        <li v-for="(variant,variantIndex) in Color(product.variants)" :key="variantIndex">
-          <a
-            @click="productColorchange(variant, product)"
-            :class="[variant]"
-            v-bind:style="{ 'background-color' : variant}"
-          ></a>
-        </li>
-      </ul>
     </div>
 </template>
 
 <script>
-import { mapState } from 'pinia'
-import { useProductStore } from '~~/store/products'
-import { useCartStore } from '~~/store/cart'
+import { mapState } from 'pinia';
+import { useProductStore } from '~~/store/products';
+import { useCartStore } from '~~/store/cart';
+import pkg from "lodash";
+const { find } = pkg;
+
 export default {
   props: ['product', 'index'],
   data() {
     return {
       symbol: '$',
       imageSrc: '',
-      quickviewProduct: {},
+      quickViewProduct: {},
       compareProduct: {},
       cartProduct: {},
-      showquickview: false,
+      showQuickView: false,
       showCompareModal: false,
       cartval: false,
       variants: {
@@ -104,7 +82,8 @@ export default {
         image: ''
       },
       dismissSecs: 5,
-      dismissCountDown: 0
+      dismissCountDown: 0,
+      image: this.product?.displayUrl?.replace(/&amp;/g, '&')
     }
   },
   emits:['opencartmodel','openquickview','alertseconds','showCompareModal'],
@@ -114,7 +93,11 @@ export default {
     }),
     curr(){  
       return useProductStore().changeCurrency
-    }
+    },
+    getProductPrice() {
+      const exists = find(this.product.prices, { isDefault: true });
+      return exists?.price ?? '';
+    },
   },
   methods: {
     getImgUrl(path) {
@@ -122,22 +105,30 @@ export default {
       return ('/images/'+ path)
     },
     addToCart: function (product) {
-      
-      this.cartval = true
-      this.cartProduct = product
-      this.$emit('opencartmodel', this.cartval, this.cartProduct)
-     
-      useCartStore().addToCart(product)
+      this.cartval = true;
+      this.cartProduct = product;
+      this.$emit("opencartmodel", this.cartval, this.cartProduct);
+      product.price = product?.prices[0]?.price;
+      product.priceBookEntryId = product?.prices[0]?.priceBookEntryId;
+      product.priceBookId = product?.prices[0]?.priceBookId;
+      product.priceModelId = product?.prices[0]?.pricingModel?.id;
+      product.quantity = 1;
+      product.periodBoundary =
+        product?.prices[0]?.pricingModel?.frequency ?? "OneTime";
+      useCartStore().addToCart(product);
     },
     addToWishlist: function (product) {
-      this.dismissCountDown = this.dismissSecs
-      useNuxtApp().$showToast({msg:"Product Is successfully added to your wishlist.",type:"info"})
-      useProductStore().addToWishlist(product)
+      this.dismissCountDown = this.dismissSecs;
+      useNuxtApp().$showToast({
+        msg: "Product Is successfully added to your wishlist.",
+        type: "info",
+      });
+      useProductStore().addToWishlist(product);
     },
-    showQuickview: function (productData) {
-      this.showquickview = true
-      this.quickviewProduct = productData
-      this.$emit('openquickview', this.showquickview, this.quickviewProduct)
+    showQuickView: function (productData) {
+      this.showQuickView = true
+      this.quickViewProduct = productData
+      this.$emit('openquickview', this.showQuickView, this.quickViewProduct)
     },
     addToCompare: function (product) {
       this.showCompareModal = true

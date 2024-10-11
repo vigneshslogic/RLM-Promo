@@ -33,30 +33,6 @@
                 </div>
               </swiper-slide>
             </swiper>
-            <!-- <swiper
-              :loop="true"
-              :breakpoints="swiperOption.breakpoints"
-              :slidesPerView="5"
-              :spaceBetween="20"
-              class="swiper-wrapper"
-            >
-              <swiper-slide
-                class="swiper-slide"
-                v-for="(product, index) in products"
-                :key="index"
-              >
-                <div class="product-box">
-                  <ProductBoxProductBox7
-                    @opencartmodel="showCartModal"
-                    @showCompareModal="showcomparemodal"
-                    @openquickview="showquickview"
-                    @alertseconds="alert"
-                    :product="product"
-                    :index="index"
-                  />
-                </div>
-              </swiper-slide>
-            </swiper> -->
           </div>
         </div>
       </div>
