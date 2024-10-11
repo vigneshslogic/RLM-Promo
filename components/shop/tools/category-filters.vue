@@ -12,28 +12,33 @@
                 <h3>{{ title }}</h3>
                 <div class="tools-form">
                   <div class="search-box">
-                    <select class="form-control">
-                      <option value>Select Make</option>
-                      <option value="1">Audi</option>
-                      <option value="2">BMW</option>
-                      <option value="3">Fiat</option>
-                      <option value="4">Hyndai</option>
-                      <option value="5">Skoda</option>
+                    <select name="engine" class="form-control" @change="getCategories">
+                      <option value>Select catalog</option>
+                      <option 
+                        v-for="catalog in catalogs?.catalog"
+                        :value="catalog.id"
+                        v-html="catalog?.name"
+                      />
                     </select>
                   </div>
                   <div class="search-box">
-                    <select name="model" class="form-control">
-                      <option value>Select Model</option>
-                    </select>
-                  </div>
-                  <div class="search-box">
-                    <select name="engine" class="form-control">
+                    <select name="engine" class="form-control" @change="getSubCategories">
                       <option value>Select category</option>
+                      <option 
+                        v-for="cat in categories"
+                        :value="cat.Id"
+                        v-html="cat?.Name"
+                      />
                     </select>
                   </div>
                   <div class="search-box">
                     <select name="year" class="form-control">
-                      <option value>Select Year</option>
+                      <option value>Select sub-category</option>
+                      <option 
+                        v-for="subCat in subCategories"
+                        :value="subCat.id"
+                        v-html="subCat.Name"
+                      />
                     </select>
                   </div>
                   <div class="search-button">
@@ -46,27 +51,11 @@
           <div class="col-lg-8 col-12 tools-grey ratio_square">
             <swiper
               :loop="true"
-              :breakpoints="swiperOption.breakpoints"
+              :breakpoints="swiperOption?.breakpoints"
               :slidesPerView="4"
               :spaceBetween="20"
               class="swiper-wrapper"
             >
-              <!-- <swiper-slide
-                class="swiper-slide"
-                v-for="(product, index) in products"
-                :key="index"
-              >
-                <div class="product-box">
-                  <ProductBoxProductBox7
-                    @opencartmodel="showCartModal"
-                    @showCompareModal="showcomparemodal"
-                    @openquickview="showquickview"
-                    @alertseconds="alert"
-                    :product="product"
-                    :index="index"
-                  />
-                </div>
-              </swiper-slide> -->
               <swiper-slide
                 class="swiper-slide"
                 v-for="(product, index) in catalogues"
@@ -93,7 +82,9 @@
 
 <script>
 import { Swiper, SwiperSlide } from "swiper/vue";
+import { useProductStore } from "~/store/products";
 import "swiper/css";
+
 export default {
   props: ["catalogues"],
   components: {
@@ -103,13 +94,13 @@ export default {
   data() {
     return {
       // imagepath: '/images/parallax/21.jpg',
-      title: "select your vehical",
+      title: "Select you Categories",
       showCart: false,
-      showquickviewmodel: false,
-      showcomapreModal: false,
-      quickviewproduct: {},
-      comapreproduct: {},
-      cartproduct: {},
+      showQuickViewModel: false,
+      showCompareModal: false,
+      quickViewProduct: {},
+      compareProduct: {},
+      cartProduct: {},
       dismissSecs: 5,
       dismissCountDown: 0,
       swiperOption: {
@@ -130,30 +121,46 @@ export default {
           },
         },
       },
+      catalogs: [],
+      categories: [],
+      subCategories: [],
     };
   },
+  async mounted() {
+    this.catalogs = await useProductStore().loadCategories();
+  },
   methods: {
+    getCategories(e) {
+      this.categories = [];
+      this.subCategories = [];
+      this.categories = this.catalogs?.categories?.filter((cat) => (e.target.value === cat?.Catalog?.Id));
+    },
+    getSubCategories(e) {
+      this.subCategories = [];
+      this.subCategories = this.categories?.find((cat) => (e.target.value === cat.Id))?.ChildCategories?.records ?? [];
+      // this.categories = this.catalogs?.categories?.filter((cat) => (e.target.value === cat?.Catalog?.Name));
+    },
     alert(item) {
       this.dismissCountDown = item;
     },
     showCartModal(item, productData) {
       this.showCart = item;
-      this.cartproduct = productData;
-      this.$emit("openCart", this.showCart, this.cartproduct);
+      this.cartProduct = productData;
+      this.$emit("openCart", this.showCart, this.cartProduct);
     },
     showquickview(item, productData) {
-      this.showquickviewmodel = item;
-      this.quickviewproduct = productData;
+      this.showQuickViewModel = item;
+      this.quickViewProduct = productData;
       this.$emit(
         "openQuickview",
-        this.showquickviewmodel,
-        this.quickviewproduct
+        this.showQuickViewModel,
+        this.quickViewProduct
       );
     },
     showcomparemodal(item, productData) {
-      this.showcomapreModal = item;
-      this.comapreproduct = productData;
-      this.$emit("openCompare", this.showcomapreModal, this.comapreproduct);
+      this.showCompareModal = item;
+      this.compareProduct = productData;
+      this.$emit("openCompare", this.showCompareModal, this.compareProduct);
     },
   },
 };

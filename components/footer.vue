@@ -12,8 +12,7 @@
                 <div class="footer-logo">
                   <img src="/images/icon/logo.png" alt="logo" />
                 </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                  et dolore magna aliqua. Ut enim ad minim veniam,</p>
+                <p>Discover a world of premium products and innovative solutions designed to meet your global needs. At Nexus Global Holdings, we pride ourselves on delivering excellence and value in everything we offer. Start your journey with us today and experience shopping like never before</p>
                 <div class="footer-social">
                   <ul>
                     <li>

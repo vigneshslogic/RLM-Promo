@@ -11,7 +11,7 @@
       @openCompare="showCoampre"
       @openCart="showCart"
     />
-    <ShopToolsSelectVehical
+    <ShopToolsCategoryFilters
       :catalogues="catalogues"
       :category="category"
       @openQuickview="showQuickview"

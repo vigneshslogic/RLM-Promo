@@ -4,9 +4,8 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event); 
 
   try {
-    const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/query/?q=SELECT id, Name, Catalog.Name, Catalog.Id, SortOrder, ParentCategory.Name, (Select Id, Name, Catalog.Name, Catalog.Id, SortOrder From ChildCategories) from ProductCategory where Catalog.Name IN ${encodeURIComponent(body.catalog)} and ParentCategory.Name = null`;
-
-    const response = await axios.get(url, {
+    const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/connect/cpq/catalogs`;
+    const response = await axios.post(url, {}, {
       headers: {
         Authorization: `Bearer ${body.accessToken}`,
         'Content-Type': 'application/json',

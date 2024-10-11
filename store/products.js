@@ -15,6 +15,8 @@ export const useProductStore = defineStore({
         symbol: "$",
       },
       order: [],
+      categories: null,
+      lastUpdated: null,
       locale: "en",
       searchProducts: [],
     };
@@ -33,16 +35,6 @@ export const useProductStore = defineStore({
       }
     },
     addToWishlist(payload) {
-      // const product = this.products.find((item) => item.id === payload.id);
-      // const wishlistItems = this.wishlist.find(
-      //   (item) => item.id === payload.id
-      // );
-      // if (wishlistItems) {
-      // } else {
-      //   this.wishlist.push({
-      //     ...product,
-      //   });
-      // }
       const wishListItems = this.wishlist.find((item) => item.id === payload.id);
 
       if (!wishListItems) {
@@ -96,7 +88,42 @@ export const useProductStore = defineStore({
     createOrder(payload) {
       this.order = payload;
     },
-  },
+    async getProductCategories() {
+      try {
+        const { $getCategories } = useNuxtApp();
+        const response = await $getCategories();
+
+        this.categories = response;
+        this.lastUpdated = Date.now();
+
+        // Store data and timestamp in localStorage
+        localStorage.setItem('categories', JSON.stringify({ data: response, timestamp: this.lastUpdated }));
+
+        return response;
+      } catch (error) {
+        return [];
+      }
+    },
+    async loadCategories() {
+      const storedData = localStorage.getItem('categories');
+
+      const now = Date.now();
+      const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+      if (storedData) {
+        const { data, timestamp } = JSON.parse(storedData);
+
+        // Check if the stored data is still valid (within 24 hours)
+        if (now - timestamp < twentyFourHours) {
+          this.categories = data; // Use data from localStorage
+          return data;
+        }
+      }
+
+      // If no valid data in localStorage, fetch new data
+      this.getProductCategories();
+    },
+   },
   getters: {
     price: (state) => {
       return state.products.map((product) => {

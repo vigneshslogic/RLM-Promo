@@ -1,4 +1,7 @@
 import axios from "axios";
+import pkg from 'lodash';
+
+const { map } = pkg;
 
 export default defineNuxtPlugin(() => {
   const getUserDetails = async (user, accessToken) => {
@@ -143,6 +146,38 @@ export default defineNuxtPlugin(() => {
     return false;
   }
 
+  const getCategories = async () => {
+
+    const accessToken = await axios.post("/api/getAccessToken");
+    const catalogs = await axios.post("/api/getCatalogs", {
+      accessToken: accessToken?.data?.access_token,
+    });
+
+    if (catalogs.status === 200) {
+      if (catalogs?.data?.result?.length) {
+
+        const allCatalogs = map(catalogs?.data?.result, 'name');
+        
+          const categories = await axios.post("/api/getCategories", {
+            accessToken: accessToken?.data?.access_token,
+            catalog: `(${allCatalogs.map(name => `'${name}'`).join(', ')})`
+          });
+
+          if (categories?.status === 200) {
+            return {
+              catalog: catalogs?.data?.result,
+              categories: categories?.data?.records,
+            }
+          }
+          return {
+            catalog: result?.name
+          }
+      }
+      return [];
+    }
+    return ;
+  }
+
   return {
     provide: {
       getProducts,
@@ -154,6 +189,7 @@ export default defineNuxtPlugin(() => {
       getOrders,
       getInvoices,
       getAssets,
+      getCategories
     },
   };
 });

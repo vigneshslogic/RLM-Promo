@@ -1,5 +1,4 @@
 <template>
-
   <div id="mySidenav" class="sidenav" :class="leftSidebarVal ? 'openSide' : ''">
     <a class="sidebar-overlay" @click="closeLeftBar(leftSidebarVal)"></a>
     <nav>
@@ -8,171 +7,40 @@
           <i class="fa fa-angle-left pe-2" aria-hidden="true"></i> Back
         </div>
       </a>
+
       <!-- Sample menu definition -->
-      <ul id="sub-menu" class="sidebar-menu">
-        <li>
-          <a href="javascript:void(0)" @click="setActive('clothing')">clothing
-            <span class="sub-arrow"></span>
+      <ul 
+        id="sub-menu" 
+        class="sidebar-menu"
+      >
+        <li v-for="catalog in categories?.catalog">
+          <a href="javascript:void(0)" @click="setActive(`${catalog?.name}`)"> 
+            <span v-html="catalog?.name"></span>
+            <span class="sub-arrow" v-if="getCategories(catalog?.name).length"></span>
           </a>
-          <ul class="mega-menu clothing-menu" :class="{ opensidesubmenu: isActive('clothing') }">
+          <ul
+            class="mega-menu clothing-menu"
+            :class="{ opensidesubmenu: isActive(`${catalog?.name}`) }"
+            v-if="getCategories(catalog?.name).length"
+          >
             <li>
               <div class="row g-sm-4 g-3">
-                <div class="col-xl-4">
+                <div
+                  class="col-xl-4"
+                  v-for="cat in getCategories(catalog?.name)"
+                >
                   <div class="link-section">
-                    <h5>women's fashion</h5>
+                    <h5>{{ cat?.Name }}</h5>
                     <ul>
-                      <li>
-                        <a href="#">dresses</a>
-                      </li>
-                      <li>
-                        <a href="#">skirts</a>
-                      </li>
-                      <li>
-                        <a href="#">westarn wear</a>
-                      </li>
-                      <li>
-                        <a href="#">ethic wear</a>
-                      </li>
-                      <li>
-                        <a href="#">sport wear</a>
+                      <li v-for="child in cat?.ChildCategories?.records ?? []">
+                        <a href="#">{{ child.Name }}</a> 
                       </li>
                     </ul>
                   </div>
-                </div>
-                <div class="col-xl-4">
-                  <div class="link-section">
-                    <h5>men's fashion</h5>
-                    <ul>
-                      <li>
-                        <a href="#">sports wear</a>
-                      </li>
-                      <li>
-                        <a href="#">western wear</a>
-                      </li>
-                      <li>
-                        <a href="#">ethic wear</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-xl-4">
-                  <div class="link-section">
-                    <h5>accessories</h5>
-                    <ul>
-                      <li>
-                        <a href="#">fashion jewellery</a>
-                      </li>
-                      <li>
-                        <a href="#">caps and hats</a>
-                      </li>
-                      <li>
-                        <a href="#">precious jewellery</a>
-                      </li>
-                      <li>
-                        <a href="#">necklaces</a>
-                      </li>
-                      <li>
-                        <a href="#">earrings</a>
-                      </li>
-                      <li>
-                        <a href="#">wrist wear</a>
-                      </li>
-                      <li>
-                        <a href="#">ties</a>
-                      </li>
-                      <li>
-                        <a href="#">cufflinks</a>
-                      </li>
-                      <li>
-                        <a href="#">pockets squares</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-xl-4">
-                  <a href="#" class="mega-menu-banner">
-                    <img src="/images/mega-menu/fashion.jpg" alt class="img-fluid">
-                  </a>
                 </div>
               </div>
             </li>
           </ul>
-        </li>
-        <li>
-          <a href="javascript:void(0)" @click="setActive('bags')">bags
-            <span class="sub-arrow"></span>
-          </a>
-          <ul :class="{ opensub1: isActive('bags') }">
-            <li>
-              <a href="#">shopper bags</a>
-            </li>
-            <li>
-              <a href="#">laptop bags</a>
-            </li>
-            <li>
-              <a href="#">clutches</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="javascript:void(0)" @click="setActive('footwear')">footwear
-            <span class="sub-arrow"></span>
-          </a>
-          <ul :class="{ opensub1: isActive('footwear') }">
-            <li>
-              <a href="#">sport shoes</a>
-            </li>
-            <li>
-              <a href="#">formal shoes</a>
-            </li>
-            <li>
-              <a href="#">casual shoes</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="#">watches</a>
-        </li>
-        <li>
-          <a href="javascript:void(0)" @click="setActive('accessories')">Accessories
-            <span class="sub-arrow"></span>
-          </a>
-          <ul :class="{ opensub1: isActive('accessories') }">
-            <li>
-              <a href="#">fashion jewellery</a>
-            </li>
-            <li>
-              <a href="#">caps and hats</a>
-            </li>
-            <li>
-              <a href="#">precious jewellery</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="javascript:void(0)">house of design</a>
-        </li>
-        <li>
-          <a href="javascript:void(0)" @click="setActive('beauty')">beauty & personal care
-            <span class="sub-arrow"></span>
-          </a>
-          <ul :class="{ opensub1: isActive('beauty') }">
-            <li>
-              <a href="#">makeup</a>
-            </li>
-            <li>
-              <a href="#">skincare</a>
-            </li>
-            <li>
-              <a href="#">premium beaty</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="#">home & decor</a>
-        </li>
-        <li>
-          <a href="#">kitchen</a>
         </li>
       </ul>
     </nav>
@@ -180,39 +48,43 @@
 </template>
 
 <script>
+import { useProductStore } from "~/store/products";
+
 export default {
-  props: ['leftSidebarVal'],
+  props: ["leftSidebarVal"],
   data() {
     return {
-      activeItem: 'clothing',
+      activeItem: "clothing",
       categories: [],
-    }
+    };
   },
   watch: {
     leftSidebarVal: {
-      handler(newValue, oldValue) {
-      },
-      deep: true
-    }
+      handler(newValue, oldValue) {},
+      deep: true,
+    },
+  },
+  async mounted() {
+    this.categories = await useProductStore().loadCategories();
   },
   methods: {
+    getCategories(catalog) {
+      return this.categories?.categories?.filter((cat) => (catalog === cat?.Catalog?.Name));
+    },
     closeLeftBar(val) {
-      val = false
-      this.$emit('closeVal', val)
+      val = false;
+      this.$emit("closeVal", val);
     },
     isActive: function (menuItem) {
-      return this.activeItem === menuItem
+      return this.activeItem === menuItem;
     },
     setActive: function (menuItem) {
       if (this.activeItem === menuItem) {
-        this.activeItem = ''
+        this.activeItem = "";
       } else {
-        this.activeItem = menuItem
+        this.activeItem = menuItem;
       }
-    }
+    },
   },
-
- 
-
-}
+};
 </script>
