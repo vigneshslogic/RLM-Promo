@@ -137,8 +137,7 @@ export default {
 
   mounted() {
     if (!this.selectedPlan) {
-      this.selectedPlan =
-        this.productData?.prices && this.productData?.prices[0];
+      this.selectedPlan = this.productData?.prices && this.productData?.prices[0];
     }
   },
 

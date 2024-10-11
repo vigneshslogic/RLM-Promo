@@ -27,6 +27,7 @@
     </section>
 
     <WidgetsQuickView
+      v-if="showQuickViewModel"
       :openModal="showQuickViewModel"
       :productData="quickViewProduct"
       @closeView="closeViewModal"
