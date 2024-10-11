@@ -64,7 +64,7 @@
                             href="javascript:void(0)"
                             @click="changeSizeVariant(price)"
                           >
-                            {{ price?.pricingModel?.frequency ?? '' }}
+                            {{ price?.pricingModel?.frequency ?? 'One Time' }}
                           </a>
                         </li>
                       </ul>
