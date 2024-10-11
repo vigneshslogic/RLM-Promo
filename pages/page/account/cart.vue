@@ -29,7 +29,7 @@
                     <nuxt-link :to="{ path: '/product/sidebar/' + item.id }">{{ item.name }}</nuxt-link>
                   </td>
                   <td>
-                    {{ item?.periodBoundary }}
+                    {{ getFrequencies(item?.periodBoundary) }}
                   </td>
                   <td>
                     <h2>£{{ item.price }}</h2>
@@ -98,7 +98,7 @@
               class="btn btn-solid"
               title="Get Quote"
               @click="handleGetQuote"
-            > Get Quote
+            > Request Quote
             </button>
             
             <nuxt-link :to="{ path: '/page/account/checkout' }" :class="'btn btn-solid ms-2'">check out</nuxt-link>
@@ -159,7 +159,22 @@ export default {
     },
     closeQuoteModal() {
       this.showQuoteModal = false;
-    }
+    },
+
+    getFrequencies(period) {
+      switch (period?.toLowerCase()) {
+        case 'months':
+          return 'Monthly';
+
+        case 'annual':
+        case 'annually':
+        case 'yearly':
+          return 'Annually';
+
+        default :
+          return 'One Time';
+      }
+    },
   },
 
   mounted() {

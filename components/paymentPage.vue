@@ -125,7 +125,7 @@
                     </div>
                     <ul class="qty" v-if="cart.length">
                       <li v-for="(item, index) in cart" :key="index">
-                        {{ item.name || uppercase }} X {{ item.quantity }} ( {{ item?.periodBoundary }} )
+                        {{ item.name || uppercase }} X {{ item.quantity }} ( {{ getFrequency(item?.periodBoundary) }} )
                         <span>£ {{ item.price * item.quantity }}</span>
                       </li>
                     </ul>
@@ -393,10 +393,26 @@ export default {
         this.user.email.errormsg = "";
       }
     },
+
     validEmail: function (email) {
       const re =
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
+    },
+
+    getFrequency(period) {
+      switch (period?.toLowerCase()) {
+        case 'months':
+          return 'Monthly';
+
+        case 'annual':
+        case 'annually':
+        case 'yearly':
+          return 'Annually';
+
+        default :
+          return 'One Time';
+      }
     },
   },
 
