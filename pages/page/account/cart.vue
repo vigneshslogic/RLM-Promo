@@ -11,6 +11,7 @@
                 <tr class="table-head">
                   <th scope="col">image</th>
                   <th scope="col">product name</th>
+                  <th scope="col">Frequency</th>
                   <th scope="col">price</th>
                   <th scope="col">quantity</th>
                   <th scope="col">action</th>
@@ -26,37 +27,9 @@
                   </td>
                   <td>
                     <nuxt-link :to="{ path: '/product/sidebar/' + item.id }">{{ item.name }}</nuxt-link>
-                    <div class="mobile-cart-content row">
-                      <div class="col-xs-3">
-                        <div class="qty-box">
-                          <div class="input-group">
-                            <span class="input-group-prepend">
-                              <button type="button" class="btn quantity-left-minus" data-type="minus" data-field
-                                @click="decrement()">
-                                <i class="ti-angle-left"></i>
-                              </button>
-                            </span>
-                            <input type="text" name="quantity" class="form-control input-number" v-model="counter" />
-                            <span class="input-group-prepend">
-                              <button type="button" class="btn quantity-right-plus" data-type="plus" data-field
-                                @click="increment()">
-                                <i class="ti-angle-right"></i>
-                              </button>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xs-3">
-                        <h2 class="td-color">£{{ item.price }}</h2>
-                      </div>
-                      <div class="col-xs-3">
-                        <h2 class="td-color">
-                          <a href="#" class="icon">
-                            <i class="ti-close"></i>
-                          </a>
-                        </h2>
-                      </div>
-                    </div>
+                  </td>
+                  <td>
+                    {{ item?.periodBoundary }}
                   </td>
                   <td>
                     <h2>£{{ item.price }}</h2>

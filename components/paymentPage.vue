@@ -125,7 +125,7 @@
                     </div>
                     <ul class="qty" v-if="cart.length">
                       <li v-for="(item, index) in cart" :key="index">
-                        {{ item.name || uppercase }} X {{ item.quantity }}
+                        {{ item.name || uppercase }} X {{ item.quantity }} ( {{ item?.periodBoundary }} )
                         <span>£ {{ item.price * item.quantity }}</span>
                       </li>
                     </ul>

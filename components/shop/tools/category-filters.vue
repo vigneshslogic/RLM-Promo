@@ -42,7 +42,7 @@
                     </select>
                   </div>
                   <div class="search-button">
-                    <a href="#" class="btn btn-solid btn-find">find my part</a>
+                    <a href="#" class="btn btn-solid btn-find">find my product</a>
                   </div>
                 </div>
               </div>

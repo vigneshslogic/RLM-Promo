@@ -19,7 +19,7 @@
         </div>
         <div class="collection-collapse-block" :class="openBlock ? 'open' : ''">
           <h3 class="collapse-block-title" @click="toggleSidebarBlock()">
-            Category
+            Catalog
           </h3>
           <div class="collection-collapse-block-content">
             <div class="collection-brand-filter">
