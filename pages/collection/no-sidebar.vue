@@ -32,7 +32,7 @@
                           <div class="col-12">
                             <div class="product-filter-content">
                               <div class="search-count">
-                                <h5>Showing Products 1-12 of {{ productslist.length }} Result</h5>
+                                <h5>Showing Products 1-12 of {{ productsList.length }} Result</h5>
                               </div>
                               <div class="collection-view">
                                 <ul>
@@ -76,7 +76,7 @@
                       <div class="product-wrapper-grid" :class="{ 'list-view': listview == true }">
                         <div class="row">
                           <div class="col-12">
-                            <div class="text-center section-t-space section-b-space" v-if="productslist.length == 0">
+                            <div class="text-center section-t-space section-b-space" v-if="productsList.length == 0">
                               <img src='/images/empty-search.jpg' class="img-fluid" alt />
                               <h3 class="mt-3">Sorry! Couldn't find the product you were looking For!!!</h3>
                               <div class="col-12 mt-3">
@@ -86,16 +86,16 @@
                           </div>
                           <div class="col-grid-box"
                             :class="{ 'col-xl-3 col-md-4 col-6': col4 == true, 'col-md-4 col-6': col3 == true, 'col-6': col2 == true, 'col-xxl-2 col-xl-3 col-md-4 col-6': col6 == true, 'col-12': listview == true }"
-                            v-for="(product, index) in productslist" :key="index" v-show="setPaginate(index)">
+                            v-for="(product, index) in productsList" :key="index" v-show="setPaginate(index)">
                             <div class="product-box">
-                              <ProductBoxProductList @opencartmodel="showCart" @showCompareModal="showCoampre"
-                                @openquickview="showQuickview" @alertseconds="alert" :product="product"
+                              <ProductBoxProductList @openCartModel="showCart" @showCompareModal="showCoampre"
+                                @openQuickView="showQuickView" @alertSeconds="alert" :product="product"
                                 :index="index" />
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="product-pagination mb-0" v-if="productslist.length > paginate">
+                      <div class="product-pagination mb-0" v-if="productsList.length > paginate">
                         <div class="theme-paggination-block">
                           <div class="row">
                             <div class="col-xl-6 col-md-6 col-sm-12">
@@ -125,7 +125,7 @@
                             </div>
                             <div class="col-xl-6 col-md-6 col-sm-12">
                               <div class="product-search-count-bottom">
-                                <h5>Showing Products 1-12 of {{ productslist.length }} Result</h5>
+                                <h5>Showing Products 1-12 of {{ productsList.length }} Result</h5>
                               </div>
                             </div>
                           </div>
@@ -141,10 +141,10 @@
       </div>
     </section>
 
-    <WidgetsQuickview :openModal="showquickviewmodel" :productData="quickviewproduct" @closeView="closeViewModal" />
-    <WidgetsComparePopup :openCompare="showcomparemodal" :productData="comapreproduct" @closeCompare="closeCompareModal" />
-    <cart-modal-popup :openCart="showcartmodal" :productData="cartproduct" @closeCart="closeCartModal"
-      :products="productslist" />
+    <WidgetsQuickView :openModal="showQuickViewModel" :productData="quickViewProduct" @closeView="closeViewModal" />
+    <WidgetsComparePopup :openCompare="showCompareModal" :productData="compareProduct" @closeCompare="closeCompareModal" />
+    <cart-modal-popup :openCart="showCartModal" :productData="cartProduct" @closeCart="closeCartModal"
+      :products="productsList" />
   </div>
   <Footer />
 </template>
@@ -166,19 +166,19 @@ export default {
       paginateRange: 3,
       pages: [],
       paginates: '',
-      showquickviewmodel: false,
-      showcomparemodal: false,
-      showcartmodal: false,
-      quickviewproduct: {},
-      comapreproduct: {},
-      cartproduct: {},
+      showQuickViewModel: false,
+      showCompareModal: false,
+      showCartModal: false,
+      quickViewProduct: {},
+      compareProduct: {},
+      cartProduct: {},
       dismissSecs: 5,
       dismissCountDown: 0
     }
   },
   computed: {
     ...mapState(useProductStore, {
-      productslist: 'productslist'
+      productsList: 'productsList'
     }),
 
   },
@@ -198,7 +198,7 @@ export default {
     },
     onChangeSort(event) {
       if (event.target.value === 'a-z') {
-        this.productslist.sort(function (a, b) {
+        this.productsList.sort(function (a, b) {
           if (a.title < b.title) {
             return -1
           } else if (a.title > b.title) {
@@ -207,7 +207,7 @@ export default {
           return 0
         })
       } else if (event.target.value === 'z-a') {
-        this.productslist.sort(function (a, b) {
+        this.productsList.sort(function (a, b) {
           if (a.title > b.title) {
             return -1
           } else if (a.title < b.title) {
@@ -216,7 +216,7 @@ export default {
           return 0
         })
       } else if (event.target.value === 'low') {
-        this.productslist.sort(function (a, b) {
+        this.productsList.sort(function (a, b) {
           if (a.price < b.price) {
             return -1
           } else if (a.price > b.price) {
@@ -225,7 +225,7 @@ export default {
           return 0
         })
       } else if (event.target.value === 'high') {
-        this.productslist.sort(function (a, b) {
+        this.productsList.sort(function (a, b) {
           if (a.price > b.price) {
             return -1
           } else if (a.price < b.price) {
@@ -278,7 +278,7 @@ export default {
       this.listview = false
     },
     getPaginate() {
-      this.paginates = Math.round(this.productslist.length / this.paginate)
+      this.paginates = Math.round(this.productsList.length / this.paginate)
       this.pages = []
       for (let i = 0; i < this.paginates; i++) {
         this.pages.push(i + 1)
@@ -309,26 +309,26 @@ export default {
       return this.pages
     },
 
-    showQuickview(item, productData) {
-      this.showquickviewmodel = item
-      this.quickviewproduct = productData
+    showQuickView(item, productData) {
+      this.showQuickViewModel = item
+      this.quickViewProduct = productData
     },
     showCoampre(item, productData) {
-      this.showcomparemodal = item
-      this.comapreproduct = productData
+      this.showCompareModal = item
+      this.compareProduct = productData
     },
     closeCompareModal(item) {
-      this.showcomparemodal = item
+      this.showCompareModal = item
     },
     showCart(item, productData) {
-      this.showcartmodal = item
-      this.cartproduct = productData
+      this.showCartModal = item
+      this.cartProduct = productData
     },
     closeCartModal(item) {
-      this.showcartmodal = item
+      this.showCartModal = item
     },
     closeViewModal(item) {
-      this.showquickviewmodel = item
+      this.showQuickViewModel = item
     }
   },
     mounted() {

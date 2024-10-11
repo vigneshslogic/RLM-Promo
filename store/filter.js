@@ -4,7 +4,7 @@ export const useFilterStore = defineStore({
     id: 'filter-store',
     state:()=>{
         return{
-            productslist: products.data,
+            productsList: products.data,
             products: products.data,
             tagItems: [],
             filteredProduct: [],

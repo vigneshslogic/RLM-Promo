@@ -7,32 +7,32 @@
     <ShopToolsCategory />
     <ShopToolsProductSlider
       :catalogues="catalogues"
-      @openQuickview="showQuickview"
+      @openQuickView="showQuickView"
       @openCompare="showCoampre"
       @openCart="showCart"
     />
     <ShopToolsCategoryFilters
       :catalogues="catalogues"
       :category="category"
-      @openQuickview="showQuickview"
+      @openQuickView="showQuickView"
       @openCompare="showCoampre"
       @openCart="showCart"
     />
     <Footer />
-    <WidgetsQuickview
-      v-if="quickviewproduct && showquickviewmodel"
-      :openModal="showquickviewmodel"
-      :productData="quickviewproduct"
+    <WidgetsQuickView
+      v-if="quickViewProduct && showQuickViewModel"
+      :openModal="showQuickViewModel"
+      :productData="quickViewProduct"
       @closeView="closeViewModal"
     />
     <WidgetsComparePopup
-      :openCompare="showcomparemodal"
-      :productData="comapreproduct"
+      :openCompare="showCompareModal"
+      :productData="compareProduct"
       @closeCompare="closeCompareModal"
     />
     <CartModalPopup
-      :openCart="showcartmodal"
-      :productData="cartproduct"
+      :openCart="showCartModal"
+      :productData="cartProduct"
       @closeCart="closeCartModal"
       :products="products"
     />
@@ -50,23 +50,23 @@ export default {
       products: [],
       catalogues: [],
       category: [],
-      showquickviewmodel: false,
-      showcomparemodal: false,
-      showcartmodal: false,
-      quickviewproduct: {},
-      comapreproduct: {},
-      cartproduct: {},
+      showQuickViewModel: false,
+      showCompareModal: false,
+      showCartModal: false,
+      quickViewProduct: {},
+      compareProduct: {},
+      cartProduct: {},
     };
   },
   computed: {
     ...mapState(useProductStore, {
-      productslist: "productslist",
+      productsList: "productsList",
     }),
   },
 
   methods: {
     productsArray: function () {
-      this.productslist.map((item) => {
+      this.productsList.map((item) => {
         if (item.type === "tools") {
           this.products.push(item);
           item.collection.map((i) => {
@@ -76,26 +76,26 @@ export default {
         }
       });
     },
-    showQuickview(item, productData) {
-      this.showquickviewmodel = item;
-      this.quickviewproduct = productData;
+    showQuickView(item, productData) {
+      this.showQuickViewModel = item;
+      this.quickViewProduct = productData;
     },
     showCoampre(item, productData) {
-      this.showcomparemodal = item;
-      this.comapreproduct = productData;
+      this.showCompareModal = item;
+      this.compareProduct = productData;
     },
     closeCompareModal(item) {
-      this.showcomparemodal = item;
+      this.showCompareModal = item;
     },
     showCart(item, productData) {
-      this.showcartmodal = item;
-      this.cartproduct = productData;
+      this.showCartModal = item;
+      this.cartProduct = productData;
     },
     closeCartModal(item) {
-      this.showcartmodal = item;
+      this.showCartModal = item;
     },
     closeViewModal(item) {
-      this.showquickviewmodel = item;
+      this.showQuickViewModel = item;
     },
     async getProducts() {
       const getProducts = await this.$getProducts();

@@ -171,8 +171,7 @@ export default {
       product.priceBookId = this.selectedPlan?.priceBookId;
       product.priceModelId = this.selectedPlan?.pricingModel?.id;
       product.quantity = 1;
-      product.periodBoundary =
-        this.selectedPlan?.pricingModel?.frequency ?? "OneTime";
+      product.periodBoundary = this.selectedPlan?.pricingModel?.frequency ?? "OneTime";
       useCartStore().addToCart(product);
       this.$emit("closeView", false);
     },

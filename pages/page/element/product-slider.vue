@@ -6,23 +6,20 @@
             <div class="row">
                 <div class="col">
                     <swiper  :slidesPerView="4" :spaceBetween="20" :breakpoints="swiperOption.breakpoints" class="swiper-wrapper">
-                        <swiper-slide class="swiper-slide" v-for="(product,index) in productslist" :key="index">
+                        <swiper-slide class="swiper-slide" v-for="(product,index) in productsList" :key="index">
                             <div class="product-box">
-                                <ProductBoxProductList @opencartmodel="showCart" @showCompareModal="showCoampre" @openquickview="showQuickview"   @alertseconds="alert" :product="product" :index="index" />
+                                <ProductBoxProductList @openCartModel="showCart" @showCompareModal="showCoampre" @openQuickView="showQuickView"   @alertSeconds="alert" :product="product" :index="index" />
                             </div>
                         </swiper-slide>
                     </swiper>
                 </div>
             </div>
         </div>
-
-
-
 </section>
 
-<WidgetsQuickview :openModal="showquickviewmodel" :productData="quickviewproduct" @closeView="closeViewModal" />
-<WidgetsComparePopup :openCompare="showcomparemodal" :productData="comapreproduct" @closeCompare="closeCompareModal" />
-<cart-modal-popup :openCart="showcartmodal" :productData="cartproduct" @closeCart="closeCartModal" :products="productslist" />
+<WidgetsQuickView :openModal="showQuickViewModel" :productData="quickViewProduct" @closeView="closeViewModal" />
+<WidgetsComparePopup :openCompare="showCompareModal" :productData="compareProduct" @closeCompare="closeCompareModal" />
+<cart-modal-popup :openCart="showCartModal" :productData="cartProduct" @closeCart="closeCartModal" :products="productsList" />
 </div>
 </template>
 
@@ -45,12 +42,12 @@ export default {
         return {
             title: 'top collection',
             subtitle: 'special offer',
-            showquickviewmodel: false,
-            showcomparemodal: false,
-            showcartmodal: false,
-            quickviewproduct: {},
-            comapreproduct: {},
-            cartproduct: {},
+            showQuickViewModel: false,
+            showCompareModal: false,
+            showCartModal: false,
+            quickViewProduct: {},
+            compareProduct: {},
+            cartProduct: {},
             dismissSecs: 5,
             dismissCountDown: 0,
             description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
@@ -75,33 +72,33 @@ export default {
     },
     computed: {
         ...mapState(useProductStore,{
-            productslist: 'productslist'
+            productsList: 'productsList'
         })
     },
     methods: {
         alert(item) {
             this.dismissCountDown = item
         },
-        showQuickview(item, productData) {
-            this.showquickviewmodel = item
-            this.quickviewproduct = productData
+        showQuickView(item, productData) {
+            this.showQuickViewModel = item
+            this.quickViewProduct = productData
         },
         showCoampre(item, productData) {
-            this.showcomparemodal = item
-            this.comapreproduct = productData
+            this.showCompareModal = item
+            this.compareProduct = productData
         },
         closeCompareModal(item) {
-            this.showcomparemodal = item
+            this.showCompareModal = item
         },
         showCart(item, productData) {
-            this.showcartmodal = item
-            this.cartproduct = productData
+            this.showCartModal = item
+            this.cartProduct = productData
         },
         closeCartModal(item) {
-            this.showcartmodal = item
+            this.showCartModal = item
         },
         closeViewModal(item){
-        this.showquickviewmodel= item
+        this.showQuickViewModel= item
       }
     }
 }

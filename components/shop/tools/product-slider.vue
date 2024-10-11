@@ -23,10 +23,10 @@
               >
                 <div class="product-box">
                   <ProductBoxSlideProducts
-                    @opencartmodel="showCartModal"
-                    @showCompareModal="showcomparemodal"
-                    @openquickview="showquickview"
-                    @alertseconds="alert"
+                    @openCartModel="showCartModal"
+                    @showCompareModal="showCompareModal"
+                    @openQuickView="showQuickView"
+                    @alertSeconds="alert"
                     :product="product"
                     :index="index"
                   />
@@ -53,11 +53,11 @@ export default {
     return {
       title: "Best Selling",
       showCart: false,
-      showquickviewmodel: false,
+      showQuickViewModel: false,
       showcomapreModal: false,
-      quickviewproduct: {},
-      comapreproduct: {},
-      cartproduct: {},
+      quickViewProduct: {},
+      compareProduct: {},
+      cartProduct: {},
       dismissSecs: 5,
       dismissCountDown: 0,
       description:
@@ -92,22 +92,22 @@ export default {
     },
     showCartModal(item, productData) {
       this.showCart = item;
-      this.cartproduct = productData;
-      this.$emit("openCart", this.showCart, this.cartproduct);
+      this.cartProduct = productData;
+      this.$emit("openCart", this.showCart, this.cartProduct);
     },
-    showquickview(item, productData) {
-      this.showquickviewmodel = item;
-      this.quickviewproduct = productData;
+    showQuickView(item, productData) {
+      this.showQuickViewModel = item;
+      this.quickViewProduct = productData;
       this.$emit(
-        "openQuickview",
-        this.showquickviewmodel,
-        this.quickviewproduct
+        "openQuickView",
+        this.showQuickViewModel,
+        this.quickViewProduct
       );
     },
-    showcomparemodal(item, productData) {
+    showCompareModal(item, productData) {
       this.showcomapreModal = item;
-      this.comapreproduct = productData;
-      this.$emit("openCompare", this.showcomapreModal, this.comapreproduct);
+      this.compareProduct = productData;
+      this.$emit("openCompare", this.showcomapreModal, this.compareProduct);
     },
   },
 };

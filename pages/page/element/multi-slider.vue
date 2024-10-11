@@ -337,7 +337,7 @@ export default {
     },
     computed: {
         ...mapState(useProductStore, {
-            productslist: 'productslist'
+            productsList: 'productsList'
         }),
 
         curr() {
@@ -350,7 +350,7 @@ export default {
             return ('/images/' + path)
         },
         productsArray: function () {
-            this.productslist.map((item) => {
+            this.productsList.map((item) => {
                 if (item.type === 'fashion') {
                     this.products.push(item)
                     item.collection.map((i) => {

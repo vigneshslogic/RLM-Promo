@@ -72,7 +72,7 @@ export default defineEventHandler(async (event) => {
             QuoteId: "@{refQuote.id}",
             QuoteActionId: "@{refQuoteAction.id}",
             Quantity: 1,
-            PricebookEntryId: product?.priceBookEntryId,
+            priceBookEntryId: product?.priceBookEntryId,
             Product2Id: product?.id,
             UnitPrice: product?.price,
             PeriodBoundary: "Anniversary", // product?.periodBoundary
@@ -99,7 +99,6 @@ export default defineEventHandler(async (event) => {
     return false;
 
   } catch (error) {
-    console.log('error', error);
     throw createError({
       statusCode: error.response ? error.response.status : 500,
       message: error.response ? error.response.data.error_description : error.message,

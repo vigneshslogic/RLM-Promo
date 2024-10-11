@@ -214,7 +214,7 @@ export default {
     };
   },
   computed: {
-    productslist: () => useProductStore().productslist,
+    productsList: () => useProductStore().productsList,
     currency: () => useProductStore().currency,
 
     filterbyCategory() {

@@ -100,9 +100,6 @@ export default defineNuxtPlugin(() => {
       userName: `${useCookie('userInfo')?.value?.FirstName} ${useCookie('userInfo')?.value?.LastName}`,
     });
 
-    // console.log('sales force', order);
-    // return false;
-
     if (order.status === 200) {
       return order.data;
     }

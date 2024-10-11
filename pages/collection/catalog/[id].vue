@@ -146,10 +146,10 @@
                       >
                         <div class="product-box">
                           <ProductBoxProductList
-                            @opencartmodel="showCart"
-                            @showCompareModal="showCoampre"
-                            @openquickview="showQuickview"
-                            @alertseconds="alert"
+                            @openCartModel="showCart"
+                            @showCompareModal="showCompare"
+                            @openQuickView="showQuickView"
+                            @alertSeconds="alert"
                             :product="product"
                             :index="index"
                           />
@@ -238,19 +238,19 @@
         </div>
       </div>
     </section>
-    <WidgetsQuickview
-      :openModal="showquickviewmodel"
-      :productData="quickviewproduct"
+    <WidgetsQuickView
+      :openModal="showQuickViewModel"
+      :productData="quickViewProduct"
       @closeView="closeViewModal"
     />
     <WidgetsComparePopup
-      :openCompare="showcomparemodal"
-      :productData="comapreproduct"
+      :openCompare="showCompareModal"
+      :productData="compareProduct"
       @closeCompare="closeCompareModal"
     />
     <cart-modal-popup
-      :openCart="showcartmodal"
-      :productData="cartproduct"
+      :openCart="showCartModal"
+      :productData="cartProduct"
       @closeCart="closeCartModal"
       :products="products"
     />
@@ -278,12 +278,12 @@ export default {
       paginateRange: 3,
       pages: [],
       paginates: '',
-      showquickviewmodel: false,
-      showcomparemodal: false,
-      showcartmodal: false,
-      quickviewproduct: {},
-      comapreproduct: {},
-      cartproduct: {},
+      showQuickViewModel: false,
+      showCompareModal: false,
+      showCartModal: false,
+      quickViewProduct: {},
+      compareProduct: {},
+      cartProduct: {},
       dismissSecs: 5,
       dismissCountDown: 0,
       products: [],
@@ -405,26 +405,26 @@ export default {
     alert(item) {
       this.dismissCountDown = item
     },
-    showQuickview(item, productData) {
-      this.showquickviewmodel = item
-      this.quickviewproduct = productData
+    showQuickView(item, productData) {
+      this.showQuickViewModel = item
+      this.quickViewProduct = productData
     },
-    showCoampre(item, productData) {
-      this.showcomparemodal = item
-      this.comapreproduct = productData
+    showCompare(item, productData) {
+      this.showCompareModal = item
+      this.compareProduct = productData
     },
     closeCompareModal(item) {
-      this.showcomparemodal = item
+      this.showCompareModal = item
     },
     showCart(item, productData) {
-      this.showcartmodal = item
-      this.cartproduct = productData
+      this.showCartModal = item
+      this.cartProduct = productData
     },
     closeCartModal(item) {
-      this.showcartmodal = item
+      this.showCartModal = item
     },
     closeViewModal(item) {
-      this.showquickviewmodel = item
+      this.showQuickViewModel = item
     }
   },
   async mounted() {

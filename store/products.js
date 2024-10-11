@@ -5,7 +5,7 @@ export const useProductStore = defineStore({
   id: "product-store",
   state: () => {
     return {
-      productslist: products.data,
+      productsList: products.data,
       products: products.data,
       wishlist: [],
       compare: [],

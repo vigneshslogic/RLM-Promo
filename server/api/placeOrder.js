@@ -78,7 +78,7 @@ export default defineEventHandler(async (event) => {
           OrderId: "@{refOrder.id}",
           OrderActionId: "@{refOrderAction.id}",
           Quantity: 1,
-          PricebookEntryId: product?.priceBookEntryId,
+          priceBookEntryId: product?.priceBookEntryId,
           Product2Id: product?.id,
           ListPrice: product?.price,
           UnitPrice: product?.price,
@@ -93,8 +93,6 @@ export default defineEventHandler(async (event) => {
         date.setMonth(date.getMonth() + 12);
         date.setDate(date.getDate() - 1);
         const endDate = date.toISOString().split('T')[0];
-
-        console.log('product?.periodBoundary', product?.periodBoundary);
 
         prod.record = {
           ...prod.record,

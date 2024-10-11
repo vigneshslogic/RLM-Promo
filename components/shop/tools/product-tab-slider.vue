@@ -91,8 +91,8 @@
                         <div class="col-xxl-3 col-md-4 col-6"
                           v-for="(product, index) in getCategoryProduct(category[0]).splice(0, 4)" :key="index">
                           <div class="product-box">
-                            <ProductBoxProductBox7 @opencartmodel="showCartModal" @showCompareModal="showcomparemodal"
-                              @openquickview="showquickview"   @alertseconds="alert" :product="product"
+                            <ProductBoxProductBox7 @openCartModel="showCartModal" @showCompareModal="showCompareModal"
+                              @openQuickView="showQuickView"   @alertSeconds="alert" :product="product"
                               :index="index" />
                           </div>
                         </div>
@@ -106,8 +106,8 @@
                         <div class="col-xxl-3 col-md-4 col-6"
                           v-for="(product, index) in getCategoryProduct(category[1]).splice(0, 4)" :key="index">
                           <div class="product-box">
-                            <ProductBoxProductBox7 @opencartmodel="showCartModal" @showCompareModal="showcomparemodal"
-                              @openquickview="showquickview"   @alertseconds="alert" :product="product"
+                            <ProductBoxProductBox7 @openCartModel="showCartModal" @showCompareModal="showCompareModal"
+                              @openQuickView="showQuickView"   @alertSeconds="alert" :product="product"
                               :index="index" />
                           </div>
                         </div>
@@ -146,11 +146,11 @@ export default {
     return {
       imagepath: '/images/tools/banner.jpg',
       showCart: false,
-      showquickviewmodel: false,
+      showQuickViewModel: false,
       showcomapreModal: false,
-      quickviewproduct: {},
-      comapreproduct: {},
-      cartproduct: {},
+      quickViewProduct: {},
+      compareProduct: {},
+      cartProduct: {},
       dismissSecs: 5,
       dismissCountDown: 0,
 
@@ -178,18 +178,18 @@ export default {
     },
     showCartModal(item, productData) {
       this.showCart = item
-      this.cartproduct = productData
-      this.$emit('openCart', this.showCart, this.cartproduct)
+      this.cartProduct = productData
+      this.$emit('openCart', this.showCart, this.cartProduct)
     },
-    showquickview(item, productData) {
-      this.showquickviewmodel = item
-      this.quickviewproduct = productData
-      this.$emit('openQuickview', this.showquickviewmodel, this.quickviewproduct)
+    showQuickView(item, productData) {
+      this.showQuickViewModel = item
+      this.quickViewProduct = productData
+      this.$emit('openQuickView', this.showQuickViewModel, this.quickViewProduct)
     },
-    showcomparemodal(item, productData) {
+    showCompareModal(item, productData) {
       this.showcomapreModal = item
-      this.comapreproduct = productData
-      this.$emit('openCompare', this.showcomapreModal, this.comapreproduct)
+      this.compareProduct = productData
+      this.$emit('openCompare', this.showcomapreModal, this.compareProduct)
     },
     discountedPrice(product) {
       const price = (product.price - (product.price * product.discount / 100)) * this.curr.curr

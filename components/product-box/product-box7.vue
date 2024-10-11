@@ -20,12 +20,12 @@
           variant="primary">
           <i class="fa fa-refresh" aria-hidden="true"></i>
         </a>
-        <a class="mobile-quick-view" title="Quick View" @click="showQuickview(product)" variant="primary">
+        <a class="mobile-quick-view" title="Quick View" @click="showQuickView(product)" variant="primary">
           <i class="ti-search" aria-hidden="true"></i>
         </a>
       </div>
       <div class="quick-view-part">
-        <a href="javascript:void(0)" title="Quick View" @click="showQuickview(product)" 
+        <a href="javascript:void(0)" title="Quick View" @click="showQuickView(product)" 
           variant="primary">
           <i class="ti-search" aria-hidden="true"></i>
         </a>
@@ -59,19 +59,19 @@ export default {
   props: ['product', 'index'],
   data() {
     return {
-      quickviewProduct: {},
+      quickViewProduct: {},
       compareProduct: {},
       cartProduct: {},
-      showquickview: false,
+      showQuickView: false,
       showCompareModal: false,
-      cartval: false,
+      cartVal: false,
       dismissSecs: 5,
       dismissCountDown: 0
     }
   },
   computed: {
     ...mapState(useProductStore, {
-      productslist: 'productslist'
+      productsList: 'productsList'
     }),
     curr() {
       return useProductStore().changeCurrency
@@ -82,9 +82,9 @@ export default {
       return ('/images/' + path)
     },
     addToCart: function (product) {
-      this.cartval = true
+      this.cartVal = true
       this.cartProduct = product
-      this.$emit('opencartmodel', this.cartval, this.cartProduct)
+      this.$emit('openCartModel', this.cartVal, this.cartProduct)
       useCartStore().addToCart(product)
     },
     addToWishlist: function (product) {
@@ -92,10 +92,10 @@ export default {
       useNuxtApp().$showToast({ msg: "Product Is successfully added to your wishlist.", type: "info" })
       useProductStore().addToWishlist(product)
     },
-    showQuickview: function (productData) {
-      this.showquickview = true
-      this.quickviewProduct = productData
-      this.$emit('openquickview', this.showquickview, this.quickviewProduct)
+    showQuickView: function (productData) {
+      this.showQuickView = true
+      this.quickViewProduct = productData
+      this.$emit('openQuickView', this.showQuickView, this.quickViewProduct)
     },
     addToCompare: function (product) {
       this.showCompareModal = true
@@ -105,7 +105,7 @@ export default {
     },
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown
-      this.$emit('alertseconds', this.dismissCountDown)
+      this.$emit('alertSeconds', this.dismissCountDown)
     },
     discountedPrice(product) {
       const price = (product.price - (product.price * product.discount / 100)) * this.curr.curr

@@ -54,7 +54,6 @@
 
       <h4 v-if="getProductPrice">£ {{ getProductPrice }}</h4>
 
-      <h4 v-else>{{curr.symbol}}{{ (product.price * curr.curr).toFixed(2) }}</h4>
     </div>
 </template>
 
@@ -74,9 +73,9 @@ export default {
       quickViewProduct: {},
       compareProduct: {},
       cartProduct: {},
-      showQuickView: false,
+      quickView: false,
       showCompareModal: false,
-      cartval: false,
+      cartVal: false,
       variants: {
         productId: '',
         image: ''
@@ -86,36 +85,29 @@ export default {
       image: this.product?.displayUrl?.replace(/&amp;/g, '&')
     }
   },
-  emits:['opencartmodel','openquickview','alertseconds','showCompareModal'],
+  emits:['openCartModel', 'openQuickView', 'alertSeconds', 'showCompareModal'],
   computed: {
     ...mapState(useProductStore,{
-      productslist: 'productslist'
+      productsList: 'productsList'
     }),
-    curr(){  
-      return useProductStore().changeCurrency
-    },
     getProductPrice() {
       const exists = find(this.product.prices, { isDefault: true });
       return exists?.price ?? '';
     },
   },
   methods: {
-    getImgUrl(path) {
-    
-      return ('/images/'+ path)
-    },
     addToCart: function (product) {
-      this.cartval = true;
+      this.cartVal = true;
       this.cartProduct = product;
-      this.$emit("opencartmodel", this.cartval, this.cartProduct);
       product.price = product?.prices[0]?.price;
       product.priceBookEntryId = product?.prices[0]?.priceBookEntryId;
       product.priceBookId = product?.prices[0]?.priceBookId;
       product.priceModelId = product?.prices[0]?.pricingModel?.id;
       product.quantity = 1;
       product.periodBoundary =
-        product?.prices[0]?.pricingModel?.frequency ?? "OneTime";
+      product?.prices[0]?.pricingModel?.frequency ?? "OneTime";
       useCartStore().addToCart(product);
+      this.$emit("openCartModel", this.cartVal, this.cartProduct);
     },
     addToWishlist: function (product) {
       this.dismissCountDown = this.dismissSecs;
@@ -126,9 +118,9 @@ export default {
       useProductStore().addToWishlist(product);
     },
     showQuickView: function (productData) {
-      this.showQuickView = true
+      this.quickView = true
       this.quickViewProduct = productData
-      this.$emit('openquickview', this.showQuickView, this.quickViewProduct)
+      this.$emit('openQuickView', this.quickView, this.quickViewProduct)
     },
     addToCompare: function (product) {
       this.showCompareModal = true
@@ -137,38 +129,6 @@ export default {
     
       useProductStore().addToCompare(product)
     },
-    Color(variants) {
-      const uniqColor = []
-      for (let i = 0; i < Object.keys(variants).length; i++) {
-        if (uniqColor.indexOf(variants[i].color) === -1) {
-          uniqColor.push(variants[i].color)
-        }
-      }
-      return uniqColor
-    },
-    productColorchange(color, product) {
-      product.variants.map((item) => {
-        if (item.color === color) {
-          product.images.map((img) => {
-            if (img.image_id === item.image_id) {
-              this.imageSrc = img.src
-            }
-          })
-        }
-      })
-    },
-    productVariantChange(imgsrc) {
-      this.imageSrc = imgsrc
-    },
-    countDownChanged(dismissCountDown) {
-      this.dismissCountDown = dismissCountDown
-      this.$emit('alertseconds', this.dismissCountDown)
-    },
-    discountedPrice(product) {
-      const price = (product.price - (product.price * product.discount / 100))* this.curr.curr
-      return price
-      
-    }
   },
  
 }

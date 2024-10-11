@@ -237,7 +237,7 @@ export default {
     computed: {
         ...mapState(useProductStore, {
             currency: 'currency',
-            productslist: 'productslist'
+            productsList: 'productsList'
         }),
         curr() {
             return useProductStore().changeCurrency
@@ -268,7 +268,7 @@ export default {
         },
 
         getCategoryProduct(collection) {
-            return this.productslist.filter((item) => {
+            return this.productsList.filter((item) => {
                 if (item.collection.find(i => i === collection)) {
                     return item
                 }

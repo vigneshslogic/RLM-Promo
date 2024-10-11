@@ -38,7 +38,7 @@
                       <span class="mx-2 fw-bold">{{ item?.CurrentAmount }} / year</span>
                       <div class="dropdown">
                         <a
-                          class="btn btn-primary btn-sm dropdown-toggle text-white"
+                          class="btn btn-outline-primary btn-sm dropdown-toggle text-black-50 text-white"
                           href="#"
                           role="button"
                           data-bs-toggle="dropdown"
@@ -79,12 +79,8 @@
                       <div class="col d-flex flex-column">
                         <span class="fw-bold">Period:</span>
                         <span>
-                          {{ dateFormat(item?.LifecycleStartDate)
-                          }}{{
-                            item?.LifecycleEndDate
-                              ? `- ${dateFormat(item?.LifecycleEndDate)}`
-                              : ''
-                          }}
+                          {{ dateFormat(item?.LifecycleStartDate) }}
+                          {{ item?.LifecycleEndDate ? `- ${dateFormat(item?.LifecycleEndDate)}` : '' }}
                         </span>
                       </div>
                       <div class="col d-flex flex-column">

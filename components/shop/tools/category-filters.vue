@@ -63,10 +63,10 @@
               >
                 <div class="product-box">
                   <ProductBoxSlideProducts
-                    @opencartmodel="showCartModal"
-                    @showCompareModal="showcomparemodal"
-                    @openquickview="showquickview"
-                    @alertseconds="alert"
+                    @openCartModel="showCartModal"
+                    @showCompareModal="showCompareModal"
+                    @openQuickView="showQuickView"
+                    @alertSeconds="alert"
                     :product="product"
                     :index="index"
                   />
@@ -148,16 +148,16 @@ export default {
       this.cartProduct = productData;
       this.$emit("openCart", this.showCart, this.cartProduct);
     },
-    showquickview(item, productData) {
+    showQuickView(item, productData) {
       this.showQuickViewModel = item;
       this.quickViewProduct = productData;
       this.$emit(
-        "openQuickview",
+        "openQuickView",
         this.showQuickViewModel,
         this.quickViewProduct
       );
     },
-    showcomparemodal(item, productData) {
+    showCompareModal(item, productData) {
       this.showCompareModal = item;
       this.compareProduct = productData;
       this.$emit("openCompare", this.showCompareModal, this.compareProduct);

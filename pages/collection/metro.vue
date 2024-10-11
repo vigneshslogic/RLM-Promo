@@ -43,7 +43,7 @@
                                 <nuxt-link :to="{ path: '/page/account/wishlist' }">
                                   <i class="ti-heart" aria-hidden="true" @click="addToWishlist(item)"></i>
                                 </nuxt-link>
-                                <a href="javascript:void(0)" title="Quick View" @click="showQuickview(item)"
+                                <a href="javascript:void(0)" title="Quick View" @click="showQuickView(item)"
                                   variant="primary">
                                   <i class="ti-search" aria-hidden="true"></i>
                                 </a>
@@ -72,9 +72,9 @@
       </div>
     </section>
 
-    <WidgetsQuickview :openModal="showquickviewmodel" :productData="quickviewproduct" @closeView="closeViewModal" />
-    <WidgetsComparePopup :openCompare="showcomparemodal" :productData="comapreproduct" @closeCompare="closeCompareModal" />
-    <cart-modal-popup :openCart="showcartmodal" :productData="cartproduct" @closeCart="closeCartModal" />
+    <WidgetsQuickView :openModal="showQuickViewModel" :productData="quickViewProduct" @closeView="closeViewModal" />
+    <WidgetsComparePopup :openCompare="showCompareModal" :productData="compareProduct" @closeCompare="closeCompareModal" />
+    <cart-modal-popup :openCart="showCartModal" :productData="cartProduct" @closeCart="closeCartModal" />
 
   </div>
   <Footer />
@@ -85,42 +85,42 @@ import { useProductStore } from '~~/store/products';
 import { useCartStore } from '~~/store/cart';
 import { storeToRefs } from 'pinia'
 
-let { productslist, currency, changeCurrency } = storeToRefs(useProductStore())
+let { productsList, currency, changeCurrency } = storeToRefs(useProductStore())
 let products = [],
 
-  cartval = false,
-  showquickviewmodel = ref(false),
-  showcomparemodal = ref(false),
-  showcartmodal = ref(false),
-  quickviewproduct = {},
-  comapreproduct = {},
-  cartproduct = {}
+  cartVal = false,
+  showQuickViewModel = ref(false),
+  showCompareModal = ref(false),
+  showCartModal = ref(false),
+  quickViewProduct = {},
+  compareProduct = {},
+  cartProduct = {}
 productsArray();
 function getImgUrl(path) {
   return ('/images/' + path)
 };
 function productsArray() {
-  productslist.value.map((item) => {
+  productsList.value.map((item) => {
     if (item.type === 'metro') {
       products.push(item)
     }
   })
 }
 
-function showQuickview(productData) {
-  showquickviewmodel.value = true
-  quickviewproduct = productData
+function showQuickView(productData) {
+  showQuickViewModel.value = true
+  quickViewProduct = productData
 }
 function closeViewModal() {
-  showquickviewmodel.value = false
+  showQuickViewModel.value = false
 }
 function showCoampre(productData) {
-  showcomparemodal.value = true
-  comapreproduct = productData
+  showCompareModal.value = true
+  compareProduct = productData
 }
 
 function closeCompareModal(item) {
-  showcomparemodal.value = false
+  showCompareModal.value = false
 }
 
 function addToWishlist(product) {

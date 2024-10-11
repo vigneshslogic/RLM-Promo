@@ -42,7 +42,7 @@
         <a
           class="mobile-quick-view"
           title="Quick View"
-          @click="showQuickview(product)"
+          @click="showQuickView(product)"
           variant="primary"
         >
           <i class="ti-search" aria-hidden="true"></i>
@@ -52,7 +52,7 @@
         <a
           href="javascript:void(0)"
           title="Quick View"
-          @click="showQuickview(product)"
+          @click="showQuickView(product)"
           variant="primary"
         >
           <i class="ti-search" aria-hidden="true"></i>
@@ -87,12 +87,12 @@ export default {
   props: ["product", "index"],
   data() {
     return {
-      quickviewProduct: {},
+      quickViewProduct: {},
       compareProduct: {},
       cartProduct: {},
-      showquickview: false,
+      quickView: false,
       showCompareModal: false,
-      cartval: false,
+      cartVal: false,
       dismissSecs: 5,
       dismissCountDown: 0,
       image: this.product?.displayUrl?.replace(/&amp;/g, '&')
@@ -100,7 +100,7 @@ export default {
   },
   computed: {
     ...mapState(useProductStore, {
-      productslist: "productslist",
+      productsList: "productsList",
     }),
     curr() {
       return useProductStore().changeCurrency;
@@ -112,17 +112,18 @@ export default {
   },
   methods: {
     addToCart: function (product) {
-      this.cartval = true;
+      const getDefaultPricing = product?.prices?.find((price) => price.isDefault === true) ?? product?.prices[0];
+      this.cartVal = true;
       this.cartProduct = product;
-      this.$emit("opencartmodel", this.cartval, this.cartProduct);
-      product.price = product?.prices[0]?.price;
-      product.priceBookEntryId = product?.prices[0]?.priceBookEntryId;
-      product.priceBookId = product?.prices[0]?.priceBookId;
-      product.priceModelId = product?.prices[0]?.pricingModel?.id;
+      product.price = getDefaultPricing?.price;
+      product.priceBookEntryId = getDefaultPricing?.priceBookEntryId;
+      product.priceBookId = getDefaultPricing?.priceBookId;
+      product.priceModelId = getDefaultPricing?.pricingModel?.id;
       product.quantity = 1;
-      product.periodBoundary =
-        product?.prices[0]?.pricingModel?.frequency ?? "OneTime";
+      product.periodBoundary = getDefaultPricing?.pricingModel?.frequency ?? "OneTime";
       useCartStore().addToCart(product);
+
+      this.$emit("openCartModel", this.cartVal, this.cartProduct);
     },
     addToWishlist: function (product) {
       this.dismissCountDown = this.dismissSecs;
@@ -132,10 +133,10 @@ export default {
       });
       useProductStore().addToWishlist(product);
     },
-    showQuickview: function (productData) {
-      this.showquickview = true;
-      this.quickviewProduct = productData;
-      this.$emit("openquickview", this.showquickview, this.quickviewProduct);
+    showQuickView: function (productData) {
+      this.quickView = true;
+      this.quickViewProduct = productData;
+      this.$emit("openQuickView", this.quickView, this.quickViewProduct);
     },
     addToCompare: function (product) {
       this.showCompareModal = true;
@@ -146,16 +147,6 @@ export default {
         this.compareProduct
       );
       useProductStore().addToCompare(product);
-    },
-    countDownChanged(dismissCountDown) {
-      this.dismissCountDown = dismissCountDown;
-      this.$emit("alertseconds", this.dismissCountDown);
-    },
-    discountedPrice(product) {
-      const price =
-        (product.price - (product.price * product.discount) / 100) *
-        this.curr.curr;
-      return price;
     },
   },
 };

@@ -13,7 +13,7 @@ export const useCartStore = defineStore({
   },
   actions: {
     addToCart(payload) {
-      const cartItems = this?.cart?.find((item) => item.id === payload.id);
+      let cartItems = this?.cart?.find((item) => item.id === payload.id);
       const qty = payload.quantity ?? 1;
 
       if (cartItems) {
@@ -23,11 +23,11 @@ export const useCartStore = defineStore({
           id: payload?.id,
           name: payload?.name,
           image: payload?.displayUrl,
-          price: payload?.prices[0]?.price,
-          priceBookEntryId: payload?.prices[0]?.priceBookEntryId,
-          priceBookId: payload?.prices[0]?.priceBookId,
-          priceModelId: payload?.prices[0]?.pricingModel?.id,
-          periodBoundary: payload?.prices[0]?.pricingModel?.frequency ?? 'OneTime',
+          price: payload?.price,
+          priceBookEntryId: payload?.priceBookEntryId,
+          priceBookId: payload?.priceBookId,
+          priceModelId: payload?.priceModelId,
+          periodBoundary: payload?.periodBoundary ?? 'OneTime',
           quantity: qty,
         });
       }

@@ -43,7 +43,7 @@
                         <a
                           href="javascript:void(0)"
                           title="Quick View"
-                          @click="showQuickview(item)"
+                          @click="showQuickView(item)"
                          
                           variant="primary"
                         >
@@ -74,10 +74,10 @@
         </div>
       </div>
     </div>
-    <WidgetsQuickview :openModal="showquickviewmodel" :productData="quickviewproduct" @closeView="closeViewModal"/>
+    <WidgetsQuickView :openModal="showQuickViewModel" :productData="quickViewProduct" @closeView="closeViewModal"/>
     <WidgetsComparePopup
-      :openCompare="showcomparemodal"
-      :productData="comapreproduct"
+      :openCompare="showCompareModal"
+      :productData="compareProduct"
       @closeCompare="closeCompareModal"
     />
   </div>
@@ -88,13 +88,13 @@ import MasonryWall from '@yeger/vue-masonry-wall'
 import { useProductStore } from '~~/store/products';
 import { useCartStore } from '~~/store/cart';
 import { storeToRefs } from 'pinia'
- let {productslist,currency} = storeToRefs(useProductStore()) 
+ let {productsList,currency} = storeToRefs(useProductStore()) 
       let products= [],
-      cartval= false,
-      showquickviewmodel= ref(false),
-      showcomparemodal= ref(false),
-      quickviewproduct= {},
-      comapreproduct= {};
+      cartVal= false,
+      showQuickViewModel= ref(false),
+      showCompareModal= ref(false),
+      quickViewProduct= {},
+      compareProduct= {};
 
     productsArray();
   
@@ -103,27 +103,27 @@ import { storeToRefs } from 'pinia'
     }
     
     function productsArray() {
-      productslist.value.map((item) => {
+      productsList.value.map((item) => {
         if (item.type === 'metro') {
           products.push(item)
         }
       })
     }
 
-    function showQuickview(productData) {
-      showquickviewmodel.value = true
-      quickviewproduct = productData
+    function showQuickView(productData) {
+      showQuickViewModel.value = true
+      quickViewProduct = productData
     }
     function closeViewModal(){
-      showquickviewmodel.value = false
+      showQuickViewModel.value = false
     }
     function showCoampre(productData) {
-      showcomparemodal.value = true
-      comapreproduct = productData
+      showCompareModal.value = true
+      compareProduct = productData
     }
 
    function  closeCompareModal(item) {
-      showcomparemodal.value = false
+      showCompareModal.value = false
     }
 
     function addToWishlist(product) {
