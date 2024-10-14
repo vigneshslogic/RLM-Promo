@@ -32,17 +32,21 @@
                     </select>
                   </div>
                   <div class="search-box">
-                    <select name="year" class="form-control">
+                    <select name="year" class="form-control" @change="handleSubcategory">
                       <option value>Select sub-category</option>
                       <option 
                         v-for="subCat in subCategories"
-                        :value="subCat.id"
+                        :value="subCat.Id"
                         v-html="subCat.Name"
                       />
                     </select>
                   </div>
                   <div class="search-button">
-                    <a href="#" class="btn btn-solid btn-find">find my product</a>
+                    <button 
+                      class="btn btn-solid btn-find"
+                      @click="handleFilter"
+                    > find my product
+                    </button>
                   </div>
                 </div>
               </div>
@@ -124,21 +128,30 @@ export default {
       catalogs: [],
       categories: [],
       subCategories: [],
+      selectedSubCat: null,
+      selectedCatalog: null,
     };
   },
   async mounted() {
     this.catalogs = await useProductStore().loadCategories();
   },
   methods: {
+    async handleFilter() {
+      this.$emit('applyFilter', this?.selectedCatalog, this?.selectedSubCat);
+    },
     getCategories(e) {
       this.categories = [];
       this.subCategories = [];
+      this.selectedSubCat = null;
+      this.selectedCatalog = e.target.value;
       this.categories = this.catalogs?.categories?.filter((cat) => (e.target.value === cat?.Catalog?.Id));
     },
     getSubCategories(e) {
       this.subCategories = [];
       this.subCategories = this.categories?.find((cat) => (e.target.value === cat.Id))?.ChildCategories?.records ?? [];
-      // this.categories = this.catalogs?.categories?.filter((cat) => (e.target.value === cat?.Catalog?.Name));
+    },
+    handleSubcategory(e) {
+      this.selectedSubCat = e.target.value;
     },
     alert(item) {
       this.dismissCountDown = item;

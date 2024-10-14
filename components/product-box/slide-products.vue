@@ -6,7 +6,7 @@
         <nuxt-link :to="{ path: '/product/sidebar/' + product.id }">
           <!-- src="/images/6.jpg" -->
           <img
-            :src="image ?? '/images/6.jpg'"
+            :src="getImage(product?.displayUrl)"
             :id="product?.id"
             class="img-fluid bg-img"
             :alt="product.name"
@@ -95,7 +95,7 @@ export default {
       cartVal: false,
       dismissSecs: 5,
       dismissCountDown: 0,
-      image: this.product?.displayUrl?.replace(/&amp;/g, '&')
+      image: '',
     };
   },
   computed: {
@@ -111,6 +111,9 @@ export default {
     },
   },
   methods: {
+    getImage(img) {
+      return img?.replace(/&amp;/g, '&') ?? "/images/6.jpg";
+    },
     addToCart: function (product) {
       const getDefaultPricing = product?.prices?.find((price) => price.isDefault === true) ?? product?.prices[0];
       this.cartVal = true;

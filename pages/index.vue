@@ -8,15 +8,16 @@
     <ShopToolsProductSlider
       :catalogues="catalogues"
       @openQuickView="showQuickView"
-      @openCompare="showCoampre"
+      @openCompare="showCompare"
       @openCart="showCart"
     />
     <ShopToolsCategoryFilters
-      :catalogues="catalogues"
+      :catalogues="filterCatalogs"
       :category="category"
       @openQuickView="showQuickView"
-      @openCompare="showCoampre"
+      @openCompare="showCompare"
       @openCart="showCart"
+      @applyFilter="handleFilters"
     />
     <Footer />
     <WidgetsQuickView
@@ -49,6 +50,7 @@ export default {
     return {
       products: [],
       catalogues: [],
+      filterCatalogs: [],
       category: [],
       showQuickViewModel: false,
       showCompareModal: false,
@@ -80,7 +82,7 @@ export default {
       this.showQuickViewModel = item;
       this.quickViewProduct = productData;
     },
-    showCoampre(item, productData) {
+    showCompare(item, productData) {
       this.showCompareModal = item;
       this.compareProduct = productData;
     },
@@ -97,15 +99,19 @@ export default {
     closeViewModal(item) {
       this.showQuickViewModel = item;
     },
-    async getProducts() {
-      const getProducts = await this.$getProducts();
+    async getProducts(id = null, isCategory = false) {
+      const getProducts = await this.$getProducts(id, isCategory);
       return getProducts?.result ?? [];
     },
+    async handleFilters(catalogId, subCatId) {
+      this.filterCatalogs = await this.getProducts(subCatId ?? catalogId, subCatId ? true : false);
+    }
   },
   async mounted() {
     localStorage.setItem('order-success', null);
     this.productsArray();
     this.catalogues = await this.getProducts();
+    this.filterCatalogs = await this.getProducts();
   },
 };
 </script>
