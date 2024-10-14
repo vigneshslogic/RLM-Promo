@@ -106,10 +106,6 @@
                           }}
                         </span>
                       </div>
-                      <div class="col d-flex flex-column">
-                        <span class="fw-bold">Open Balance:</span>
-                        <span>-</span>
-                      </div>
                     </div>
                   </div>
                 </div>

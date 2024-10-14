@@ -102,6 +102,19 @@ export default defineNuxtPlugin(() => {
     });
 
     if (order.status === 200) {
+      const userInfo = useCookie('userInfo').value;
+      userInfo.Account.BillingCity = user?.city?.value;
+      userInfo.Account.BillingCountry = user?.state?.value;
+      userInfo.Account.BillingState = user?.state?.value;
+      userInfo.Account.BillingStreet = user?.address?.value;
+      userInfo.Account.BillingPostalCode = user?.pincode?.value;
+      userInfo.Account.ShippingCity = user?.city?.value;
+      userInfo.Account.ShippingCountry = user?.state?.value;
+      userInfo.Account.ShippingState = user?.state?.value;
+      userInfo.Account.ShippingStreet = user?.address?.value;
+      userInfo.Account.ShippingPostalCode = user?.pincode?.value;
+    
+      useCookie('userInfo').value = userInfo;
       return order.data;
     }
 

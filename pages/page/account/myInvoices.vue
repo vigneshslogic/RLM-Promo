@@ -22,7 +22,10 @@
                         <span class="fw-bold pe-3">Invoice Document No:</span>
                         <span>{{ item?.DocumentNumber }}</span> 
                       </div>
-                      <button class="btn btn-solid btn-sm p-1">Download Invoice</button>
+                      <div>
+                        <button class="btn btn-solid btn-sm p-1 mx-1">Download Invoice</button>
+                        <button class="btn btn-solid btn-sm p-1 mx-1">Pay Now</button>
+                      </div>
                     </div>
                     <div class="card-body">
                       <div class="row">
@@ -36,7 +39,7 @@
                         </div>
                         <div class="col d-flex flex-column">
                             <span class="fw-bold">Total Amount with Tax</span>
-                            <span>{{ item?.TotalChargeAmountWithTax }}</span>
+                            <span>£&nbsp;&nbsp;{{ item?.TotalChargeAmountWithTax }}</span>
                         </div>
                         <div class="col d-flex flex-column">
                             <span class="fw-bold">Balance</span>

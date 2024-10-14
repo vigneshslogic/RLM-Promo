@@ -116,8 +116,6 @@ export default defineEventHandler(async (event) => {
     if (products?.length) {
       rawPayload.graph.records = rawPayload?.graph?.records.concat(products);
 
-      // return rawPayload;
-
       const response = await axios.post(url, rawPayload, {
         headers: {
           Authorization: `Bearer ${body.accessToken}`,
@@ -127,6 +125,26 @@ export default defineEventHandler(async (event) => {
 
       if (response.status === 201 || response.status === 200) {
         try {
+          // store user billing/ shipping addresses
+          const addressURL = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/sobjects/Account/${body?.accountId}`;
+          await axios.patch(activeUrl, {
+            BillingCity: body?.user?.city?.value,
+            BillingCountry: body?.user?.state?.value,
+            BillingState: body?.user?.state?.value,
+            BillingStreet: body?.user?.address?.value,
+            BillingPostalCode: body?.user?.pincode?.value,
+            ShippingCity: body?.user?.city?.value,
+            ShippingCountry: body?.user?.state?.value,
+            ShippingState: body?.user?.state?.value,
+            ShippingStreet: body?.user?.address?.value,
+            ShippingPostalCode: body?.user?.pincode?.value,
+          }, {
+            headers: {
+              Authorization: `Bearer ${body.accessToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+
           // make order activate after the order place immediately
           const activeUrl = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/sobjects/Order/${response.data?.orderId}`;
           await axios.patch(activeUrl, { Status: "Activated" }, {

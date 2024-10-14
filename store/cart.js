@@ -64,7 +64,7 @@ export const useCartStore = defineStore({
       this.cart = payload;
     },
     clearCart() {
-      this.cart = null; // or use '' to clear it as an empty string
+      this.cart = []; // or use '' to clear it as an empty string
     },
   },
   getters: {

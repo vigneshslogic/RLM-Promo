@@ -337,15 +337,14 @@ export default {
       }
 
       if (
-        this.user.lastName.value.length <= 1 ||
-        this.user.lastName.value.length > 10
+        this.user.lastName.value.length <= 1
       ) {
         this.user.lastName.errormsg = "empty not allowed";
       } else {
         this.user.lastName.errormsg = "";
       }
 
-      if (this.user.city.value.length < 3 || this.user.city.value.length > 10) {
+      if (this.user.city.value.length < 3) {
         this.user.city.errormsg = "empty not allowed";
       } else {
         this.user.city.errormsg = "";
