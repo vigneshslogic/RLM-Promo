@@ -36,7 +36,7 @@
                     </div>
                     <div class="d-flex align-items-center">
                       <span class="mx-2 fw-bold"
-                        >{{ item?.CurrentAmount }} / year</span
+                        >£&nbsp;&nbsp;{{ item?.CurrentAmount ?? 0 }} / year</span
                       >
                       <div class="dropdown">
                         <a
@@ -85,11 +85,11 @@
                     <div class="row">
                       <div class="col d-flex flex-column">
                         <span class="fw-bold">Next Billing Date:</span>
-                        <span>-</span>
+                        <span>{{ dateFormat(item?.LifecycleEndDate, 'next') ?? '-' }}</span>
                       </div>
                       <div class="col d-flex flex-column">
                         <span class="fw-bold">Next Payment Amount:</span>
-                        <span>-</span>
+                        <span>£&nbsp;&nbsp;{{ item?.CurrentAmount ?? 0 }}</span>
                       </div>
                       <div class="col d-flex flex-column">
                         <span class="fw-bold">You'll renew on:</span>
@@ -160,14 +160,22 @@ export default {
   }),
 
   methods: {
-    dateFormat(dateString) {
+    dateFormat(dateString, type) {
       if (dateString !== null) {
         const date = new Date(dateString);
 
+        if (type === 'next') {
+          const day = String(date.getUTCDate() + 1).padStart(2, '0');
+          const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+          const year = date.getUTCFullYear();
+
+          return `${day}/${month}/${year}`;
+        }
+
         // Extract the day, month, and year
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+        const year = date.getUTCFullYear();
 
         // Format the date as DD/MM/YYYY
         return `${day}/${month}/${year}`;
