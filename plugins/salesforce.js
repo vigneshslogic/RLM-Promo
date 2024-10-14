@@ -182,6 +182,21 @@ export default defineNuxtPlugin(() => {
     return ;
   }
 
+  const changeQuantity = async (payload) => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const invoices = await axios.post("/api/changeQuantity", {
+      accessToken: accessToken?.data?.access_token,
+      accountId: useCookie('userInfo')?.value?.Account?.Id,
+      payload,
+    });
+
+    if (invoices.status === 200) {
+      return invoices.data;
+    }
+
+    return false;
+  }
+
   return {
     provide: {
       getProducts,
@@ -193,7 +208,8 @@ export default defineNuxtPlugin(() => {
       getOrders,
       getInvoices,
       getAssets,
-      getCategories
+      getCategories,
+      changeQuantity
     },
   };
 });

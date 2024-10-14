@@ -23,6 +23,12 @@ export const useAuthStore = defineStore({
             const { $getAssets } = useNuxtApp();
             const response = await $getAssets();
             return response;
+        },
+
+        changeQuantity: async (payload) => {
+            const { $changeQuantity } = useNuxtApp();
+            const response = await $changeQuantity(payload);
+            return response;
         }
     }
 })
