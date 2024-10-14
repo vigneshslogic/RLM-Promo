@@ -2,12 +2,12 @@
 <Header/>
   <div>
     <WidgetsBreadcrumbs title="Checkout" />
-    <PaymentPage/>
+    <PaymentPage :user-info="userInfo" />
   </div>
   <Footer />
 </template>
-<script>
-export default{
 
-}
+<script setup>
+const userInfo = useCookie('userInfo').value;
+
 </script>

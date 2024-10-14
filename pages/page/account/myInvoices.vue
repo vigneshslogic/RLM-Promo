@@ -22,7 +22,7 @@
                         <span class="fw-bold pe-3">Invoice Document No:</span>
                         <span>{{ item?.DocumentNumber }}</span> 
                       </div>
-                      <button class="btn btn-solid btn-sm p-1">Pay Now</button>
+                      <button class="btn btn-solid btn-sm p-1">Download Invoice</button>
                     </div>
                     <div class="card-body">
                       <div class="row">
@@ -35,7 +35,7 @@
                             <span>{{ item?.DueDate }}</span>
                         </div>
                         <div class="col d-flex flex-column">
-                            <span class="fw-bold">Total Change Amount with Tax</span>
+                            <span class="fw-bold">Total Amount with Tax</span>
                             <span>{{ item?.TotalChargeAmountWithTax }}</span>
                         </div>
                         <div class="col d-flex flex-column">
