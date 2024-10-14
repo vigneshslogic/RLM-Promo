@@ -31,14 +31,20 @@ export default defineEventHandler(async (event) => {
               AccountId: body?.accountId, // define user accountId here
               BillToContactId: body?.contactId,
               Name: `${body?.userName} - ${productNames}`, // make it with {{user}}-{{product_name}}
-              EffectiveDate: "2024-02-01",
+              EffectiveDate: today.toISOString().split('T')[0],
               Pricebook2Id: "01sPv000001FdriIAC",
+              Source__c: "WebStore",
               Status: "Draft",
               BillingCity: body?.user?.city?.value,          // Billing city
               BillingCountry: body?.user?.state?.value,                 // Billing country
               BillingState: body?.user?.state?.value,                    // Billing state
               BillingStreet: body?.user?.address?.value,        // Billing street
               BillingPostalCode: body?.user?.pincode?.value,            // Billing postal code
+              ShippingCity: body?.user?.city?.value,          // Shipping city
+              ShippingCountry: body?.user?.state?.value,                 // Shipping country
+              ShippingState: body?.user?.state?.value,                    // Shipping state
+              ShippingStreet: body?.user?.address?.value,        // Shipping street
+              ShippingPostalCode: body?.user?.pincode?.value,            // Shipping postal code
             },
           },
           {
