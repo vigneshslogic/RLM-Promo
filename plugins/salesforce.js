@@ -43,11 +43,12 @@ export default defineNuxtPlugin(() => {
     return getUserDetails(user, accessToken?.data?.access_token);
   };
 
-  const getProducts = async (catalogId = null) => {
+  const getProducts = async (catalogId = null, isCategory = false) => {
     const accessToken = await axios.post("/api/getAccessToken");
     const products = await axios.post("/api/getProducts", {
       accessToken: accessToken?.data?.access_token,
-      catalogId,
+      catalogId: catalogId,
+      isCategory: isCategory,
     });
 
     if (products.status === 200) {

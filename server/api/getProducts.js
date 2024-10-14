@@ -5,11 +5,27 @@ export default defineEventHandler(async (event) => {
 
   try {
     const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/connect/cpq/products`;
-    const response = await axios.post(url, {
+    let payload = {};
+    if (!body?.isCategory && body?.catalogId) {
+      payload = {
         'correlationId': 'corrId',
-        'catalogId': body?.catalogId ?? '',
+        'catalogId': body?.catalogId,
         'priceBookId': '01sPv000001FdriIAC',
-    }, {
+      } 
+    } else if (body?.isCategory && body?.catalogId) {
+      payload = {
+        'correlationId': 'corrId',
+        'categoryId': body?.catalogId,
+        'priceBookId': '01sPv000001FdriIAC',
+      } 
+    } else {
+      payload = {
+        'correlationId': 'corrId',
+        'priceBookId': '01sPv000001FdriIAC',
+      } 
+    }
+
+    const response = await axios.post(url, payload, {
       headers: {
         Authorization: `Bearer ${body.accessToken}`,
         'Content-Type': 'application/json',
@@ -22,7 +38,6 @@ export default defineEventHandler(async (event) => {
     
     return false;
 
-    // return response.data;
   } catch (error) {
     throw createError({
       statusCode: error.response ? error.response.status : 500,

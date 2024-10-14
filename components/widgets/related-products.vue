@@ -74,7 +74,7 @@ export default {
     productsList: () => useProductStore().productsList,
   },
   async mounted() {
-    const getProducts = await this.$getProducts(this.$route.params.id);
+    const getProducts = await this.$getProducts();
     this.catProducts = shuffle(getProducts?.result ?? []).filter((prod) => prod.id !== this.$route.params.id);
   },
   methods: {

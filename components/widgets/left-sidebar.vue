@@ -33,7 +33,7 @@
                     <h5>{{ cat?.Name }}</h5>
                     <ul>
                       <li v-for="child in cat?.ChildCategories?.records ?? []">
-                        <a href="#">{{ child.Name }}</a> 
+                        <a :href="`/collection/category/${child?.Id}`">{{ child.Name }}</a> 
                       </li>
                     </ul>
                   </div>
