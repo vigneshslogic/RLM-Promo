@@ -222,6 +222,7 @@
 import { useCartStore } from "~~/store/cart";
 import { useProductStore } from "~~/store/products";
 export default {
+  props: ["userInfo"],
   computed: {
     cart() {
       return useCartStore().cartItems;
@@ -244,16 +245,15 @@ export default {
       // selectedPayment: "paypal",
       errors: [],
       loading: false,
-      // userInfo: useCookie("userInfo").value,
       user: {
-        firstName: { value: "John", errormsg: "" },
-        lastName: { value: "Doe", errormsg: "" },
-        phone: { value: "+442079460958", errormsg: "" },
-        email: { value: "johndoe@example.com", errormsg: "" },
-        address: { value: "123 High Street", errormsg: "" },
-        city: { value: "London", errormsg: "" },
-        state: { value: "United Kingdom", errormsg: "" },
-        pincode: { value: "W1A 1AA", errormsg: "" },
+        firstName: { value: this.userInfo?.FirstName ?? "John", errormsg: "" },
+        lastName: { value: this.userInfo?.LastName ?? "Doe", errormsg: "" },
+        phone: { value: this.userInfo?.Phone ?? "+442079460958", errormsg: "" },
+        email: { value: this.userInfo?.Email ?? "johndoe@example.com", errormsg: "" },
+        address: { value: this.userInfo?.Account?.BillingStreet ?? "123 High Street", errormsg: "" },
+        city: { value: this.userInfo?.Account?.BillingCity ?? "London", errormsg: "" },
+        state: { value: this.userInfo?.Account?.BillingState ?? "United Kingdom", errormsg: "" },
+        pincode: { value: this.userInfo?.Account?.BillingPostalCode ?? "W1A 1AA", errormsg: "" },
         cardNumber: { value: "", errormsg: "" },
         expiryDate: { value: "", errormsg: "" },
         securityCode: { value: "", errormsg: "" },

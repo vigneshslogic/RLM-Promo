@@ -32,10 +32,6 @@
                         <span>{{ item?.BillToContact?.Name }}</span>
                       </div>
                       <div class="col d-flex flex-column">
-                        <span class="fw-bold">Contact Number</span>
-                        <span>-</span>
-                      </div>
-                      <div class="col d-flex flex-column">
                         <span class="fw-bold">Order Start Date</span>
                         <span>{{ item?.EffectiveDate }}</span>
                       </div>
