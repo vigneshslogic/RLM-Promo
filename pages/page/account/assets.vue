@@ -35,7 +35,9 @@
                       </button>
                     </div>
                     <div class="d-flex align-items-center">
-                      <span class="mx-2 fw-bold">{{ item?.CurrentAmount }} / year</span>
+                      <span class="mx-2 fw-bold"
+                        >{{ item?.CurrentAmount }} / year</span
+                      >
                       <div class="dropdown">
                         <a
                           class="btn btn-outline-primary btn-sm dropdown-toggle text-black-50 text-white"
@@ -45,14 +47,31 @@
                           aria-expanded="false"
                         ></a>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item text-black" href="#">Upgrade</a></li>
                           <li>
-                            <a class="dropdown-item text-black" @click="handleModal()" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#"
+                            <a class="dropdown-item text-black" href="#"
+                              >Upgrade</a
+                            >
+                          </li>
+                          <li>
+                            <a
+                              class="dropdown-item text-black"
+                              @click="handleModal(item)"
+                              data-bs-toggle="modal"
+                              data-bs-target="#staticBackdrop"
+                              href="#"
                               >Change Quantity</a
                             >
                           </li>
-                          <li><a class="dropdown-item text-black" href="#">Renew</a></li>
-                          <li><a class="dropdown-item text-black" href="#">Cancel</a></li>
+                          <li>
+                            <a class="dropdown-item text-black" href="#"
+                              >Renew</a
+                            >
+                          </li>
+                          <li>
+                            <a class="dropdown-item text-black" href="#"
+                              >Cancel</a
+                            >
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -80,7 +99,11 @@
                         <span class="fw-bold">Period:</span>
                         <span>
                           {{ dateFormat(item?.LifecycleStartDate) }}
-                          {{ item?.LifecycleEndDate ? `- ${dateFormat(item?.LifecycleEndDate)}` : '' }}
+                          {{
+                            item?.LifecycleEndDate
+                              ? `- ${dateFormat(item?.LifecycleEndDate)}`
+                              : ''
+                          }}
                         </span>
                       </div>
                       <div class="col d-flex flex-column">
@@ -93,7 +116,11 @@
               </div>
             </div>
             <div class="col-sm-12 empty-cart-cls text-center py-5" v-else>
-              <img src='/images/icon-empty-cart.png' class="img-fluid" alt="empty Assets" />
+              <img
+                src="/images/icon-empty-cart.png"
+                class="img-fluid"
+                alt="empty Assets"
+              />
               <h3 class="mt-3">
                 <strong>You have no assets at the moment!</strong>
               </h3>
@@ -102,14 +129,19 @@
         </div>
       </div>
     </div>
-    <changeQuntModal/>
+    <changeQuantityModal
+      v-if="isOpen"
+      :is-open="isOpen"
+      @close="handleClose()"
+      :current-asset="currentAsset"
+    />
   </div>
 </template>
 
 <script>
-import changeQuntModal from './changeQuntModal.vue';
+import changeQuantityModal from './changeQuantityModal.vue';
 export default {
-  components: { changeQuntModal },
+  components: { changeQuantityModal },
   props: {
     assets: {
       type: Array,
@@ -123,6 +155,8 @@ export default {
 
   data: () => ({
     status: false,
+    isOpen: false,
+    currentAsset: {},
   }),
 
   methods: {
@@ -140,7 +174,14 @@ export default {
       }
     },
 
-    handleModal() {}
+    handleModal(item) {
+      this.isOpen = true;
+      this.currentAsset = item;
+    },
+
+    handleClose() {
+      this.isOpen = false;
+    },
   },
 };
 </script>

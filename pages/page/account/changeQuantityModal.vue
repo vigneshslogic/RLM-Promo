@@ -1,0 +1,254 @@
+<template>
+  <div>
+    <div class="modal-backdrop fade show" v-if="isOpen"></div>
+    <div
+      class="modal fade show d-block bd-example-modal-lg theme-modal cart-modal"
+      id="modal-cart"
+      aria-hidden="true"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modal-cartLabel"
+      v-if="isOpen"
+    >
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body modal1 bg-gradient">
+            <div class="container-fluid p-0">
+              <div class="row cart-modal">
+                <div class="col-lg-12 position-relative">
+                  <div class="modal-bg addtocart">
+                    <div class="modal-header justify-content-center">
+                      <div class="d-flex flex-column text-center">
+                        <h3>Change Quantity</h3>
+                        <span>
+                          Enter a new quantity, preview pricing changes, and
+                          review terms
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      class="close btn-close"
+                      type="button"
+                      @click="close(openCart)"
+                    >
+                      <span>x</span>
+                    </button>
+                    <div class="row my-3">
+                      <div class="col-md-4">
+                        <div
+                          class="card justify-content-around text-center p-3 w-auto h-100"
+                        >
+                          <h3>CURRENT</h3>
+                          <div>
+                            <h3 class="card-title">PROFESSIONAL</h3>
+                            <h3 class="card-text">
+                              £&nbsp;&nbsp;{{ currentAsset?.CurrentAmount }}
+                            </h3>
+                            <span>EURO per user per month</span>
+                          </div>
+                          <div>
+                            <p>Number of Users</p>
+                            <div class="qty-box">
+                              <div class="input-group">
+                                <span class="input-group-prepend">
+                                  <button
+                                    type="button"
+                                    class="btn quantity-left-minus"
+                                    data-type="minus"
+                                    data-field
+                                    @click="handleNumberUsers('minus')"
+                                  >
+                                    <i class="ti-minus"></i>
+                                  </button>
+                                </span>
+                                <input
+                                  type="number"
+                                  min="1"
+                                  v-model="noOfUser"
+                                  name="quantity"
+                                  class="form-control input-number"
+                                />
+                                <span class="input-group-prepend">
+                                  <button
+                                    type="button"
+                                    class="btn quantity-right-plus"
+                                    data-type="plus"
+                                    data-field
+                                    @click="handleNumberUsers('plus')"
+                                  >
+                                    <i class="ti-plus"></i>
+                                  </button>
+                                </span>
+                              </div>
+                            </div>
+                            <p class="mt-3">Effective Date</p>
+                            <input
+                              class="date-input"
+                              type="date"
+                              placeholder="DD/MM/YY"
+                              v-model="effectiveDate"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card w-auto h-100 p-3">
+                          <span class="p-2">Pricing Summary:</span>
+                          <div class="card-body">
+                            <table class="table table-responsive-xs">
+                              <thead class="table-head">
+                                <tr>
+                                  <th></th>
+                                  <th>Current</th>
+                                  <th>New</th>
+                                  <th>Change</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>List Price</td>
+                                  <td>£&nbsp;&nbsp;{{ currentAsset?.CurrentAmount }}</td>
+                                  <td>£&nbsp;&nbsp;{{ currentAsset?.CurrentAmount }}</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td>Discount</td>
+                                  <td>0%</td>
+                                  <td>-</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td>Quantity</td>
+                                  <td>{{ noOfUser }}</td>
+                                  <td>-</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td>Subtotal</td>
+                                  <td>
+                                    {{ `£${calculateSubTotal(noOfUser, currentAsset?.CurrentAmount)}` }}
+                                  </td>
+                                  <td>-</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td>Estimated Tax</td>
+                                  <td>0</td>
+                                  <td>-</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td>Estimated Total</td>
+                                  <td>
+                                    {{ `£${calculateSubTotal(noOfUser, currentAsset?.CurrentAmount)}` }}
+                                  </td>
+                                  <td>-</td>
+                                  <td>-</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="d-flex justify-content-end">
+                            <button
+                              type="button"
+                              @click="handleUpdate()"
+                              class="btn btn-primary"
+                            >
+                              CONFIRM CHANGES
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { useAuthStore } from '~~/store/auth';
+export default {
+  props: {
+    isOpen: {
+      type: Boolean,
+      default: false,
+    },
+    currentAsset: {
+      type: Object,
+      default: () => {},
+    },
+  },
+
+  data: () => ({
+    fields: [
+      'List Price',
+      'Discount',
+      'Quantity',
+      'Subtotal',
+      'Estimated Tax',
+      'Estimated Total',
+    ],
+    noOfUser: 1,
+    effectiveDate: null,
+  }),
+
+  created() {
+    const today = new Date().toISOString().slice(0, 10);
+    this.effectiveDate = today;
+  },
+
+  methods: {
+    async close() {
+      this.$emit('close');
+    },
+
+    async handleNumberUsers(sign) {
+      if (sign === 'plus') {
+        this.noOfUser = this.noOfUser + 1;
+      }
+      if (sign === 'minus') {
+        this.noOfUser = this.noOfUser - 1;
+      }
+    },
+
+    calculateSubTotal(user, price) {
+      return user * price;
+    },
+
+    async handleUpdate() {
+      const date = new Date(this.effectiveDate);
+      const isoString = date.toISOString();
+      const payload = {
+        inputs: [
+          {
+            amendAssetIds: [this.currentAsset.Id],
+            amendStartDate: isoString,
+            quantityChange: this.noOfUser,
+            amendOutputType: 'Order',
+          },
+        ],
+      };
+      const response = await useAuthStore().changeQuantity(payload);
+      if (response) {
+        useNuxtApp().$showToast({ msg: "Your request has been submitted.", type: "info" });
+        this.$emit('close');
+      } else {
+        useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
+.date-input {
+  padding: 10px 15px;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+}
+</style>
