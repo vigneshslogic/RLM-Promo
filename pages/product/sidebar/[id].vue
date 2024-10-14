@@ -31,7 +31,7 @@
                     <div class="product-right">
                       <h2>{{ getDetail?.name }}</h2>
 
-                      <h3>£{{ selectedPlan?.price }}</h3>
+                      <h3>£{{ Number(selectedPlan?.price?.toFixed(2)) ?? 0 }}</h3>
                                          
                       <div class="product-description border-product">
                         <h6 class="product-title size-text">select plan</h6>

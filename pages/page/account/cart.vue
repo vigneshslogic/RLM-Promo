@@ -32,7 +32,7 @@
                     {{ getFrequencies(item?.periodBoundary) }}
                   </td>
                   <td>
-                    <h2>£{{ item.price }}</h2>
+                    <h2>£{{ Number(item?.price?.toFixed(2)) ?? 0 }}</h2>
                   </td>
                   <td>
                     <div class="qty-box">

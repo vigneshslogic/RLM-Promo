@@ -107,7 +107,7 @@ export default {
     },
     getProductPrice() {
       const exists = find(this.product.prices, { isDefault: true });
-      return exists?.price;
+      return Number(exists?.price?.toFixed(2)) ?? 0;
     },
   },
   methods: {

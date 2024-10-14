@@ -31,7 +31,7 @@
                         </div>
                         <div class="col d-flex flex-column">
                             <span class="fw-bold">Total Amount</span>
-                            <span>£&nbsp;&nbsp;{{ item?.TotalChargeAmountWithTax }}</span>
+                            <span>£&nbsp;&nbsp;{{ Number(item?.TotalChargeAmountWithTax?.toFixed(2)) ?? 0 }}</span>
                         </div>
                         </div>
                     </div>

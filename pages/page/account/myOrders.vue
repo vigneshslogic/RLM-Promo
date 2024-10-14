@@ -45,7 +45,7 @@
                       </div>
                       <div class="col d-flex flex-column">
                         <span class="fw-bold">Order Amount</span>
-                        <span>£&nbsp;&nbsp;{{ item?.TotalAmount }}</span>
+                        <span>£&nbsp;&nbsp;{{ Number(item?.TotalAmount?.toFixed(2)) ?? 0 }}</span>
                       </div>
                     </div>
                   </div>

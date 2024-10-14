@@ -17,7 +17,7 @@
                     <img :src="item.pro1image" class="img-fluid" alt />
                     <div class="dot-info">
                       <h5 class="title">{{ item.pro1title }}</h5>
-                      <h5>{{ item.pro1price }}</h5>
+                      <h5>{{ Number(item.pro1price?.toFixed(2)) ?? 0 }}</h5>
                     </div>
                   </div>
                 </a>
@@ -29,7 +29,7 @@
                     <img :src="item.pro2image" class="img-fluid" alt />
                     <div class="dot-info">
                       <h5 class="title">{{ item.pro2title }}</h5>
-                      <h5>{{ item.pro2price }}</h5>
+                      <h5>{{ Number(item.pro2price.toFixed(2)) ?? 0 }}</h5>
                     </div>
                   </div>
                 </a>

@@ -46,7 +46,7 @@
                         </div>
                       </div>
                       <div class="col-xs-3">
-                        <h2 class="td-color">£{{ item.price }}</h2>
+                        <h2 class="td-color">£{{ Number(item?.price?.toFixed(2)) ?? 0 }}</h2>
                       </div>
                       <div class="col-xs-3">
                         <h2 class="td-color">
@@ -58,7 +58,7 @@
                     </div>
                   </td>
                   <td>
-                    <h2>£{{ item.price }}</h2>
+                    <h2>£{{ Number(item?.price?.toFixed(2)) ?? 0 }}</h2>
                   </td>
                   <td>
                     <a class="icon me-3" href="#" @click.prevent="removeWishlistItem(item)">
