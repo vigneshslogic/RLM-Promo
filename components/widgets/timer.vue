@@ -31,7 +31,7 @@ export default {
   props: ['date'],
   data() {
     return {
-      timerdate: Math.trunc(new Date('December 20, 2023').getTime() / 1000),
+      timerdate: Math.trunc(new Date('November 15, 2024').getTime() / 1000),
       now: Math.trunc(new Date().getTime() / 1000),
     }
   },
