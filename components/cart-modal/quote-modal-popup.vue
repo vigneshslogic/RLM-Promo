@@ -74,7 +74,7 @@ import { useProductStore } from "~~/store/products";
 import { useCartStore } from '~~/store/cart';
 
 export default {
-  props: ["openQuote", "productData", "products", "category"],
+  props: ["openQuote", "productData", "products", "category", "noAction"],
   emits: ["closeCart"],
   computed: {
     ...mapState(useProductStore, {
@@ -121,25 +121,24 @@ export default {
     },
 
     async handleGetQuote() {
-      if (this.description.value.length <= 1 ) {
-        this.description.errormsg = 'empty not allowed'
-      } else {
-        this.description.errormsg = ''
-      }
-      
-      if (!this.description.errormsg) {
-        const status = await useCartStore().getQuote(this.description.value);
-        
-        if (status?.quoteId) {
-          useNuxtApp().$showToast({ msg: "Your quote request has been submitted. Our team will reach out to your shortly.", type: "info" });
+      if (!this.noAction) {
+        if (this.description.value.length <= 1 ) {
+          this.description.errormsg = 'empty not allowed'
         } else {
-          useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
+          this.description.errormsg = ''
         }
-        this.$emit('closeQuote');
+        
+        if (!this.description.errormsg) {
+          const status = await useCartStore().getQuote(this.description.value);
+          
+          if (status?.quoteId) {
+            useNuxtApp().$showToast({ msg: "Your quote request has been submitted. Our team will reach out to your shortly.", type: "info" });
+          } else {
+            useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
+          }
+          this.$emit('closeQuote');
+        }
       }
-      
-      
-
     }
   },
 };

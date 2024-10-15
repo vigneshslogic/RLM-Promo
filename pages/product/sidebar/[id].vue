@@ -31,15 +31,37 @@
                     <div class="product-right">
                       <h2>{{ getDetail?.name }}</h2>
 
-                      <h3>£{{ Number(selectedPlan?.price?.toFixed(2)) ?? 0 }}</h3>
-                                         
+                      <h4 v-if="getDetail?.nodeType === 'bundleProduct'" class="text-danger">Request for detail pricing</h4>
+                      <h3 v-else>£{{ Number(selectedPlan?.price?.toFixed(2)) ?? 0 }}</h3>
+                      
                       <div class="product-description border-product">
                         <h6 class="product-title size-text">select plan</h6>
                         <div class="size-box">
-                          <ul>
+                          <ul v-if="getDetail?.nodeType === 'bundleProduct'">
                             <li
+                              v-if="getDetail?.prices[0]"
+                              v-show="!(!getDetail?.prices[0] && index > 1 )"
                               class="product-title"
+                              :key="index"
+                              v-bind:class="{
+                                active:
+                                  getDetail?.prices[0]?.priceBookEntryId ==
+                                  selectedPlan?.priceBookEntryId,
+                              }"
+                            >
+                              <a
+                                href="javascript:void(0)"
+                                @click="changeSizeVariant(price)"
+                              >
+                                {{ price?.pricingModel?.frequency ?? 'One Time' }}
+                              </a>
+                            </li>
+                          </ul>
+                          <ul v-else>
+                            <li
                               v-for="(price, index) in getDetail?.prices"
+                              v-show="!(!price && index > 1 )"
+                              class="product-title"
                               :key="index"
                               v-bind:class="{
                                 active:
@@ -94,9 +116,18 @@
                       <div class="product-buttons">
                         <!-- <nuxt-link :to="{ path: '/page/account/cart' }"> -->
                         <button
-                          class="btn btn-solid"
+                          class="btn btn-solid ms-2"
+                          title="Configure"
+                          v-if="getDetail?.nodeType === 'bundleProduct'"
+                          @click="handleGetQuote"
+                        >
+                          Request Quote
+                        </button>
+                        <button
+                          class="btn btn-solid ms-2"
                           title="Add to cart"
                           @click="addToCart(getDetail, counter)"
+                          v-else
                         >
                           Add To Cart
                         </button>
@@ -105,6 +136,7 @@
                           class="btn btn-solid ms-2"
                           title="buy now"
                           :disabled="counter > getDetail?.stock"
+                          v-if="getDetail?.nodeType !== 'bundleProduct'"
                         >
                           <!-- @click="buyNow(getDetail, counter)" -->
                           Buy Now
@@ -316,6 +348,7 @@
         :productTYpe="productTYpe"
         :productId="productId"
       />
+      <CartModalQuoteModalPopup v-if="showQuoteModal" :openQuote="showQuoteModal" @closeQuote="closeQuoteModal" :noAction="true" />
     </section>
   </div>
   <Footer />
@@ -336,6 +369,15 @@ const route = useRoute();
 const counter = ref(1);
 const selectedPlan = ref("");
 const image = ref('');
+const showQuoteModal = ref(false);
+
+const handleGetQuote = () => {
+  showQuoteModal.value = true;
+};
+
+const closeQuoteModal = () => {
+  showQuoteModal.value = false;
+}
 
 onMounted(async () => {
   getDetail.value = await useProductStore().getProductById(route.params.id);
