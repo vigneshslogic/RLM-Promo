@@ -127,7 +127,7 @@ export default defineEventHandler(async (event) => {
         try {
           // store user billing/ shipping addresses
           const addressURL = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/sobjects/Account/${body?.accountId}`;
-          await axios.patch(activeUrl, {
+          await axios.patch(addressURL, {
             BillingCity: body?.user?.city?.value,
             BillingCountry: body?.user?.state?.value,
             BillingState: body?.user?.state?.value,
@@ -144,7 +144,11 @@ export default defineEventHandler(async (event) => {
               "Content-Type": "application/json",
             },
           });
+        } catch (error) {
+          console.error(error); //continue with the execution
+        }
 
+        try {
           // make order activate after the order place immediately
           const activeUrl = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/sobjects/Order/${response.data?.orderId}`;
           await axios.patch(activeUrl, { Status: "Activated" }, {
