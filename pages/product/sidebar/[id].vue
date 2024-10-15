@@ -39,7 +39,7 @@
                         <div class="size-box">
                           <ul v-if="getDetail?.nodeType === 'bundleProduct'">
                             <li
-                              v-if="getDetail?.prices[0]"
+                              v-if="getDetail?.id === '01tPv000006pgL7IAI'"
                               v-show="!(!getDetail?.prices[0] && index > 1 )"
                               class="product-title"
                               :key="index"
