@@ -42,7 +42,7 @@
                           <div>
                             <h3 class="card-title">PROFESSIONAL</h3>
                             <h3 class="card-text">
-                              £&nbsp;&nbsp;{{ currentAsset?.CurrentAmount }}
+                              £&nbsp;{{ currentAsset?.TotalLifecycleAmount }}
                             </h3>
                             <span>EURO per user per month</span>
                           </div>
@@ -107,43 +107,43 @@
                               <tbody>
                                 <tr>
                                   <td>List Price</td>
-                                  <td>£&nbsp;&nbsp;{{ currentAsset?.CurrentAmount }}</td>
-                                  <td>£&nbsp;&nbsp;{{ currentAsset?.CurrentAmount }}</td>
-                                  <td>-</td>
+                                  <td>£&nbsp;{{ currentAsset?.TotalLifecycleAmount }}</td>
+                                  <td>£&nbsp;{{ currentAsset?.TotalLifecycleAmount }}</td>
+                                  <td>£&nbsp;0</td>
                                 </tr>
                                 <tr>
                                   <td>Discount</td>
-                                  <td>0%</td>
-                                  <td>-</td>
-                                  <td>-</td>
+                                  <td>£&nbsp;0</td>
+                                  <td>£&nbsp;0</td>
+                                  <td>£&nbsp;0</td>
                                 </tr>
                                 <tr>
                                   <td>Quantity</td>
+                                  <td>{{ qty }}</td>
                                   <td>{{ noOfUser }}</td>
-                                  <td>-</td>
-                                  <td>-</td>
+                                  <td>{{ noOfUser - qty }}</td>
                                 </tr>
                                 <tr>
                                   <td>Subtotal</td>
+                                  <td> £&nbsp;{{ currentAsset?.TotalLifecycleAmount }}</td>
                                   <td>
-                                    {{ `£${calculateSubTotal(noOfUser, currentAsset?.CurrentAmount)}` }}
+                                    {{ `£ ${calculateSubTotal(noOfUser, currentAsset?.TotalLifecycleAmount)}` }}
                                   </td>
-                                  <td>-</td>
-                                  <td>-</td>
+                                  <td>{{ `£ ${calculateSubTotal(noOfUser, currentAsset?.TotalLifecycleAmount) - currentAsset?.TotalLifecycleAmount }` }}</td>
                                 </tr>
                                 <tr>
                                   <td>Estimated Tax</td>
-                                  <td>0</td>
-                                  <td>-</td>
-                                  <td>-</td>
+                                  <td>£&nbsp;0</td>
+                                  <td>£&nbsp;0</td>
+                                  <td>£&nbsp;0</td>
                                 </tr>
                                 <tr>
                                   <td>Estimated Total</td>
+                                  <td>£&nbsp;{{ totalLifecycleAmount }}</td>
                                   <td>
-                                    {{ `£${calculateSubTotal(noOfUser, currentAsset?.CurrentAmount)}` }}
+                                    {{ `£ ${calculateSubTotal(noOfUser, currentAsset?.TotalLifecycleAmount)}` }}
                                   </td>
-                                  <td>-</td>
-                                  <td>-</td>
+                                  <td>{{ `£ ${calculateSubTotal(noOfUser, currentAsset?.TotalLifecycleAmount) - totalLifecycleAmount}` }}</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -196,11 +196,16 @@ export default {
     ],
     noOfUser: 1,
     effectiveDate: null,
+    qty: 0,
+    totalLifecycleAmount: 0,
   }),
 
   created() {
     const today = new Date().toISOString().slice(0, 10);
     this.effectiveDate = today;
+    this.noOfUser = this.currentAsset?.CurrentQuantity;
+    this.qty = this.currentAsset?.CurrentQuantity;
+    this.totalLifecycleAmount = this.currentAsset?.TotalLifecycleAmount;
   },
 
   methods: {
@@ -213,7 +218,7 @@ export default {
         this.noOfUser = this.noOfUser + 1;
       }
       if (sign === 'minus') {
-        this.noOfUser = this.noOfUser - 1;
+        this.noOfUser = this.noOfUser <= 1 ? 1 : this.noOfUser - 1;
       }
     },
 
@@ -234,6 +239,7 @@ export default {
           },
         ],
       };
+      
       const response = await useAuthStore().changeQuantity(payload);
       if (response) {
         useNuxtApp().$showToast({ msg: "Your request has been submitted.", type: "info" });

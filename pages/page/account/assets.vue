@@ -36,7 +36,7 @@
                     </div>
                     <div class="d-flex align-items-center">
                       <span class="mx-2 fw-bold"
-                        >£&nbsp;&nbsp;{{ item?.CurrentAmount ?? 0 }} / year</span
+                        >£&nbsp;&nbsp;{{ item?.TotalLifecycleAmount ?? 0 }} / year</span
                       >
                       <div class="dropdown">
                         <a
@@ -79,7 +79,7 @@
                 </div>
                 <div class="card-body">
                   <p class="card-text">
-                    {{ item?.CurrentQuantity }} Users | - | -
+                    {{ item?.CurrentQuantity }} Users
                   </p>
                   <div>
                     <div class="row">
@@ -89,7 +89,7 @@
                       </div>
                       <div class="col d-flex flex-column">
                         <span class="fw-bold">You'll renew on:</span>
-                        <span>-</span>
+                        <span>{{ dateFormat(item?.LifecycleEndDate) }}</span>
                       </div>
                       <div class="col d-flex flex-column">
                         <span class="fw-bold">Period:</span>
