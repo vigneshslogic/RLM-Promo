@@ -88,10 +88,6 @@
                         <span>{{ dateFormat(item?.LifecycleEndDate, 'next') ?? '-' }}</span>
                       </div>
                       <div class="col d-flex flex-column">
-                        <span class="fw-bold">Next Payment Amount:</span>
-                        <span>£&nbsp;&nbsp;{{ item?.CurrentAmount ?? 0 }}</span>
-                      </div>
-                      <div class="col d-flex flex-column">
                         <span class="fw-bold">You'll renew on:</span>
                         <span>-</span>
                       </div>
