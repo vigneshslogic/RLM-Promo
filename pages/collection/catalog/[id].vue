@@ -109,10 +109,17 @@
                     :class="{ 'list-view': listview == true }"
                   >
                     <div class="row">
+                      <div class="col-12 p-5 text-center" v-if="loading">
+                        
+                        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                        
+                      </div>
                       <div class="col-12">
                         <div
                           class="text-center section-t-space section-b-space"
-                          v-if="products.length == 0"
+                          v-if="products.length == 0 && !loading" 
                         >
                           <img
                             src="/images/empty-search.jpg"
@@ -287,7 +294,7 @@ export default {
       dismissSecs: 5,
       dismissCountDown: 0,
       products: [],
-
+      loading: true,
     }
   },
   computed: {
@@ -428,9 +435,11 @@ export default {
     }
   },
   async mounted() {
+    this.loading = true;
     this.updatePaginate(1);
     const getProducts = await this.$getProducts(this.$route.params.id);
     this.products = getProducts?.result ?? [];
+    this.loading = false;
   },  
 
 }
