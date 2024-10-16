@@ -42,7 +42,7 @@
                           <div>
                             <h3 class="card-title">PROFESSIONAL</h3>
                             <h3 class="card-text">
-                              £&nbsp;{{ currentAsset?.TotalLifecycleAmount }}
+                              £&nbsp;{{ Number(currentAsset?.TotalLifecycleAmount?.toFixed(2)) ?? 0 }}
                             </h3>
                             <span>EURO per user per month</span>
                           </div>
@@ -107,8 +107,8 @@
                               <tbody>
                                 <tr>
                                   <td>List Price</td>
-                                  <td>£&nbsp;{{ currentAsset?.TotalLifecycleAmount }}</td>
-                                  <td>£&nbsp;{{ currentAsset?.TotalLifecycleAmount }}</td>
+                                  <td>£&nbsp;{{ Number(currentAsset?.TotalLifecycleAmount?.toFixed(2)) ?? 0 }}</td>
+                                  <td>£&nbsp;{{ Number(currentAsset?.TotalLifecycleAmount?.toFixed(2)) ?? 0 }}</td>
                                   <td>£&nbsp;0</td>
                                 </tr>
                                 <tr>
@@ -125,11 +125,11 @@
                                 </tr>
                                 <tr>
                                   <td>Subtotal</td>
-                                  <td> £&nbsp;{{ currentAsset?.TotalLifecycleAmount }}</td>
+                                  <td> £&nbsp;{{ Number(currentAsset?.TotalLifecycleAmount?.toFixed(2)) ?? 0 }}</td>
                                   <td>
-                                    {{ `£ ${calculateSubTotal(noOfUser, currentAsset?.TotalLifecycleAmount)}` }}
+                                    {{ `£ ${Number(calculateSubTotal(noOfUser, currentAsset?.TotalLifecycleAmount ?? 0) / qty).toFixed(2)}` }}
                                   </td>
-                                  <td>{{ `£ ${calculateSubTotal(noOfUser, currentAsset?.TotalLifecycleAmount) - currentAsset?.TotalLifecycleAmount }` }}</td>
+                                  <td>{{ `£ ${Number(calculateSubTotal(noOfUser, Number(currentAsset?.TotalLifecycleAmount).toFixed(2) ?? 0) / qty - Number(currentAsset?.TotalLifecycleAmount).toFixed(2) ?? 0 ).toFixed(2)}` }}</td>
                                 </tr>
                                 <tr>
                                   <td>Estimated Tax</td>
@@ -141,9 +141,9 @@
                                   <td>Estimated Total</td>
                                   <td>£&nbsp;{{ totalLifecycleAmount }}</td>
                                   <td>
-                                    {{ `£ ${calculateSubTotal(noOfUser, currentAsset?.TotalLifecycleAmount)}` }}
+                                    {{ `£ ${Number(calculateSubTotal(noOfUser, currentAsset?.TotalLifecycleAmount ?? 0)).toFixed(2)}` }}
                                   </td>
-                                  <td>{{ `£ ${calculateSubTotal(noOfUser, currentAsset?.TotalLifecycleAmount) - totalLifecycleAmount}` }}</td>
+                                  <td>{{ `£ ${Number(calculateSubTotal(noOfUser, currentAsset?.TotalLifecycleAmount ?? 0) / qty - totalLifecycleAmount).toFixed(2)}` }}</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -205,7 +205,7 @@ export default {
     this.effectiveDate = today;
     this.noOfUser = this.currentAsset?.CurrentQuantity;
     this.qty = this.currentAsset?.CurrentQuantity;
-    this.totalLifecycleAmount = this.currentAsset?.TotalLifecycleAmount;
+    this.totalLifecycleAmount = Number(this.currentAsset?.TotalLifecycleAmount?.toFixed(2)) ?? 0;
   },
 
   methods: {
@@ -223,7 +223,7 @@ export default {
     },
 
     calculateSubTotal(user, price) {
-      return user * price;
+      return Number(user * (Number(price) ?? 0).toFixed(2)) ?? 0;
     },
 
     async handleUpdate() {

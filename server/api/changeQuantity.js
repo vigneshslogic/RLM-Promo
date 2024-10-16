@@ -19,11 +19,10 @@ export default defineEventHandler(async (event) => {
 
       try {
         if (response.data.length) {
-          console.log('innnnn');
           response.data.forEach(async (res) => {
-            console.log('res', res);
             if (res?.outputValues?.amendRecordId) {
               const activeUrl = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/sobjects/Order/${res?.outputValues?.amendRecordId}`;
+              
               await axios.patch(activeUrl, { Status: "Activated" }, {
                 headers: {
                   Authorization: `Bearer ${body.accessToken}`,

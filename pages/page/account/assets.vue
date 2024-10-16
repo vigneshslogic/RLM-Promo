@@ -36,7 +36,7 @@
                     </div>
                     <div class="d-flex align-items-center">
                       <span class="mx-2 fw-bold"
-                        >£&nbsp;&nbsp;{{ item?.TotalLifecycleAmount ?? 0 }} / year</span
+                        >£&nbsp;&nbsp;{{ Number(item?.TotalLifecycleAmount?.toFixed(2)) ?? 0 }} / year</span
                       >
                       <div class="dropdown">
                         <a
