@@ -118,7 +118,7 @@
                         <button
                           class="btn btn-solid ms-2"
                           title="Configure"
-                          v-if="getDetail?.nodeType === 'bundleProduct'"
+                          v-if="getDetail?.nodeType === 'bundleProduct' && useCookie('userInfo')?.value?.Id"
                           @click="handleGetQuote"
                         >
                           Request Quote
@@ -127,7 +127,7 @@
                           class="btn btn-solid ms-2"
                           title="Add to cart"
                           @click="addToCart(getDetail, counter)"
-                          v-else
+                          v-if="useCookie('userInfo')?.value?.Id && getDetail?.nodeType !== 'bundleProduct'"
                         >
                           Add To Cart
                         </button>
@@ -348,7 +348,7 @@
         :productTYpe="productTYpe"
         :productId="productId"
       />
-      <CartModalQuoteModalPopup v-if="showQuoteModal" :openQuote="showQuoteModal" @closeQuote="closeQuoteModal" :noAction="true" />
+      <CartModalQuoteModalPopup v-if="showQuoteModal" :productData="getDetail" :openQuote="showQuoteModal" :qty="counter" @closeQuote="closeQuoteModal" :noAction="true" />
     </section>
   </div>
   <Footer />

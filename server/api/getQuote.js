@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
             },
             QuoteId: "@{refQuote.id}",
             QuoteActionId: "@{refQuoteAction.id}",
-            Quantity: 1,
+            Quantity: product?.quantity ?? 1,
             priceBookEntryId: product?.priceBookEntryId,
             Product2Id: product?.id,
             UnitPrice: product?.price,

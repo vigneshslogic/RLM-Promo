@@ -74,7 +74,7 @@ import { useProductStore } from "~~/store/products";
 import { useCartStore } from '~~/store/cart';
 
 export default {
-  props: ["openQuote", "productData", "products", "category", "noAction"],
+  props: ["openQuote", "productData", "products", "category", "noAction", "qty"],
   emits: ["closeCart"],
   computed: {
     ...mapState(useProductStore, {
@@ -139,7 +139,26 @@ export default {
           this.$emit('closeQuote');
         }
       }
+
+      if (this.productData && this.qty && this.noAction) {
+        const { $generateQuote } = useNuxtApp();
+        const getProducts = await $generateQuote(
+          [{
+            priceBookEntryId: this.productData?.prices[0]?.priceBookEntryId,
+            id: this.productData?.id,
+            price: this.productData?.prices[0]?.price,
+            quantity: this.qty,
+          }], this.description?.value);
+        
+        if (getProducts?.quoteId) {
+          useNuxtApp().$showToast({ msg: "Your quote request has been submitted. Our team will reach out to your shortly.", type: "info" });
+        } else {
+          useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
+        }
+        this.$emit('closeQuote');
+      }
     }
   },
 };
 </script>
+
