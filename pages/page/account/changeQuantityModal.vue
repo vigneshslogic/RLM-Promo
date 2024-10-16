@@ -242,7 +242,7 @@ export default {
       
       const response = await useAuthStore().changeQuantity(payload);
       if (response) {
-        useNuxtApp().$showToast({ msg: "Your request has been submitted.", type: "info" });
+        useNuxtApp().$showToast({ msg: " Your Upgrade Order is placed.", type: "info" });
         this.$emit('close');
       } else {
         useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
