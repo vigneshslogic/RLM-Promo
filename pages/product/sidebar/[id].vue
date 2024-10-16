@@ -127,7 +127,7 @@
                           class="btn btn-solid ms-2"
                           title="Add to cart"
                           @click="addToCart(getDetail, counter)"
-                          v-if="useCookie('userInfo')?.value?.Id && getDetail?.nodeType !== 'bundleProduct'"
+                          v-if="getDetail?.nodeType !== 'bundleProduct'"
                         >
                           Add To Cart
                         </button>
