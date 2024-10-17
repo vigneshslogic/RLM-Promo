@@ -51,7 +51,9 @@
                               class="btn btn-solid my-3"
                               title="Get Quote"
                               @click.prevent="handleGetQuote"
-                            > Request Quote
+                            > 
+                            <span v-if="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              Request Quote
                             </button>
                           </div>
                         </div>
@@ -87,6 +89,7 @@ export default {
   data() {
     return {
       description: {value: '', errormsg: ''},
+      isLoading: false,
     }
   },
   watch: {
@@ -129,11 +132,13 @@ export default {
         }
         
         if (!this.description.errormsg) {
+          this.isLoading = true;
           const status = await useCartStore().getQuote(this.description.value);
-          
           if (status?.quoteId) {
+            this.isLoading = false;
             useNuxtApp().$showToast({ msg: "Your quote request has been submitted. Our team will reach out to your shortly.", type: "info" });
           } else {
+            this.isLoading = false;
             useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
           }
           this.$emit('closeQuote');
@@ -141,6 +146,7 @@ export default {
       }
 
       if (this.productData && this.qty && this.noAction) {
+        this.isLoading = true;
         const { $generateQuote } = useNuxtApp();
         const getProducts = await $generateQuote(
           [{
@@ -151,8 +157,10 @@ export default {
           }], this.description?.value);
         
         if (getProducts?.quoteId) {
+          this.isLoading = false;
           useNuxtApp().$showToast({ msg: "Your quote request has been submitted. Our team will reach out to your shortly.", type: "info" });
         } else {
+          this.isLoading = false;
           useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
         }
         this.$emit('closeQuote');

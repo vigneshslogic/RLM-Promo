@@ -152,8 +152,9 @@
                             <button
                               type="button"
                               @click="handleUpdate()"
-                              class="btn btn-primary"
+                              class="btn btn-solid"
                             >
+                              <span v-if="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                               CONFIRM CHANGES
                             </button>
                           </div>
@@ -198,6 +199,7 @@ export default {
     effectiveDate: null,
     qty: 0,
     totalLifecycleAmount: 0,
+    isLoading: false,
   }),
 
   created() {
@@ -229,6 +231,7 @@ export default {
     async handleUpdate() {
       const date = new Date(this.effectiveDate);
       const isoString = date.toISOString();
+      this.isLoading = true;
       const payload = {
         inputs: [
           {
@@ -243,8 +246,10 @@ export default {
       const response = await useAuthStore().changeQuantity(payload);
       if (response) {
         useNuxtApp().$showToast({ msg: " Your Upgrade Order is placed.", type: "info" });
+        this.isLoading = false;
         this.$emit('close');
       } else {
+        this.isLoading = false;
         useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
       }
     },

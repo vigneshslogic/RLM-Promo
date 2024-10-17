@@ -9,7 +9,7 @@
           <div class="col-lg-4 col-12">
             <div class="tools-description">
               <div>
-                <h3>{{ title }}</h3>
+                <h3 class="title">{{ title }}</h3>
                 <div class="tools-form">
                   <div class="search-box">
                     <select name="engine" class="form-control" @change="getCategories">
@@ -178,3 +178,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.title {
+  color: var(--theme-deafult) !important;
+}
+</style>

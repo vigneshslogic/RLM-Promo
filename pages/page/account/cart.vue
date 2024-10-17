@@ -40,7 +40,7 @@
                         <span class="input-group-prepend">
                           <button type="button" class="btn quantity-left-minus" data-type="minus" data-field
                             @click="decrement(item)">
-                            <i class="ti-angle-left"></i>
+                            <i class="ti-minus"></i>
                           </button>
                         </span>
                         <input type="text" name="quantity" class="form-control input-number"
@@ -48,7 +48,7 @@
                         <span class="input-group-prepend">
                           <button type="button" class="btn quantity-right-plus" data-type="plus" data-field
                             @click="increment(item)">
-                            <i class="ti-angle-right"></i>
+                            <i class="ti-plus"></i>
                           </button>
                         </span>
                       </div>
