@@ -210,6 +210,36 @@ export default defineNuxtPlugin(() => {
     return false;
   }
 
+  const cancelSubscription = async (payload) => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const subscription = await axios.post("/api/cancelSubscription", {
+      accessToken: accessToken?.data?.access_token,
+      accountId: useCookie('userInfo')?.value?.Account?.Id,
+      payload
+    });
+
+    if (subscription.status === 200) {
+      return subscription.data;
+    }
+
+    return false;
+  }
+
+  const renewSubscription = async (payload) => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const subscription = await axios.post("/api/renewSubscription", {
+      accessToken: accessToken?.data?.access_token,
+      accountId: useCookie('userInfo')?.value?.Account?.Id,
+      payload
+    });
+
+    if (subscription.status === 200) {
+      return subscription.data;
+    }
+
+    return false;
+  }
+
   return {
     provide: {
       getProducts,
@@ -222,7 +252,9 @@ export default defineNuxtPlugin(() => {
       getInvoices,
       getAssets,
       getCategories,
-      changeQuantity
+      changeQuantity,
+      cancelSubscription,
+      renewSubscription,
     },
   };
 });

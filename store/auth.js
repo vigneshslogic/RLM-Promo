@@ -29,6 +29,18 @@ export const useAuthStore = defineStore({
             const { $changeQuantity } = useNuxtApp();
             const response = await $changeQuantity(payload);
             return response;
+        },
+
+        cancelSubscription: async (payload) => {
+            const { $cancelSubscription } = useNuxtApp();
+            const response = await $cancelSubscription(payload);
+            return response;
+        },
+
+        renewSubscription: async (payload) => {
+            const { $renewSubscription } = useNuxtApp();
+            const response = await $renewSubscription(payload);
+            return response;
         }
     }
 })

@@ -63,12 +63,12 @@
                             >
                           </li>
                           <li>
-                            <a class="dropdown-item text-black" href="#"
+                            <a @click="handleSubscriptionModal('renew', item)" class="dropdown-item text-black" href="#"
                               >Renew</a
                             >
                           </li>
                           <li>
-                            <a class="dropdown-item text-black" href="#"
+                            <a @click="handleSubscriptionModal('cancel', item)" class="dropdown-item text-black" href="#"
                               >Cancel</a
                             >
                           </li>
@@ -127,13 +127,21 @@
       @close="handleClose()"
       :current-asset="currentAsset"
     />
+    <subscriptionModal
+      v-if="isSubscription"
+      :is-open="isSubscription"
+      :type="sbs_type"
+      :current-asset="currentAsset"
+       @close="handleClose()"
+    />
   </div>
 </template>
 
 <script>
 import changeQuantityModal from './changeQuantityModal.vue';
+import subscriptionModal from './subscriptionModal.vue';
 export default {
-  components: { changeQuantityModal },
+  components: { changeQuantityModal, subscriptionModal },
   props: {
     assets: {
       type: Array,
@@ -148,6 +156,8 @@ export default {
   data: () => ({
     status: false,
     isOpen: false,
+    isSubscription: false,
+    sbs_type: null,
     currentAsset: {},
   }),
 
@@ -181,7 +191,15 @@ export default {
 
     handleClose() {
       this.isOpen = false;
+      this.isSubscription = false;
+      this.sbs_type = null;
     },
+
+    handleSubscriptionModal(type, item) {
+      this.currentAsset = item;
+      this.sbs_type = type;
+      this.isSubscription = true;
+    }
   },
 };
 </script>
