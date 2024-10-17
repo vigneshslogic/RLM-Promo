@@ -19,9 +19,9 @@
                   <div class="modal-bg addtocart">
                     <div class="h5 my-2 text-center text-danger">
                       {{
-                        type === 'cancel'
-                          ? 'Are you sure want to cancel subscription ?'
-                          : 'Are you sure want to renew subscription ?'
+                        type === "cancel"
+                          ? "Are you sure want to cancel subscription ?"
+                          : "Are you sure want to renew subscription ?"
                       }}
                     </div>
                     <div class="d-flex justify-content-center py-2">
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { useAuthStore } from '~~/store/auth';
+import { useAuthStore } from "~~/store/auth";
 export default {
   props: {
     isOpen: {
@@ -62,7 +62,7 @@ export default {
     },
     type: {
       type: String,
-      default: '',
+      default: "",
     },
     currentAsset: {
       type: Object,
@@ -72,40 +72,67 @@ export default {
 
   methods: {
     async close() {
-      this.$emit('close');
+      this.$emit("close");
     },
 
     async handleSubscription() {
-      if (this.type === 'cancel') {
-        const date = new Date();
-        const isoString = date.toISOString();
-        const payload = {
-          inputs: [
-            {
-              cancelAssetIds: [this.currentAsset.Id],
-              cancelStartDate: isoString,
-              cancelOutputType: 'Order',
-            },
-          ],
-        };
-        const response = await useAuthStore().cancelSubscription(payload);
-        if (response) {
-          this.$emit('close');
-        }
-      } else {
-        const payload = {
-          inputs: [
-            {
-              amendAssetIds: [this.currentAsset.Id],
-              amendOutputType: 'Order',
-            },
-          ],
-        };
+      const date = new Date();
+      const isoString = date.toISOString().split("T")[0];
+      switch (this.type) {
+        case "cancel":
+          const payload = {
+            inputs: [
+              {
+                cancelAssetIds: [this.currentAsset.Id],
+                cancelStartDate: `${isoString}T00:00:00.000+0000`,
+                cancelOutputType: "Order",
+              },
+            ],
+          };
 
-        const response = await useAuthStore().cancelSubscription(payload);
-        if (response) {
-          this.$emit('close');
-        }
+          const response = await useAuthStore().cancelSubscription(payload);
+          if (response) {
+            useNuxtApp().$showToast({
+              msg: "Your Subscription/ Assets is cancelled successfully!.",
+              type: "info",
+            });
+            this.$emit("close");
+          } else {
+            useNuxtApp().$showToast({
+              msg: "Something went wrong. Please try again later.",
+              type: "error",
+            });
+          }
+          break;
+
+        case "renew":
+          const data = {
+            inputs: [
+              {
+                renewAssetIds: [this.currentAsset.Id],
+                renewOutputType: "Order",
+              },
+            ],
+          };
+
+          const res = await useAuthStore().cancelSubscription(data);
+          if (res) {
+            useNuxtApp().$showToast({
+              msg: "Your Subscription/ Assets is renewal successfully!.",
+              type: "info",
+            });
+            this.$emit("close");
+          } else {
+            useNuxtApp().$showToast({
+              msg: "Something went wrong. Please try again later.",
+              type: "error",
+            });
+          }
+        break;
+
+        default:
+
+        break;
       }
     },
   },
