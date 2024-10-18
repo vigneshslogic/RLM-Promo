@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const url = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/connect/cpq/catalogs`;
-    const response = await axios.post(url, {}, {
+    const response = await axios.post(url, {limit: 50}, {
       headers: {
         Authorization: `Bearer ${body.accessToken}`,
         'Content-Type': 'application/json',

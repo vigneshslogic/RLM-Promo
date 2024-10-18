@@ -29,14 +29,13 @@
                   </li>
                 </ul>
                 <div class="collection-product-wrapper">
-                  <div class="product-top-filter">
+                  <div class="product-top-filter" v-if="products.length">
                     <div class="row">
                       <div class="col-12">
                         <div class="product-filter-content">
                           <div class="search-count">
                             <h5>
-                              Showing Products 1-12 of
-                              {{ products.length }} Result
+                              Showing Products 1-{{products.length}} of Result
                             </h5>
                           </div>
                           <div class="collection-view">
