@@ -6,7 +6,6 @@ export default defineEventHandler(async (event) => {
 
   try {
     const url = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/connect/cpq/products`;
-    console.log('url', url);
     let payload = {};
     
     if (!body?.isCategory && body?.catalogId) {
@@ -27,8 +26,6 @@ export default defineEventHandler(async (event) => {
         'priceBookId': `${config?.pricebook_id}`,
       } 
     }
-
-    console.log('payload', payload);
 
     const response = await axios.post(url, payload, {
       headers: {

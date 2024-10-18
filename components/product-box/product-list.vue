@@ -92,7 +92,10 @@ export default {
     }),
     getProductPrice() {
       const exists = find(this.product.prices, { isDefault: true });
-      return exists?.price ?? '';
+      if (exists) {
+        return exists?.price ?? '';
+      }
+      return this.product?.prices[0]?.price;
     },
   },
   methods: {
@@ -105,7 +108,7 @@ export default {
       product.priceModelId = product?.prices[0]?.pricingModel?.id;
       product.quantity = 1;
       product.periodBoundary =
-      product?.prices[0]?.pricingModel?.frequency ?? "OneTime";
+      product?.prices[0]?.pricingModel?.pricingModelType ?? "OneTime";
       useCartStore().addToCart(product);
       this.$emit("openCartModel", this.cartVal, this.cartProduct);
     },

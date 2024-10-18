@@ -64,7 +64,7 @@
                             href="javascript:void(0)"
                             @click="changeSizeVariant(price)"
                           >
-                            {{ price?.pricingModel?.frequency ?? 'One Time' }}
+                            {{ price?.pricingModel?.pricingModelType ?? 'One Time' }}
                           </a>
                         </li>
                       </ul>
@@ -170,7 +170,7 @@ export default {
       product.priceBookId = this.selectedPlan?.priceBookId;
       product.priceModelId = this.selectedPlan?.pricingModel?.id;
       product.quantity = 1;
-      product.periodBoundary = this.selectedPlan?.pricingModel?.frequency ?? "OneTime";
+      product.periodBoundary = this.selectedPlan?.pricingModel?.pricingModelType ?? "OneTime";
       useCartStore().addToCart(product);
       this.$emit("closeView", false);
     },

@@ -53,7 +53,7 @@
                                 href="javascript:void(0)"
                                 @click="changeSizeVariant(price)"
                               >
-                                {{ price?.pricingModel?.frequency ?? 'One Time' }}
+                                {{ price?.pricingModel?.pricingModelType ?? 'One Time' }}
                               </a>
                             </li>
                           </ul>
@@ -73,7 +73,7 @@
                                 href="javascript:void(0)"
                                 @click="changeSizeVariant(price)"
                               >
-                                {{ price?.pricingModel?.frequency ?? 'One Time' }}
+                                {{ price?.pricingModel?.pricingModelType ?? 'One Time' }}
                               </a>
                             </li>
                           </ul>
@@ -409,7 +409,7 @@ const addToCart = (product, qty) => {
   product.priceBookId = selectedPlan?.value?.priceBookId;
   product.priceModelId = selectedPlan?.value?.pricingModel?.id;
   product.quantity = qty || 1;
-  product.periodBoundary = selectedPlan?.value?.pricingModel?.frequency ?? 'OneTime';
+  product.periodBoundary = selectedPlan?.value?.pricingModel?.pricingModelType ?? 'OneTime';
   useCartStore().addToCart(product);
   useNuxtApp().$showToast({ msg: "Product Is successfully added to the cart.", type:"info" })
 };
