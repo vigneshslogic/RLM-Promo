@@ -414,4 +414,15 @@ const addToCart = (product, qty) => {
   useNuxtApp().$showToast({ msg: "Product Is successfully added to the cart.", type:"info" })
 };
 
+const buyNow = (product, qty) => {
+  product.price = selectedPlan?.value?.price;
+  product.priceBookEntryId = selectedPlan?.value?.priceBookEntryId;
+  product.priceBookId = selectedPlan?.value?.priceBookId;
+  product.priceModelId = selectedPlan?.value?.pricingModel?.id;
+  product.quantity = qty || 1;
+  product.periodBoundary = selectedPlan?.value?.pricingModel?.frequency ?? 'OneTime';
+  useCartStore().setInitialCart(product);
+  
+};
+
 </script>
