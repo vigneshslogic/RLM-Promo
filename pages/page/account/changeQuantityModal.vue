@@ -242,14 +242,17 @@ export default {
           },
         ],
       };
-      
-      const response = await useAuthStore().changeQuantity(payload);
-      if (response) {
-        useNuxtApp().$showToast({ msg: " Your Upgrade Order is placed.", type: "info" });
+
+      try {
+        const response = await useAuthStore().changeQuantity(payload);
+        if (response) {
+          useNuxtApp().$showToast({ msg: " Your Upgrade Order is placed.", type: "info" });
+          this.isLoading = false;
+          this.$emit('close');
+        } 
+      } catch (error) {
         this.isLoading = false;
         this.$emit('close');
-      } else {
-        this.isLoading = false;
         useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
       }
     },

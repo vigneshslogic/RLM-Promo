@@ -25,7 +25,7 @@
                         type="button"
                         class="btn-close"
                         aria-label="Close"
-                        @click="$emit('closeQuote')" 
+                        @click="$emit('closeQuote')"
                       />
                     </div>
                     <div class="p-3">
@@ -41,18 +41,25 @@
                               rows="6"
                               required
                             />
-                            <span class="validate-error" v-if="description.value.length === 0">{{
-                              description.errormsg
-                            }}</span>
+                            <span
+                              class="validate-error"
+                              v-if="description.value.length === 0"
+                              >{{ description.errormsg }}</span
+                            >
                           </div>
-                          
+
                           <div class="form-group col-md-12">
                             <button
                               class="btn btn-solid my-3"
                               title="Get Quote"
                               @click.prevent="handleGetQuote"
-                            > 
-                            <span v-if="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            >
+                              <span
+                                v-if="isLoading"
+                                class="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>
                               Request Quote
                             </button>
                           </div>
@@ -71,16 +78,23 @@
 </template>
 
 <script>
-import { mapState } from "pinia";
-import { useProductStore } from "~~/store/products";
+import { mapState } from 'pinia';
+import { useProductStore } from '~~/store/products';
 import { useCartStore } from '~~/store/cart';
 
 export default {
-  props: ["openQuote", "productData", "products", "category", "noAction", "qty"],
-  emits: ["closeCart"],
+  props: [
+    'openQuote',
+    'productData',
+    'products',
+    'category',
+    'noAction',
+    'qty',
+  ],
+  emits: ['closeCart'],
   computed: {
     ...mapState(useProductStore, {
-      currency: "currency",
+      currency: 'currency',
     }),
     curr() {
       return useProductStore().changeCurrency;
@@ -88,9 +102,9 @@ export default {
   },
   data() {
     return {
-      description: {value: '', errormsg: ''},
+      description: { value: '', errormsg: '' },
       isLoading: false,
-    }
+    };
   },
   watch: {
     openQuote: {
@@ -101,11 +115,11 @@ export default {
   methods: {
     // Get Image Url
     getImgUrl(path) {
-      return "/images/" + path;
+      return '/images/' + path;
     },
     closeCart(val) {
       val = false;
-      this.$emit("closeCart", val);
+      this.$emit('closeCart', val);
     },
     cartRelatedProducts(collection, id) {
       return this.products.filter((item) => {
@@ -125,21 +139,31 @@ export default {
 
     async handleGetQuote() {
       if (!this.noAction) {
-        if (this.description.value.length <= 1 ) {
-          this.description.errormsg = 'empty not allowed'
+        if (this.description.value.length <= 1) {
+          this.description.errormsg = 'empty not allowed';
         } else {
-          this.description.errormsg = ''
+          this.description.errormsg = '';
         }
-        
+
         if (!this.description.errormsg) {
           this.isLoading = true;
-          const status = await useCartStore().getQuote(this.description.value);
-          if (status?.quoteId) {
+          try {
+            const status = await useCartStore().getQuote(
+              this.description.value
+            );
+            if (status?.quoteId) {
+              this.isLoading = false;
+              useNuxtApp().$showToast({
+                msg: 'Your quote request has been submitted. Our team will reach out to your shortly.',
+                type: 'info',
+              });
+            }
+          } catch (error) {
             this.isLoading = false;
-            useNuxtApp().$showToast({ msg: "Your quote request has been submitted. Our team will reach out to your shortly.", type: "info" });
-          } else {
-            this.isLoading = false;
-            useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
+            useNuxtApp().$showToast({
+              msg: 'Something went wrong. Please try again later.',
+              type: 'error',
+            });
           }
           this.$emit('closeQuote');
         }
@@ -147,26 +171,37 @@ export default {
 
       if (this.productData && this.qty && this.noAction) {
         this.isLoading = true;
-        const { $generateQuote } = useNuxtApp();
-        const getProducts = await $generateQuote(
-          [{
-            priceBookEntryId: this.productData?.prices[0]?.priceBookEntryId,
-            id: this.productData?.id,
-            price: this.productData?.prices[0]?.price,
-            quantity: this.qty,
-          }], this.description?.value);
-        
-        if (getProducts?.quoteId) {
+        try {
+          const { $generateQuote } = useNuxtApp();
+          const getProducts = await $generateQuote(
+            [
+              {
+                priceBookEntryId: this.productData?.prices[0]?.priceBookEntryId,
+                id: this.productData?.id,
+                price: this.productData?.prices[0]?.price,
+                quantity: this.qty,
+              },
+            ],
+            this.description?.value
+          );
+          if (getProducts?.quoteId) {
+            this.isLoading = false;
+            useNuxtApp().$showToast({
+              msg: 'Your quote request has been submitted. Our team will reach out to your shortly.',
+              type: 'info',
+            });
+          }
+        } catch (error) {
           this.isLoading = false;
-          useNuxtApp().$showToast({ msg: "Your quote request has been submitted. Our team will reach out to your shortly.", type: "info" });
-        } else {
-          this.isLoading = false;
-          useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
+          useNuxtApp().$showToast({
+            msg: 'Something went wrong. Please try again later.',
+            type: 'error',
+          });
         }
+
         this.$emit('closeQuote');
       }
-    }
+    },
   },
 };
 </script>
-

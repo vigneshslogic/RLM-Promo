@@ -26,13 +26,13 @@
                     </nuxt-link>
                   </td>
                   <td>
-                    <nuxt-link :to="{ path: '/product/sidebar/' + item.id }">{{ item.name }}</nuxt-link>
+                    <nuxt-link :to="{ path: '/product/sidebar/' + item.id }" class="text-danger product-tle">{{ item.name }}</nuxt-link>
                   </td>
                   <td>
                     {{ getFrequencies(item?.periodBoundary) }}
                   </td>
                   <td>
-                    <h2>£{{ Number(item?.price?.toFixed(2)) ?? 0 }}</h2>
+                    <h3>£{{ Number(item?.price?.toFixed(2)) ?? 0 }}</h3>
                   </td>
                   <td>
                     <div class="qty-box">
@@ -60,8 +60,8 @@
                     </a>
                   </td>
                   <td>
-                    <h2 class="td-color">
-                      £ {{ (item.price * curr.curr) * item.quantity }}</h2>
+                    <h3 class="td-color">
+                      £ {{ (item.price * curr.curr) * item.quantity }}</h3>
                   </td>
                 </tr>
               </tbody>
@@ -182,3 +182,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.product-tle {
+  font-size: large;
+}
+</style>
