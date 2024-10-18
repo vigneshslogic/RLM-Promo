@@ -132,15 +132,17 @@
                           Add To Cart
                         </button>
                         <!-- </nuxt-link> -->
-                        <button
-                          class="btn btn-solid ms-2"
-                          title="buy now"
-                          :disabled="counter > getDetail?.stock"
-                          v-if="getDetail?.nodeType !== 'bundleProduct'"
-                        >
-                          <!-- @click="buyNow(getDetail, counter)" -->
-                          Buy Now
-                        </button>
+                        <nuxt-link :to="{ path: '/page/account/checkout' }"> 
+                          <button
+                            class="btn btn-solid ms-2"
+                            title="buy now"
+                            :disabled="counter > getDetail?.stock"
+                            v-if="getDetail?.nodeType !== 'bundleProduct'"
+                            @click="buyNow(getDetail, counter)"
+                          >
+                            Buy Now
+                          </button>
+                        </nuxt-link>
                       </div>
                       <div class="border-product">
                         <h6 class="product-title">product details</h6>
@@ -421,8 +423,7 @@ const buyNow = (product, qty) => {
   product.priceModelId = selectedPlan?.value?.pricingModel?.id;
   product.quantity = qty || 1;
   product.periodBoundary = selectedPlan?.value?.pricingModel?.frequency ?? 'OneTime';
-  useCartStore().setInitialCart(product);
-  
+  useCartStore().addToCart(product);
 };
 
 </script>
