@@ -2,9 +2,10 @@ import axios from 'axios';
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event); 
+  const config = useRuntimeConfig();
 
   try {
-    const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/connect/cpq/catalogs`;
+    const url = `${config?.api_endpoint}/services/data/v${config?.api_version}/connect/cpq/catalogs`;
     const response = await axios.post(url, {}, {
       headers: {
         Authorization: `Bearer ${body.accessToken}`,

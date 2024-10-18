@@ -2,8 +2,10 @@ import axios from 'axios';
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
+    const config = useRuntimeConfig();
+
     try {
-        const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/actions/standard/initiateCancellation`;
+        const url = `${config?.api_endpoint}/services/data/v${config?.api_version}/actions/standard/initiateCancellation`;
 
         const payload = body?.payload;
 
@@ -21,7 +23,7 @@ export default defineEventHandler(async (event) => {
                 // make order activate after the order place immediately
                 response.data.foeEach(async(res) => {
                     if (res?.outputValues?.cancelRecordId) {
-                        const activeUrl = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/sobjects/Order/${res?.outputValues?.cancelRecordId}`;
+                        const activeUrl = `${config?.api_endpoint}/services/data/v${config?.api_version}/sobjects/Order/${res?.outputValues?.cancelRecordId}`;
                         await axios.patch(activeUrl, { Status: "Activated" }, {
                             headers: {
                             Authorization: `Bearer ${body.accessToken}`,

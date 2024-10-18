@@ -2,8 +2,10 @@ import axios from 'axios';
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
+  const config = useRuntimeConfig();
+
   try {
-    const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/commerce/quotes/actions/place`;
+    const url = `${config?.api_endpoint}/services/data/v${config?.api_version}/commerce/quotes/actions/place`;
 
     const productNames = body?.products?.map(product => product.name)?.join('-');
     let today = new Date();
@@ -28,7 +30,7 @@ export default defineEventHandler(async (event) => {
                             method: "POST"
                         },
                         Name: `${body?.userName} - ${productNames}`,
-                        Pricebook2Id: "01sPv000001FdriIAC",
+                        Pricebook2Id: `${config?.pricebook_id}`,
                         description: body?.description ?? '',
                         Source__c: "WebStore",
                         ContactId: body?.contactId,

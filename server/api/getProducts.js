@@ -2,28 +2,32 @@ import axios from 'axios';
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event); 
+  const config = useRuntimeConfig();
 
   try {
-    const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/connect/cpq/products`;
+    const url = `${config?.api_endpoint}/services/data/v${config?.api_version}/connect/cpq/products`;
     let payload = {};
+    
     if (!body?.isCategory && body?.catalogId) {
       payload = {
         'correlationId': 'corrId',
         'catalogId': body?.catalogId,
-        'priceBookId': '01sPv000001FdriIAC',
+        'priceBookId': `${config?.pricebook_id}`,
       } 
     } else if (body?.isCategory && body?.catalogId) {
       payload = {
         'correlationId': 'corrId',
         'categoryId': body?.catalogId,
-        'priceBookId': '01sPv000001FdriIAC',
+        'priceBookId': `${config?.pricebook_id}`,
       } 
     } else {
       payload = {
         'correlationId': 'corrId',
-        'priceBookId': '01sPv000001FdriIAC',
+        'priceBookId': `${config?.pricebook_id}`,
       } 
     }
+
+    console.log('payload', payload);
 
     const response = await axios.post(url, payload, {
       headers: {

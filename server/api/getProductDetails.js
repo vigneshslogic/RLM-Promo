@@ -2,11 +2,12 @@ import axios from 'axios';
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event); 
+  const config = useRuntimeConfig();
 
   try {
-    const url = `https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v62.0/connect/cpq/products/${body.product}`;
+    const url = `${config?.api_endpoint}/services/data/v${config?.api_version}/connect/cpq/products/${body.product}`;
     const response = await axios.post(url, {
-        "priceBookId": "01sPv000001FdriIAC"
+      "priceBookId": `${config?.pricebook_id}`,
     }, {
       headers: {
         Authorization: `Bearer ${body.accessToken}`,

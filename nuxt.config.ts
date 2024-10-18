@@ -18,11 +18,16 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    salesforceClientId: process.env.NUXT_SALESFORCE_CLIENT_ID,
-    salesforceClientSecret: process.env.NUXT_SALESFORCE_CLIENT_SECRET,
-    salesforceRedirectUri: process.env.NUXT_SALESFORCE_REDIRECT_URI,
-    username: process.env.NUXT_USERNAME,
-    password: process.env.NUXT_PASSWORD,
+    salesforceClientId: process.env.SALESFORCE_CLIENT_ID,
+    salesforceClientSecret: process.env.SALESFORCE_CLIENT_SECRET,
+    username: process.env.USERNAME,
+    password: process.env.PASSWORD,
+    api_endpoint: process.env.BASE_ENDPOINT,
+    api_version: `"${process.env.API_VERSION}"`,
+    pricebook_id: process.env.PRICEBOOK_ID,
+    public: {
+      pricebook_id: process.env.PRICEBOOK_ID,
+    }
   },
   
   app: {

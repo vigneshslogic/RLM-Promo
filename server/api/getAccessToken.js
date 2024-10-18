@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 export default defineEventHandler(async (event) => {
-  // const body = await readBody(event); 
   const config = useRuntimeConfig();
 
-  const tokenUrl = 'https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/oauth2/token';
-
+  
+  const tokenUrl = `${config?.api_endpoint}/services/oauth2/token`;
+  
   const clientId = config.salesforceClientId;
   const clientSecret = config.salesforceClientSecret;
   const username = config.username;
