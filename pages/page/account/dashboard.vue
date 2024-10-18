@@ -482,13 +482,25 @@ export default {
   
   methods: {
     async getAuthOrders() {
-      this.orders = await useAuthStore().getOrders();
+      try {
+        this.orders = await useAuthStore().getOrders();
+      } catch (error) {
+        console.error('error',error);
+      }
     },
     async getAuthInvoices() {
-      this.invoices = await useAuthStore().getInvoices();
+      try {
+        this.invoices = await useAuthStore().getInvoices();
+      } catch (error) {
+        console.error('error', error)
+      }
     },
     async getAuthAssets() {
-      this.assets = await useAuthStore().getAssets();
+      try {
+        this.assets = await useAuthStore().getAssets();
+      } catch {
+        console.error('error', error )
+      }
     }
   },
 

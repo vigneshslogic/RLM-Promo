@@ -2,9 +2,9 @@ import axios from 'axios';
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-
+  const config = useRuntimeConfig();
   try {
-    const instanceURL = 'https://enterprise-velocity-2370-dev-ed.scratch.my.salesforce.com/services/data/v58.0/sobjects';
+    const instanceURL = `${config?.api_endpoint}/services/data/v${config?.api_version}/sobjects`;
 
     if (body.user) {
       const accountData = {

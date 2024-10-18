@@ -104,12 +104,12 @@
                 <nuxt-link :to="{ path: '/product/sidebar/'+item.id}">
                   <img alt class="mr-3" :src='getImage(item?.image)'>
                 </nuxt-link>
-                <div class="media-body">
+                <div class="media-body ps-3">
                   <nuxt-link :to="{ path: '/product/sidebar/'+item.id}">
                     <h4>{{item.name}}</h4>
                   </nuxt-link>
                   <h4>
-                    <span>{{item.quantity}} x {{ item.price || currency }}</span>
+                    <span>{{item.quantity}} x £&nbsp;{{ item.price || currency }}</span>
                   </h4>
                 </div>
               </div>
@@ -123,18 +123,18 @@
               <div class="total">
                 <h5>
                   subtotal :
-                  <span>{{ cartTotal || currency }}</span>
+                  <span>£&nbsp;{{ cartTotal || currency }}</span>
                 </h5>
               </div>
             </li>
             <li>
-              <div class="buttons">
-                <nuxt-link :to="{ path: '/page/account/cart'}" :class="'view-cart'">
-                  view cart
-                </nuxt-link>
-                <nuxt-link :to="{ path: '/page/account/checkout'}" :class="'checkout'">
-                  checkout
-                </nuxt-link>
+              <div class="d-flex justify-content-around">
+                  <nuxt-link :to="{ path: '/page/account/cart'}" :class="'view-cart btn btn-solid text-nowrap p-1 px-2'">
+                    view cart
+                  </nuxt-link>
+                  <nuxt-link :to="{ path: '/page/account/checkout'}" :class="'checkout btn btn-solid text-nowrap p-1 px-2'">
+                    checkout
+                  </nuxt-link>
               </div>
             </li>
           </ul>
@@ -182,7 +182,7 @@ export default {
     curr(){  
       return useProductStore().changeCurrency
     }
-   
+
   },
   watch:{
     searchString(){

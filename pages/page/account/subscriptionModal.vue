@@ -19,9 +19,9 @@
                   <div class="modal-bg addtocart">
                     <div class="h5 my-2 text-center text-danger">
                       {{
-                        type === "cancel"
-                          ? "Are you sure want to cancel subscription ?"
-                          : "Are you sure want to renew subscription ?"
+                        type === 'cancel'
+                          ? 'Are you sure want to cancel subscription ?'
+                          : 'Are you sure want to renew subscription ?'
                       }}
                     </div>
                     <div class="d-flex justify-content-center py-2">
@@ -38,7 +38,12 @@
                         @click="handleSubscription()"
                         class="btn btn-danger"
                       >
-                      <span v-if="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span
+                          v-if="isLoading"
+                          class="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
                         Confirm
                       </button>
                     </div>
@@ -54,7 +59,7 @@
 </template>
 
 <script>
-import { useAuthStore } from "~~/store/auth";
+import { useAuthStore } from '~~/store/auth';
 export default {
   props: {
     isOpen: {
@@ -63,7 +68,7 @@ export default {
     },
     type: {
       type: String,
-      default: "",
+      default: '',
     },
     currentAsset: {
       type: Object,
@@ -77,9 +82,9 @@ export default {
 
   methods: {
     async close() {
-      this.$emit("close");
+      this.$emit('close');
     },
-    
+
     dateFormat(endDate) {
       const date = new Date(endDate);
       const day = String(date.getUTCDate() + 1).padStart(2, '0');
@@ -93,54 +98,56 @@ export default {
       const m = String(date.getUTCMonth() + 1).padStart(2, '0');
       const y = date.getUTCFullYear() + 1;
 
-      const renewalEndDate = `${y}-${m}-${d}`
+      const renewalEndDate = `${y}-${m}-${d}`;
 
-      return [renewalStartDate,renewalEndDate];
+      return [renewalStartDate, renewalEndDate];
     },
 
     async handleSubscription() {
       const date = new Date();
-      const isoString = date.toISOString().split("T")[0];
+      const isoString = date.toISOString().split('T')[0];
       switch (this.type) {
-        case "cancel":
+        case 'cancel':
           this.isLoading = true;
           const payload = {
             inputs: [
               {
                 cancelAssetIds: [this.currentAsset.Id],
                 cancelStartDate: `${isoString}T00:00:00.000+0000`,
-                cancelOutputType: "Order",
+                cancelOutputType: 'Order',
               },
             ],
           };
-
-          const response = await useAuthStore().cancelSubscription(payload);
-          if (response) {
+          try {
+            const response = await useAuthStore().cancelSubscription(payload);
+            if (response) {
+              this.isLoading = false;
+              useNuxtApp().$showToast({
+                msg: 'Your Subscription/ Assets is cancelled successfully!.',
+                type: 'info',
+              });
+              this.$emit('close');
+            }
+          } catch (error) {
             this.isLoading = false;
+            this.$emit('close');
             useNuxtApp().$showToast({
-              msg: "Your Subscription/ Assets is cancelled successfully!.",
-              type: "info",
-            });
-            this.$emit("close");
-          } else {
-            this.isLoading = false;
-            useNuxtApp().$showToast({
-              msg: "Something went wrong. Please try again later.",
-              type: "error",
+              msg: 'Something went wrong. Please try again later.',
+              type: 'error',
             });
           }
           break;
 
-        case "renew":
+        case 'renew':
           this.isLoading = true;
           const dates = this.dateFormat(this.currentAsset?.LifecycleEndDate);
           const data = {
             inputs: [
               {
                 renewAssetIds: [this.currentAsset.Id],
-                renewOutputType: "Order",
+                renewOutputType: 'Order',
                 renewStartDate: `${dates[0]}T00:00:00.000Z`,
-                renewEndDate: `${dates[1]}T00:00:00.000Z`
+                renewEndDate: `${dates[1]}T00:00:00.000Z`,
               },
             ],
           };
@@ -149,23 +156,22 @@ export default {
             if (res) {
               this.isLoading = false;
               useNuxtApp().$showToast({
-                msg: "Your Subscription/ Assets is renewal successfully!.",
-                type: "info",
+                msg: 'Your Subscription/ Assets is renewal successfully!.',
+                type: 'info',
               });
-              this.$emit("close");
-            } 
+              this.$emit('close');
+            }
           } catch (error) {
             this.isLoading = false;
             useNuxtApp().$showToast({
-              msg: "Something went wrong. Please try again later.",
-              type: "error",
+              msg: 'Something went wrong. Please try again later.',
+              type: 'error',
             });
           }
-        break;
+          break;
 
         default:
-
-        break;
+          break;
       }
     },
   },
