@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
 
   try {
-    const url = `${config?.api_endpoint}/services/data/v${config?.api_version}/commerce/quotes/actions/place`;
+    const url = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/commerce/quotes/actions/place`;
 
     const productNames = body?.products?.map(product => product.name)?.join('-');
     let today = new Date();

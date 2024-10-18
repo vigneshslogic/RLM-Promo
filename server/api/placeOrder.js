@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
 
   try {
-    const url = `${config?.api_endpoint}/services/data/v${config?.api_version}/commerce/sales-orders/actions/place`;
+    const url = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/commerce/sales-orders/actions/place`;
 
     const productNames = body?.products?.map(product => product.name)?.join('-');
     let today = new Date();
@@ -127,7 +127,7 @@ export default defineEventHandler(async (event) => {
       if (response.status === 201 || response.status === 200) {
         try {
           // store user billing/ shipping addresses
-          const addressURL = `${config?.api_endpoint}/services/data/v${config?.api_version}/sobjects/Account/${body?.accountId}`;
+          const addressURL = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/sobjects/Account/${body?.accountId}`;
           await axios.patch(addressURL, {
             BillingCity: body?.user?.city?.value,
             BillingCountry: body?.user?.state?.value,
@@ -151,7 +151,7 @@ export default defineEventHandler(async (event) => {
 
         try {
           // make order activate after the order place immediately
-          const activeUrl = `${config?.api_endpoint}/services/data/v${config?.api_version}/sobjects/Order/${response.data?.orderId}`;
+          const activeUrl = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/sobjects/Order/${response.data?.orderId}`;
           await axios.patch(activeUrl, { Status: "Activated" }, {
             headers: {
               Authorization: `Bearer ${body.accessToken}`,

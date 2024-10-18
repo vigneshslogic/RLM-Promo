@@ -5,7 +5,8 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
 
   try {
-    const url = `${config?.api_endpoint}/services/data/v${config?.api_version}/connect/cpq/products`;
+    const url = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/connect/cpq/products`;
+    console.log('url', url);
     let payload = {};
     
     if (!body?.isCategory && body?.catalogId) {

@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
 
   try {
-    const url = `${config?.api_endpoint}/services/data/v${config?.api_version}/actions/standard/initiateAmendment`;
+    const url = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/actions/standard/initiateAmendment`;
 
     const payload = body?.payload;
 
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
         if (response.data.length) {
           response.data.forEach(async (res) => {
             if (res?.outputValues?.amendRecordId) {
-              const activeUrl = `${config?.api_endpoint}/services/data/v${config?.api_version}/sobjects/Order/${res?.outputValues?.amendRecordId}`;
+              const activeUrl = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/sobjects/Order/${res?.outputValues?.amendRecordId}`;
               
               await axios.patch(activeUrl, { Status: "Activated" }, {
                 headers: {

@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
 
   try {
-    const url = `${config?.api_endpoint}/services/data/v${config?.api_version}/connect/cpq/products/${body.product}`;
+    const url = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/connect/cpq/products/${body.product}`;
     const response = await axios.post(url, {
       "priceBookId": `${config?.pricebook_id}`,
     }, {

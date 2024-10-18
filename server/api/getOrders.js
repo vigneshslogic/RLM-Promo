@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig();
 
     try {
-        const url = `${config?.api_endpoint}/services/data/v${config?.api_version}/query/?q=SELECT Id, OrderNumber, Status, EffectiveDate, BillToContact.Name, TotalAmount from Order where AccountId = '${body?.accountId}' order by CreatedDate`;
+        const url = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/query/?q=SELECT Id, OrderNumber, Status, EffectiveDate, BillToContact.Name, TotalAmount from Order where AccountId = '${body?.accountId}' order by CreatedDate`;
 
         const response = await axios.get(url,
             {
