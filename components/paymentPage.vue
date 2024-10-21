@@ -312,15 +312,14 @@ export default {
         this.payment = false;
         const status = await useCartStore().generateOrder(this.user);
 
-        if (status?.orderId) {
-          localStorage.setItem('order-success', JSON.stringify(status));
-          useProductStore().createOrder(status);
-          // useNuxtApp().$showToast({ msg: "Order generated successfully.", type: "info" });
-          this.$router.replace("/page/order-success");
-          // useCartStore().setInitialCart([]);
-
-        } else {
-          useNuxtApp().$showToast({ msg: "Something went wrong. Please try again later.", type: "error" })
+        try{
+          if (status?.orderId) {
+            localStorage.setItem('order-success', JSON.stringify(status));
+            useProductStore().createOrder(status);
+            this.$router.replace("/page/order-success");
+          } 
+        } catch (error) {
+          useNuxtApp().$showToast({ msg: error?.message?.replace(/&#39;/g, "'"), type: "error" })
         }
       }
       this.loading = false;

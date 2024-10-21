@@ -73,52 +73,65 @@ export default defineNuxtPlugin(() => {
   };
 
   const generateQuote = async (products, description) => {
-    const accessToken = await axios.post("/api/getAccessToken");
-    const quote = await axios.post("/api/getQuote", {
-      accessToken: accessToken?.data?.access_token,
-      products,
-      description,
-      contactId: useCookie('userInfo')?.value?.Id,
-      accountId: useCookie('userInfo')?.value?.Account?.Id,
-      userName: `${useCookie('userInfo')?.value?.FirstName} ${useCookie('userInfo')?.value?.LastName}`
-    });
-
-    if (quote.status === 200) {
-      return quote.data;
+    try {
+      const accessToken = await axios.post("/api/getAccessToken");
+      const quote = await axios.post("/api/getQuote", {
+        accessToken: accessToken?.data?.access_token,
+        products,
+        description,
+        contactId: useCookie('userInfo')?.value?.Id,
+        accountId: useCookie('userInfo')?.value?.Account?.Id,
+        userName: `${useCookie('userInfo')?.value?.FirstName} ${useCookie('userInfo')?.value?.LastName}`
+      });
+  
+      if (quote.status === 200) {
+        return quote.data;
+      }
+      return false;
+    } catch (error) {
+      throw createError({
+        statusCode: error.response ? error.response.status : 500,
+        message: error.response ? error.response?.data?.message : error.message,
+      });
     }
-
-    return false;
   };
 
   const placeOrder = async (products, user) => {
-    const accessToken = await axios.post("/api/getAccessToken");
-    const order = await axios.post("/api/placeOrder", {
-      accessToken: accessToken?.data?.access_token,
-      products,
-      user,
-      contactId: useCookie('userInfo')?.value?.Id,
-      accountId: useCookie('userInfo')?.value?.Account?.Id,
-      userName: `${useCookie('userInfo')?.value?.FirstName} ${useCookie('userInfo')?.value?.LastName}`,
-    });
-
-    if (order.status === 200) {
-      const userInfo = useCookie('userInfo').value;
-      userInfo.Account.BillingCity = user?.city?.value;
-      userInfo.Account.BillingCountry = user?.state?.value;
-      userInfo.Account.BillingState = user?.state?.value;
-      userInfo.Account.BillingStreet = user?.address?.value;
-      userInfo.Account.BillingPostalCode = user?.pincode?.value;
-      userInfo.Account.ShippingCity = user?.city?.value;
-      userInfo.Account.ShippingCountry = user?.state?.value;
-      userInfo.Account.ShippingState = user?.state?.value;
-      userInfo.Account.ShippingStreet = user?.address?.value;
-      userInfo.Account.ShippingPostalCode = user?.pincode?.value;
-    
-      useCookie('userInfo').value = userInfo;
-      return order.data;
+    try {
+      const accessToken = await axios.post("/api/getAccessToken");
+      const order = await axios.post("/api/placeOrder", {
+        accessToken: accessToken?.data?.access_token,
+        products,
+        user,
+        contactId: useCookie('userInfo')?.value?.Id,
+        accountId: useCookie('userInfo')?.value?.Account?.Id,
+        userName: `${useCookie('userInfo')?.value?.FirstName} ${useCookie('userInfo')?.value?.LastName}`,
+      });
+  
+      if (order.status === 200) {
+        const userInfo = useCookie('userInfo').value;
+        userInfo.Account.BillingCity = user?.city?.value;
+        userInfo.Account.BillingCountry = user?.state?.value;
+        userInfo.Account.BillingState = user?.state?.value;
+        userInfo.Account.BillingStreet = user?.address?.value;
+        userInfo.Account.BillingPostalCode = user?.pincode?.value;
+        userInfo.Account.ShippingCity = user?.city?.value;
+        userInfo.Account.ShippingCountry = user?.state?.value;
+        userInfo.Account.ShippingState = user?.state?.value;
+        userInfo.Account.ShippingStreet = user?.address?.value;
+        userInfo.Account.ShippingPostalCode = user?.pincode?.value;
+      
+        useCookie('userInfo').value = userInfo;
+        return order.data;
+      }
+  
+      return false;
+    } catch (error) {
+      throw createError({
+        statusCode: error.response ? error.response.status : 500,
+        message: error.response ? error.response?.data?.message : error.message,
+      });
     }
-
-    return false;
   };
 
   const getOrders = async () => {

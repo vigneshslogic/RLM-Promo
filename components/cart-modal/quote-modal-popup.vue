@@ -161,7 +161,7 @@ export default {
           } catch (error) {
             this.isLoading = false;
             useNuxtApp().$showToast({
-              msg: 'Something went wrong. Please try again later.',
+              msg: error?.message?.replace(/&#39;/g, "'"),
               type: 'error',
             });
           }
