@@ -79,6 +79,29 @@
                           </ul>
                         </div>
 
+                        <div v-if="getDetail?.attributes" class="my-3 w-50">
+                          <div v-for="(item, index) in getDetail?.attributes" :key="index">
+                            <div v-if="item.dataType === 'PICKLIST'">
+                              <h6 class="product-title size-text">Select {{ item.name }}</h6>
+                              <select
+                                class="form-select"
+                                aria-label="Default select example"
+                                v-model="selectedOption"
+                                @change="updateSelect"
+                              >
+                              <option selected value="select" hidden>Please select</option>
+                                <option
+                                  v-for="(option, i) in item?.attributePickList?.values"
+                                  :kye="i"
+                                  :value="option?.id"
+                                >
+                                  {{ option?.displayValue }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
                         <h6 class="product-title">quantity</h6>
                         <div class="qty-box">
                           <div class="input-group">
@@ -372,6 +395,7 @@ const counter = ref(1);
 const selectedPlan = ref("");
 const image = ref('');
 const showQuoteModal = ref(false);
+const selectedOption = ref('select');
 
 const handleGetQuote = () => {
   showQuoteModal.value = true;
@@ -404,6 +428,8 @@ const decrement = () => {
 const changeSizeVariant = (variant) => {
   selectedPlan.value = variant;
 };
+
+const updateSelect = () => {}
 
 const addToCart = (product, qty) => {
   product.price = selectedPlan?.value?.price;
