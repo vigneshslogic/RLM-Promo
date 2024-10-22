@@ -46,7 +46,7 @@ export const useProductStore = defineStore({
           priceBookEntryId: payload?.prices[0]?.priceBookEntryId,
           priceBookId: payload?.prices[0]?.priceBookId,
           priceModelId: payload?.prices[0]?.pricingModel?.id,
-          periodBoundary: payload?.prices[0]?.pricingModel?.pricingModelType ?? 'OneTime',
+          periodBoundary: payload?.prices[0]?.pricingModel?.frequency ?? 'OneTime',
         });
       }
     },

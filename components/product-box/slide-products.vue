@@ -126,7 +126,7 @@ export default {
       product.priceBookId = getDefaultPricing?.priceBookId;
       product.priceModelId = getDefaultPricing?.pricingModel?.id;
       product.quantity = 1;
-      product.periodBoundary = getDefaultPricing?.pricingModel?.pricingModelType ?? "OneTime";
+      product.periodBoundary = getDefaultPricing?.pricingModel?.frequency ?? "OneTime";
       useCartStore().addToCart(product);
 
       this.$emit("openCartModel", this.cartVal, this.cartProduct);
