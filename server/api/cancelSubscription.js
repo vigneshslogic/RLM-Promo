@@ -16,22 +16,24 @@ export default defineEventHandler(async (event) => {
                     'Content-Type': 'application/json',
                 }
             }
-        )
+        );
 
         if (response.status === 200) {
             try {
                 // make order activate after the order place immediately
-                response.data.foeEach(async(res) => {
-                    if (res?.outputValues?.cancelRecordId) {
-                        const activeUrl = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/sobjects/Order/${res?.outputValues?.cancelRecordId}`;
-                        await axios.patch(activeUrl, { Status: "Activated" }, {
-                            headers: {
-                            Authorization: `Bearer ${body.accessToken}`,
-                            "Content-Type": "application/json",
-                            },
-                        });
-                    }
-                })
+                if (response.data?.length) {
+                    response.data?.forEach(async(res) => {
+                        if (res?.outputValues?.cancelRecordId) {
+                            const activeUrl = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/sobjects/Order/${res?.outputValues?.cancelRecordId}`;
+                            await axios.patch(activeUrl, { Status: "Activated" }, {
+                                headers: {
+                                Authorization: `Bearer ${body.accessToken}`,
+                                "Content-Type": "application/json",
+                                },
+                            });
+                        }
+                    })
+                }
               } catch (error) {
                 console.error(error); //continue with the execution
               }
