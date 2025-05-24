@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
       } 
     }
 
-    console.log('currentData-->',JSON.stringify(payload));
+    console.log('Data-->',JSON.stringify(payload));
     
     const response = await axios.post(url, payload, {
       headers: {
