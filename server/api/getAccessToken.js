@@ -11,6 +11,12 @@ export default defineEventHandler(async (event) => {
   const username = config.username;
   const password = config.password;
 
+  console.log('Data-->',tokenUrl);
+  console.log('Data-->',clientId);
+  console.log('Data-->',clientSecret);
+  console.log('Data-->',username);
+  console.log('Data-->',password);
+  
   try {
     const response = await axios.post(tokenUrl, new URLSearchParams({
       grant_type: 'password',
