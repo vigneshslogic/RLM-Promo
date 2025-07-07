@@ -84,7 +84,7 @@ export default defineEventHandler(async (event) => {
           },
           OrderId: "@{refOrder.id}",
           OrderActionId: "@{refOrderAction.id}",
-          Quantity: 1,
+          Quantity: product?.quantity,
           priceBookEntryId: product?.priceBookEntryId,
           Product2Id: product?.id,
           ListPrice: product?.price,
