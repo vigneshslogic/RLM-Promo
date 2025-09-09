@@ -162,6 +162,15 @@ export default defineNuxtPlugin(() => {
     return false;
   }
 
+  const downloadInvoice = async (payload) => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const invoice = await axios.post("/api/downloadInvoice", {
+      accessToken: accessToken?.data?.access_token,
+      invoiceId: payload,
+    }, { responseType: 'blob' });
+    return invoice;
+  }
+
   const getAssets = async () => {
     const accessToken = await axios.post("/api/getAccessToken");
     const invoices = await axios.post("/api/getAssets", {
@@ -173,6 +182,18 @@ export default defineNuxtPlugin(() => {
       return invoices.data;
     }
 
+    return false;
+  }
+
+  const getPayments = async () => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const payments = await axios.post("/api/getPayments", {
+      accessToken: accessToken?.data?.access_token,
+      accountId: useCookie('userInfo')?.value?.Account?.Id,
+    });
+    if (payments.status === 200) {
+      return payments.data;
+    }
     return false;
   }
 
@@ -253,6 +274,16 @@ export default defineNuxtPlugin(() => {
     return false;
   }
 
+  const upgradeSubscription = async (payload,other) => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const upgrade = await axios.post("/api/upgradeSubscription", {
+      accessToken: accessToken?.data?.access_token,
+      accountId: useCookie('userInfo')?.value?.Account?.Id,
+      payload,
+      other
+    });
+  }
+
   return {
     provide: {
       getProducts,
@@ -263,11 +294,14 @@ export default defineNuxtPlugin(() => {
       placeOrder,
       getOrders,
       getInvoices,
+      getPayments,
+      downloadInvoice,
       getAssets,
       getCategories,
       changeQuantity,
       cancelSubscription,
       renewSubscription,
+      upgradeSubscription,
     },
   };
 });

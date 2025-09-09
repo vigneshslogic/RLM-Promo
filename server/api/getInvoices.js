@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig();
 
     try {
-        const url = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/query/?q=SELECT InvoiceNumber, DocumentNumber, InvoiceDate, DueDate, TotalChargeAmountWithTax, Balance from Invoice where BillingAccountId = '${body.accountId}' order by CreatedDate`;
+        const url = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/query/?q=SELECT Id, InvoiceNumber, DocumentNumber, InvoiceDate, DueDate, TotalChargeAmountWithTax, Balance from Invoice where BillingAccountId = '${body.accountId}' order by CreatedDate`;
 
         const response = await axios.get(url,
             {

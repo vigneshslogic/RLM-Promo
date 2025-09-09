@@ -36,6 +36,7 @@ export default defineEventHandler(async (event) => {
               Pricebook2Id: `${config?.pricebook_id}`,
               Source__c: "WebStore",
               Status: "Draft",
+              AutoRenewal__c: body?.user?.autoRenewal?.value,
               BillingCity: body?.user?.city?.value,          // Billing city
               BillingCountry: body?.user?.state?.value,                 // Billing country
               BillingState: body?.user?.state?.value,                    // Billing state

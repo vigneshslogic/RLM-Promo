@@ -56,6 +56,14 @@
                   <li class="nav-item">
                     <a
                       data-bs-toggle="tab"
+                      data-bs-target="#payments"
+                      class="nav-link"
+                      >My Payment Methods</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      data-bs-toggle="tab"
                       data-bs-target="#wishlist"
                       class="nav-link"
                       >Newsletter</a
@@ -250,6 +258,9 @@
               </div>
               <div class="tab-pane fade" id="assets">
                 <assets v-if="assets" :assets="assets?.records" :user="user"/>
+              </div>
+              <div class="tab-pane fade" id="payments">
+                <payments v-if="payments" :payments="payments?.records" :user="user"/>
               </div>
               <div class="tab-pane fade" id="invoices">
                 <myInvoices v-if="invoices" :invoices="invoices?.records" :user="user"/>
@@ -468,15 +479,17 @@ import { useAuthStore } from '~~/store/auth'
 import myOrders from './myOrders.vue';
 import myInvoices from  "./myInvoices.vue";
 import assets from './assets.vue';
+import payments from './mypayments.vue';
 
 export default {
-  components: { myOrders, myInvoices, assets },
+  components: { myOrders, myInvoices, assets, payments },
   data() {
     return {
       orders: null,
       invoices: null,
       assets: null,
       user: {},
+      payments: null,
     }
   },
   
@@ -501,7 +514,14 @@ export default {
       } catch {
         console.error('error', error )
       }
-    }
+    },
+    async getAuthPayments() {
+      try {
+        this.payments = await useAuthStore().getPayments();
+      } catch (error) {
+        console.error('error', error )
+      }
+    },
   },
 
   mounted() {
@@ -509,6 +529,7 @@ export default {
     this.getAuthOrders();
     this.getAuthInvoices();
     this.getAuthAssets();
+    this.getAuthPayments();
   }
 }
 </script>

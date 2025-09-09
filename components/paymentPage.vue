@@ -193,6 +193,20 @@
                         >
                       </div>
                       <div class="form-group col-md-12 col-sm-12">
+                        <div class="field-label">Auto Renewal</div>
+                        <div class="form-check">
+                          <input 
+                            type="checkbox" 
+                            id="auto-renewal" 
+                            v-model="user.autoRenewal.value" 
+                            class="form-check-input"
+                          />
+                          <label for="auto-renewal" class="form-check-label">
+                            Enable automatic renewal for this subscription
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form-group col-md-12 col-sm-12">
                         <button
                           v-if="useCookie('userLogin').value"
                           class="btn btn-solid"
@@ -257,6 +271,7 @@ export default {
         cardNumber: { value: "", errormsg: "" },
         expiryDate: { value: "", errormsg: "" },
         securityCode: { value: "", errormsg: "" },
+        autoRenewal: { value: true },
       },
       isLogin: false,
       // paypal: {

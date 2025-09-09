@@ -37,6 +37,7 @@ export default defineEventHandler(async (event) => {
     });
 
     if (response.status === 200) {
+      response.data.result = response.data.result.filter((prod) => prod.isActive);
       return response.data;
     }
     

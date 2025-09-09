@@ -19,9 +19,21 @@ export const useAuthStore = defineStore({
             return response;
         },
 
+        downloadInvoice: async (payload) => {
+            const { $downloadInvoice } = useNuxtApp();
+            const response = await $downloadInvoice(payload);
+            return response;
+        },
+
         getAssets: async (state) => {
             const { $getAssets } = useNuxtApp();
             const response = await $getAssets();
+            return response;
+        },
+
+        getPayments: async (state) => {
+            const { $getPayments } = useNuxtApp();
+            const response = await $getPayments();
             return response;
         },
 
@@ -40,6 +52,12 @@ export const useAuthStore = defineStore({
         renewSubscription: async (payload) => {
             const { $renewSubscription } = useNuxtApp();
             const response = await $renewSubscription(payload);
+            return response;
+        },
+        
+        upgradeSubscription: async (payload,other) => {
+            const { $upgradeSubscription } = useNuxtApp();
+            const response = await $upgradeSubscription(payload,other);
             return response;
         }
     }

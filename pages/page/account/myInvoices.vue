@@ -23,7 +23,14 @@
                         <span>{{ item?.DocumentNumber }}</span> 
                       </div>
                       <div>
-                        <button class="btn btn-solid btn-sm p-1 mx-1">Download Invoice</button>
+                        <button
+                          class="btn btn-solid btn-sm p-1 mx-1"
+                          @click="downloadInvoice(item.Id)"
+                          :disabled="downloadingInvoices.includes(item.Id)"
+                        >
+                          <span v-if="downloadingInvoices.includes(item.Id)" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                          {{ downloadingInvoices.includes(item.Id) ? 'Downloading...' : 'Download Invoice' }}
+                        </button>
                         <button class="btn btn-solid btn-sm p-1 mx-1">Pay Now</button>
                       </div>
                     </div>
@@ -68,17 +75,63 @@
   </template>
   
   <script>
+  import { useToast } from "vue-toastification";
+  import { useAuthStore } from '~~/store/auth'
   export default {
-      props: {
-          invoices: {
-              type: Array,
-              default: () => [],
-          },
-          user: {
-              type: Object,
-              default: () => {}
-          },
+    props: {
+        invoices: {
+          type: Array,
+          default: () => [],
+        },
+        user: {
+          type: Object,
+          default: () => {}
+        },
+    },
+    data() {
+      return {
+        downloadingInvoices: [],
+        toast: useToast()
       }
+    },
+    methods: {
+      async downloadInvoice(invoiceId) {
+        this.downloadingInvoices.push(invoiceId);
+        
+        try {
+          const downloadPromise = useAuthStore().downloadInvoice(invoiceId);
+
+          downloadPromise.then(res => {
+            const blob = new Blob([res.data], { type: res.headers["content-type"] });
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            const disposition = res.headers["content-disposition"];
+            let fileName = "invoice.pdf";
+            if (disposition && disposition.indexOf("filename=") !== -1) {
+              fileName = disposition.split("filename=")[1].replace(/"/g, "");
+            }
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => {
+              window.URL.revokeObjectURL(url);
+            }, 100);
+            this.toast.success("Invoice downloaded successfully!");
+          }).catch(err => {
+            const message = err.response?.data?.message || "No invoice file found.";
+            this.toast.warning(message);
+          }).finally(() => {
+            this.downloadingInvoices = this.downloadingInvoices.filter(id => id !== invoiceId);
+          });  
+        } catch (err) {
+          console.error("Download initialization failed:", err);
+          this.toast.error("Unable to start download.");
+          this.downloadingInvoices = this.downloadingInvoices.filter(id => id !== invoiceId);
+        }
+      },
+    },
   }
   </script>
-  
