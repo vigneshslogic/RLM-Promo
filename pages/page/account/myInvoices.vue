@@ -75,7 +75,6 @@
   </template>
   
   <script>
-  import { useToast } from "vue-toastification";
   import { useAuthStore } from '~~/store/auth'
   export default {
     props: {
@@ -91,7 +90,6 @@
     data() {
       return {
         downloadingInvoices: [],
-        toast: useToast()
       }
     },
     methods: {
@@ -119,16 +117,25 @@
             setTimeout(() => {
               window.URL.revokeObjectURL(url);
             }, 100);
-            this.toast.success("Invoice downloaded successfully!");
+            useNuxtApp().$showToast({
+              msg:"Invoice downloaded successfully!",
+              type: 'success'
+            });
           }).catch(err => {
             const message = err.response?.data?.message || "No invoice file found.";
-            this.toast.warning(message);
+            useNuxtApp().$showToast({
+              msg:message,
+              type: 'warning'
+            });
           }).finally(() => {
             this.downloadingInvoices = this.downloadingInvoices.filter(id => id !== invoiceId);
           });  
         } catch (err) {
           console.error("Download initialization failed:", err);
-          this.toast.error("Unable to start download.");
+          useNuxtApp().$showToast({
+              msg:"Unable to start download.",
+              type: 'error'
+            });
           this.downloadingInvoices = this.downloadingInvoices.filter(id => id !== invoiceId);
         }
       },
