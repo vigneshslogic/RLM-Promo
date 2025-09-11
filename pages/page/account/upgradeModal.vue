@@ -85,7 +85,7 @@
                                                                 <div
                                                                     class="card-body d-flex flex-column justify-content-between">
                                                                     <div>
-                                                                        <h5 class="card-title">{{ product?.Name }}
+                                                                        <h5 class="card-title">{{ product?.name }}
                                                                         </h5>
                                                                         <p class="card-text text-muted">
                                                                             £ {{ Number(product?.prices?.[0]?.price

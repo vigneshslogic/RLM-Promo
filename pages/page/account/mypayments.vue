@@ -31,7 +31,7 @@
                                                 <ul class="dropdown-menu">
                                                     <li>
                                                         <a class="dropdown-item text-black" href="#">
-                                                            Change Payment
+                                                            Edit Payment Method
                                                         </a>
                                                     </li>
                                                 </ul>
