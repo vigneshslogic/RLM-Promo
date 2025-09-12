@@ -16,8 +16,8 @@
                       <option value>Select catalog</option>
                       <option 
                         v-for="catalog in catalogs?.catalog"
-                        :value="catalog.id"
-                        v-html="catalog?.name"
+                        :value="catalog.Id"
+                        v-html="catalog?.Name"
                       />
                     </select>
                   </div>

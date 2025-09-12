@@ -151,6 +151,19 @@ export default defineEventHandler(async (event) => {
         }
 
         try {
+          const orderurl = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/query/?q=SELECT Id, OrderNumber, Status from Order where Id = '${response.data?.orderId}'`;
+          const responseOrder = await axios.get(orderurl, {
+            headers: {
+              Authorization: `Bearer ${body?.accessToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+          
+          if (responseOrder?.data?.records?.length) {
+            const orderRecord = responseOrder.data.records[0];
+            response.data.OrderNumber = orderRecord.OrderNumber;
+            response.data.Status = orderRecord.Status;
+          }
           // make order activate after the order place immediately
           const activeUrl = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/sobjects/Order/${response.data?.orderId}`;
           await axios.patch(activeUrl, { Status: "Activated" }, {
@@ -160,7 +173,11 @@ export default defineEventHandler(async (event) => {
             },
           });
         } catch (error) {
-          console.error(error); //continue with the execution
+            if (error.response && error.response.status === 400) {
+              console.error("Order activation failed (400):", JSON.stringify(error.response.data, null, 2));
+            } else {
+              console.error("Order activation error:", error);
+            }
         }
         return response.data;
       }

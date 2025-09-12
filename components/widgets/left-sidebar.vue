@@ -14,20 +14,20 @@
         class="sidebar-menu"
       >
         <li v-for="catalog in categories?.catalog">
-          <a :href="getCategories(catalog?.name).length ? 'javascript:void(0)' : `/collection/catalog/${catalog?.id}`" @click="setActive(`${catalog?.name}`)"> 
-            <span v-html="catalog?.name"></span>
-            <span class="sub-arrow" v-if="getCategories(catalog?.name).length"></span>
+          <a :href="getCategories(catalog?.Name).length ? 'javascript:void(0)' : `/collection/catalog/${catalog?.Id}`" @click="setActive(`${catalog?.Name}`)"> 
+            <span v-html="catalog?.Name"></span>
+            <span class="sub-arrow" v-if="getCategories(catalog?.Name).length"></span>
           </a>
           <ul
             class="mega-menu clothing-menu"
-            :class="{ opensidesubmenu: isActive(`${catalog?.name}`) }"
-            v-if="getCategories(catalog?.name).length"
+            :class="{ opensidesubmenu: isActive(`${catalog?.Name}`) }"
+            v-if="getCategories(catalog?.Name).length"
           >
             <li>
               <div class="row g-sm-4 g-3">
                 <div
                   class="col-xl-4"
-                  v-for="cat in getCategories(catalog?.name)"
+                  v-for="cat in getCategories(catalog?.Name)"
                 >
                   <div class="link-section">
                     <h5>{{ cat?.Name }}</h5>
