@@ -197,6 +197,19 @@ export default defineNuxtPlugin(() => {
     return false;
   }
 
+  const createPayment = async (payload) => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const payments = await axios.post("/api/createPayment", {
+      accessToken: accessToken?.data?.access_token,
+      accountId: useCookie('userInfo')?.value?.Account?.Id,
+      payload,
+    });
+    if (payments.status === 200) {
+      return payments.data;
+    }
+    return false;
+  }
+
   const getCategories = async () => {
 
     const accessToken = await axios.post("/api/getAccessToken");
@@ -295,6 +308,7 @@ export default defineNuxtPlugin(() => {
       getOrders,
       getInvoices,
       getPayments,
+      createPayment,
       downloadInvoice,
       getAssets,
       getCategories,
