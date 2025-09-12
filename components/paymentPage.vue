@@ -161,8 +161,24 @@
                       </div>
 
                       <div class="form-group col-md-12 col-sm-12">
-                        <input type="checkbox" id="save-payment" v-model="saveForFuture" checked />
-                        <label for="save-payment">Save this payment method for future use</label>
+                        <div class="form-check">
+                          <input type="checkbox" id="save-payment" v-model="user.autoRenewal.value"
+                            class="form-check-input" />
+                          <label for="save-payment" class="form-check-label">
+                            Save this payment method for future use
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-12 col-sm-12">
+                      <div class="field-label">Auto Renewal</div>
+                      <div class="form-check">
+                        <input type="checkbox" id="auto-renewal" v-model="user.autoRenewal.value"
+                          class="form-check-input" />
+                        <label for="auto-renewal" class="form-check-label">
+                          Enable automatic renewal for this subscription
+                        </label>
                       </div>
                     </div>
 
