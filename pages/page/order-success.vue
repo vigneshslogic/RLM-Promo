@@ -23,11 +23,13 @@
           <div class="col-md-12">
             <div class="success-text">
               <i class="fa fa-check-circle" aria-hidden="true"></i>
-              <h2>thank you</h2>
+              <h2>Payment Successful</h2>
               <p>
-                Payment is successfully processing your order.
+                Thank you! Your payment has been successfully processed, and your order is confirmed.
               </p>
-              <p>Transaction ID: {{ order?.requestId }}</p>
+              <p>
+                Order Number: <strong>#{{ order?.OrderNumber }}</strong>
+              </p>
             </div>
           </div>
         </div>

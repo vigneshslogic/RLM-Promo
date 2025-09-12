@@ -26,8 +26,8 @@
               <ul class="category-list">
                 <li v-for="(catalog, index) in catalogs?.catalog" :key="index">
                   <nuxt-link
-                    :to="{ path: '/collection/catalog/' + catalog?.id }"
-                    ><span v-html="catalog.name" /></nuxt-link
+                    :to="{ path: '/collection/catalog/' + catalog?.Id }"
+                    ><span v-html="catalog.Name" /></nuxt-link
                     >
                 </li>
               </ul>

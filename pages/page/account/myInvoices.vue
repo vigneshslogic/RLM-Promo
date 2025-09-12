@@ -1,78 +1,89 @@
 <template>
-    <div class="dashboard-right">
-      <div class="dashboard">
-        <div class="page-title">
-          <h2>My Invoices</h2>
-        </div>
-        <div class="welcome-msg">
-          <p>Hello, {{ user?.FirstName }} {{  user?.LastName }}</p>
-          <p>
-            From your Invoices you have the ability to view your all invoices and
-            status of invoice.
-          </p>
-        </div>
-        <div class="box-account box-info">
-          <div>
-            <div class="box">
-              <div class="row mx-auto">
-                <div v-if="invoices.length">
-                    <div class="card my-3" v-for="(item, index) in invoices" :key="index">
-                    <div class="card-header d-flex justify-content-between">
-                      <div>
-                        <span class="fw-bold pe-3">Invoice Document No:</span>
-                        <span>{{ item?.DocumentNumber }}</span> 
+  <div class="dashboard-right">
+    <div class="dashboard">
+      <div class="page-title">
+        <h2>My Invoices</h2>
+      </div>
+      <div class="welcome-msg">
+        <p>Hello, {{ user?.FirstName }} {{ user?.LastName }}</p>
+        <p>
+          From your Invoices you have the ability to view your all invoices and
+          status of invoice.
+        </p>
+      </div>
+      <div class="box-account box-info">
+        <div>
+          <div class="box">
+            <div class="row mx-auto">
+              <div v-if="invoices.length">
+                <div class="card my-3" v-for="(item, index) in invoices" :key="index">
+                  <div class="card-header d-flex justify-content-between">
+                    <div>
+                      <span class="fw-bold pe-3">Invoice Document No:</span>
+                      <span>{{ item?.DocumentNumber }}</span>
+                    </div>
+                    <div>
+                      <button 
+                        class="btn btn-solid btn-sm p-1 mx-1" 
+                        @click="viewInvoice(item.Id)"
+                        :disabled="viewingInvoices.includes(item.Id)"
+                      >
+                        <span 
+                          v-if="viewingInvoices.includes(item.Id)" 
+                          class="spinner-border spinner-border-sm me-2"
+                          role="status" 
+                          aria-hidden="true"
+                        ></span>
+                        {{ viewingInvoices.includes(item.Id) ? 'Opening...' : 'View Invoice' }}
+                      </button>
+                      <button class="btn btn-solid btn-sm p-1 mx-1" @click="downloadInvoice(item.Id)"
+                        :disabled="downloadingInvoices.includes(item.Id)">
+                        <span v-if="downloadingInvoices.includes(item.Id)" class="spinner-border spinner-border-sm me-2"
+                          role="status" aria-hidden="true"></span>
+                        {{ downloadingInvoices.includes(item.Id) ? 'Downloading...' : 'Download Invoice' }}
+                      </button>
+                      <button class="btn btn-solid btn-sm p-1 mx-1">Pay Now</button>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Invoice Date</span>
+                        <span>{{ item?.InvoiceDate }}</span>
                       </div>
-                      <div>
-                        <button
-                          class="btn btn-solid btn-sm p-1 mx-1"
-                          @click="downloadInvoice(item.Id)"
-                          :disabled="downloadingInvoices.includes(item.Id)"
-                        >
-                          <span v-if="downloadingInvoices.includes(item.Id)" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                          {{ downloadingInvoices.includes(item.Id) ? 'Downloading...' : 'Download Invoice' }}
-                        </button>
-                        <button class="btn btn-solid btn-sm p-1 mx-1">Pay Now</button>
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Invoice Due Date</span>
+                        <span>{{ item?.DueDate }}</span>
+                      </div>
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Total Amount with Tax</span>
+                        <span>£&nbsp;&nbsp;{{ item?.TotalChargeAmountWithTax }}</span>
+                      </div>
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Balance</span>
+                        <span>£&nbsp;&nbsp;{{ item?.Balance }}</span>
+                      </div>
+                      <div class="col d-flex flex-column">
+                        <span class="fw-bold">Total Amount</span>
+                        <span>£&nbsp;&nbsp;{{ Number(item?.TotalChargeAmountWithTax?.toFixed(2)) ?? 0 }}</span>
                       </div>
                     </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col d-flex flex-column">
-                            <span class="fw-bold">Invoice Date</span>
-                            <span>{{ item?.InvoiceDate }}</span>
-                        </div>
-                        <div class="col d-flex flex-column">
-                            <span class="fw-bold">Invoice Due Date</span>
-                            <span>{{ item?.DueDate }}</span>
-                        </div>
-                        <div class="col d-flex flex-column">
-                            <span class="fw-bold">Total Amount with Tax</span>
-                            <span>£&nbsp;&nbsp;{{ item?.TotalChargeAmountWithTax }}</span>
-                        </div>
-                        <div class="col d-flex flex-column">
-                            <span class="fw-bold">Balance</span>
-                            <span>£&nbsp;&nbsp;{{ item?.Balance }}</span>
-                        </div>
-                        <div class="col d-flex flex-column">
-                            <span class="fw-bold">Total Amount</span>
-                            <span>£&nbsp;&nbsp;{{ Number(item?.TotalChargeAmountWithTax?.toFixed(2)) ?? 0 }}</span>
-                        </div>
-                      </div>
-                    </div>
-                    </div>
+                  </div>
                 </div>
-                <div class="col-sm-12 empty-cart-cls text-center py-5" v-else>
-                  <img src='/images/icon-empty-cart.png' class="img-fluid" alt="empty cart" />
-                  <h3 class="mt-3">
-                    <strong>You have no invoices at the moment!</strong>
-                  </h3>
-                </div>
+              </div>
+              <div class="col-sm-12 empty-cart-cls text-center py-5" v-else>
+                <img src='/images/icon-empty-cart.png' class="img-fluid" alt="empty cart" />
+                <h3 class="mt-3">
+                  <strong>You have no invoices at the moment!</strong>
+                </h3>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
   import { useAuthStore } from '~~/store/auth'
@@ -90,9 +101,46 @@
     data() {
       return {
         downloadingInvoices: [],
+        viewingInvoices: [],
       }
     },
     methods: {
+      async viewInvoice(invoiceId) {
+         if (this.viewingInvoices.includes(invoiceId)) return; 
+         this.viewingInvoices.push(invoiceId);
+        try {
+          const res = await useAuthStore().downloadInvoice(invoiceId);
+          const blob = new Blob([res.data], { type: "application/pdf" });
+          const url = window.URL.createObjectURL(blob);
+
+           const disposition = res.headers["content-disposition"];
+            let fileName = "invoice.pdf";
+            if (disposition && disposition.includes("filename=")) {
+              fileName = disposition.split("filename=")[1].replace(/"/g, "");
+            }
+
+          const newTab = window.open();
+          if (newTab) {
+            newTab.document.write(`
+              <html>
+                <head><title>${fileName}</title></head>
+                <body style="margin:0">
+                  <embed src="${url}" type="application/pdf" width="100%" height="100%" />
+                </body>
+              </html>
+            `);
+          }
+          setTimeout(() => window.URL.revokeObjectURL(url), 60 * 1000);
+        } catch (err) {
+          const message = err.response?.data?.message || "Unable to preview invoice.";
+          useNuxtApp().$showToast({
+            msg: message,
+            type: "warning",
+          });
+        } finally {
+          this.viewingInvoices = this.viewingInvoices.filter(id => id !== invoiceId);
+        }
+      },
       async downloadInvoice(invoiceId) {
         this.downloadingInvoices.push(invoiceId);
         

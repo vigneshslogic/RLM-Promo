@@ -216,25 +216,18 @@ export default defineNuxtPlugin(() => {
     const catalogs = await axios.post("/api/getCatalogs", {
       accessToken: accessToken?.data?.access_token,
     });
-
-    if (catalogs.status === 200) {
-      if (catalogs?.data?.result?.length) {
-
-        const allCatalogs = map(catalogs?.data?.result, 'name');
-        
+    if (catalogs?.data?.done === true) {
+      if (catalogs?.data?.records) {
+        const allCatalogs = map(catalogs?.data?.records, 'Name');
           const categories = await axios.post("/api/getCategories", {
             accessToken: accessToken?.data?.access_token,
             catalog: `(${allCatalogs.map(name => `'${name}'`).join(', ')})`
           });
-
-          if (categories?.status === 200) {
+          if (categories?.data?.records || categories?.status === 200) {
             return {
-              catalog: catalogs?.data?.result,
+              catalog: catalogs?.data?.records,
               categories: categories?.data?.records,
             }
-          }
-          return {
-            catalog: result?.name
           }
       }
       return [];
