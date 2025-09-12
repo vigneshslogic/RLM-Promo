@@ -72,25 +72,27 @@ export default {
     },
     methods: {
         async onSubmit() {
-            const customer = await this.$loginUser({
-                email: this.user.email?.value,
-                password: this.user.password?.value,
-            });
+             try {
+                const customer = await this.$loginUser({
+                    email: this.user.email?.value,
+                    password: this.user.password?.value,
+                });
+                if (customer.status !== 200) {
+                    this.errormsg = 'User does not exists on the platform. Can you register and try again?';
+                } 
 
-            if (customer.status !== 200) {
-                this.errormsg = 'User does not exists on the platform. Can you register and try again?';
-            } else {
                 UserAuth.localLogin(customer.data);
-                useCookie('userLogin').value === true;
     
                 if (this.cart.length > 0) {
-                    this.$router.replace('/page/account/checkout');
+                    await this.$router.replace('/page/account/checkout');
                 }
                 else {
-                    this.$router.replace('/');
+                   await this.$router.replace('/');
                 }
 
-                useCookie('userLogin').value === true
+            } catch(err){
+                console.error('Login failed:', err);
+                this.errormsg = 'Something went wrong. Please try again later.';
             }
 
         },
