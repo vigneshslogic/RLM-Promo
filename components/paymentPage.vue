@@ -80,6 +80,41 @@
                       <span class="count">£ {{ cartTotal }}</span>
                     </li>
                     <li>
+                      Promotion Code
+                      <div class="flex flex-row items-center mt-2">
+                        <input
+                          type="text"
+                          v-model="promoCode"
+                          maxlength="12"
+                          placeholder="Enter Promo code"
+                          class="border rounded px-2 py-1 flex-grow mr-2 mb-2"
+                          :disabled="couponApplied"
+                        />
+                        <button
+                          v-if="!couponApplied"
+                          class="btn btn-sm btn-solid whitespace-nowrap"
+                          @click="applyCoupon"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                      <div
+                        v-if="couponApplied"
+                        class="flex justify-between items-center mt-2"
+                      >
+                        <span class="text-red-600 font-medium flex items-center">
+                          Coupon applied (10% off)
+                          <button
+                            @click="removeCoupon"
+                            class="ml-2 text-red-500 hover:text-red-700"
+                          >
+                            ✕
+                          </button>
+                        </span>
+                        <span class="count">-£{{ discountAmount }}</span>
+                      </div>
+                    </li>
+                    <li>
                       Shipping
                       <div class="shipping">
                         <div class="shopping-option">
@@ -96,7 +131,7 @@
                   <ul class="sub-total">
                     <li>
                       Total
-                      <span class="count">£ {{ cartTotal }}</span>
+                      <span class="count">£ {{ discountedTotal  }}</span>
                     </li>
                   </ul>
                 </div>
@@ -220,6 +255,18 @@ export default {
     curr() {
       return useProductStore().changeCurrency;
     },
+    discountedTotal() {
+      if (this.couponApplied) {
+        return (this.cartTotal * (1 - this.discountRate)).toFixed(2);
+      }
+      return this.cartTotal.toFixed(2);
+    },
+    discountAmount() {
+      if (this.couponApplied) {
+        return (this.cartTotal * this.discountRate).toFixed(2);
+      }
+      return 0;
+    }
   },
   data() {
     return {
@@ -253,6 +300,9 @@ export default {
       selectedPaymentId: null,
       saveForFuture: true,
       showNewCard: false,
+      promoCode: "",
+      couponApplied: false,
+      discountRate: 0.1,
     };
   },
 
@@ -329,6 +379,7 @@ export default {
         this.onSubmit();
       } else if (this.isLogin) {
         this.payment = false;
+        this.user.discount = this.couponApplied ? 10 : 0;
         const status = await useCartStore().generateOrder(this.user);
 
         try {
@@ -532,6 +583,13 @@ export default {
       }
     },
 
+    getItemTotal(item) {
+      if (item?.periodBoundary?.toLowerCase() === 'months') {
+        return (item.price * 12 * item.quantity).toFixed(2);
+      }
+      return (item.price * item.quantity).toFixed(2);
+    },
+
     detectCardType(number) {
       const re = {
         visa: /^4[0-9]{6,}$/,
@@ -562,6 +620,21 @@ export default {
       this.user.cardNumber.value = "";
       this.user.expiryDate.value = "";
       this.user.securityCode.value = "";
+    },
+
+    applyCoupon() {
+      if (!this.promoCode) {
+        useNuxtApp().$showToast({ msg: "Enter a promo code.", type: "warning" });
+        return;
+      }
+      this.couponApplied = true;
+      useNuxtApp().$showToast({ msg: "Promo applied! 10% discount.", type: "success" });
+    },
+    
+    removeCoupon() {
+      this.couponApplied = false;
+      this.promoCode = "";
+      useNuxtApp().$showToast({ msg: "Promo removed.", type: "info" });
     },
   },
 

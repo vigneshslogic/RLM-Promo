@@ -91,6 +91,9 @@ export default defineEventHandler(async (event) => {
           ListPrice: product?.price,
           UnitPrice: product?.price,
           NetUnitPrice: product?.price,
+          Discount:  parseFloat(
+                            ((body?.user?.discount || 0) / (body?.products?.length || 1)).toFixed(2)
+                ),
           PeriodBoundary: "Anniversary",
           ServiceDate: today.toISOString().split('T')[0],
         },
