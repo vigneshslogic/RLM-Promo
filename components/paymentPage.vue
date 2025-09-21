@@ -79,39 +79,32 @@
                       Subtotal
                       <span class="count">£ {{ cartTotal }}</span>
                     </li>
-                    <li>
-                      Promotion Code
-                      <div class="flex flex-row items-center mt-2">
-                        <input
-                          type="text"
-                          v-model="promoCode"
-                          maxlength="12"
-                          placeholder="Enter Promo code"
-                          class="border rounded px-2 py-1 flex-grow mr-2 mb-2"
-                          :disabled="couponApplied"
-                        />
-                        <button
-                          v-if="!couponApplied"
-                          class="btn btn-sm btn-solid whitespace-nowrap"
-                          @click="applyCoupon"
-                        >
-                          Apply
-                        </button>
+                    <li class="promotion-code">
+                      <div class="promo-row">
+                        <span class="promo-label">Promotion Code</span>
+                        <div class="promo-input">
+                          <input
+                            type="text"
+                            v-model="promoCode"
+                            maxlength="12"
+                            placeholder="Enter Promo code"
+                            :disabled="couponApplied"
+                          />
+                          <button
+                            v-if="!couponApplied"
+                            @click="applyCoupon"
+                          >
+                            Apply
+                          </button>
+                        </div>
                       </div>
                       <div
                         v-if="couponApplied"
-                        class="flex justify-between items-center mt-2"
+                        class="coupon-applied"
                       >
-                        <span class="text-red-600 font-medium flex items-center">
-                          Coupon applied (10% off)
-                          <button
-                            @click="removeCoupon"
-                            class="ml-2 text-red-500 hover:text-red-700"
-                          >
-                            ✕
-                          </button>
-                        </span>
+                        <span>Coupon applied (10% off)</span>
                         <span class="count">-£{{ discountAmount }}</span>
+                        <button @click="removeCoupon">✕</button>
                       </div>
                     </li>
                     <li>
@@ -655,3 +648,86 @@ export default {
   },
 };
 </script>
+<style scoped>
+.sub-total li.promotion-code .promo-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.sub-total li.promotion-code .promo-input {
+  display: flex;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.sub-total li.promotion-code .promo-input input {
+  flex: 1;
+  padding: 0.25rem 0.5rem;
+}
+
+.sub-total li.promotion-code .promo-input button {
+  white-space: nowrap;
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.sub-total li.promotion-code .promo-input button:hover {
+  background-color: #e74c3c;
+}
+
+.sub-total li.promotion-code .coupon-applied {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background-color: #e6ffed;
+  border: 1px solid #a6f4b0;
+  border-radius: 0.25rem;
+  font-size: 14px;
+  color: #2f8f46;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sub-total li.promotion-code .coupon-applied span:first-child {
+  flex: 1;
+}
+
+.sub-total li.promotion-code .coupon-applied .count {
+  font-weight: 600;
+  color: #e74c3c;
+  font-size: 16px;
+  text-align: right;
+  white-space: nowrap;
+  margin-right: 0.5rem;
+}
+
+.sub-total li.promotion-code .coupon-applied button {
+  background: transparent;
+  color: #666;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  line-height: 1;
+}
+
+.sub-total li.promotion-code .coupon-applied button:hover {
+  color: #000;
+  border-color: #999;
+  background-color: #f5f5f5;
+}
+</style>
