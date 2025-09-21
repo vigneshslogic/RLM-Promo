@@ -356,20 +356,6 @@ export default {
       this.isLogin = useCookie("userLogin").value;
       if (!this.isLogin) {
         this.$router.replace("/page/account/login");
-      } else if (
-        this.user.firstName.errormsg ||
-        this.user.lastName.errormsg ||
-        this.user.city.errormsg ||
-        this.user.pincode.errormsg ||
-        this.user.state.errormsg ||
-        this.user.phone.errormsg ||
-        this.user.email.errormsg ||
-        this.user.address.errormsg ||
-        this.user.cardNumber.errormsg ||
-        this.user.expiryDate.errormsg ||
-        this.user.securityCode.errormsg
-      ) {
-        this.onSubmit();
       } else if (this.isLogin) {
         this.payment = false;
         this.user.discount = this.couponApplied ? 10 : 0;
