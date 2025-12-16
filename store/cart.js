@@ -24,9 +24,12 @@ export const useCartStore = defineStore({
           name: payload?.name,
           image: payload?.displayUrl,
           price: payload?.price,
+          listPrice: payload?.listPrice,
           priceBookEntryId: payload?.priceBookEntryId,
           priceBookId: payload?.priceBookId,
           priceModelId: payload?.priceModelId,
+          pricingModelType: payload?.pricingModelType,
+          selectedAttribute: payload?.selectedAttribute ?? null,
           periodBoundary: payload?.periodBoundary ?? 'OneTime',
           quantity: qty,
         });

@@ -290,6 +290,18 @@ export default defineNuxtPlugin(() => {
     });
   }
 
+  const attributePricing = async (payload) => {
+    const accessToken = await axios.post("/api/getAccessToken");
+    const pricing = await axios.post("/api/attributePricing", {
+      accessToken: accessToken?.data?.access_token,
+      payload
+    });
+    if (pricing.status === 200){
+      return pricing.data;
+    }
+    return pricing.data;
+  }
+
   return {
     provide: {
       getProducts,
@@ -309,6 +321,7 @@ export default defineNuxtPlugin(() => {
       cancelSubscription,
       renewSubscription,
       upgradeSubscription,
+      attributePricing,
     },
   };
 });

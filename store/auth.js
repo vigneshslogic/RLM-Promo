@@ -65,6 +65,12 @@ export const useAuthStore = defineStore({
             const { $upgradeSubscription } = useNuxtApp();
             const response = await $upgradeSubscription(payload,other);
             return response;
+        },
+
+        attributePricing: async (payload) => {
+            const { $attributePricing } = useNuxtApp();
+            const response = await $attributePricing(payload);
+            return response;
         }
     }
 })
