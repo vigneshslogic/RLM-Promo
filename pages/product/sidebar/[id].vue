@@ -23,7 +23,7 @@
                         <img
                           class="img-fluid bg-img"
                           :src="image"
-                          />
+                        />
                       </swiper-slide>
                     </swiper>
                   </div>
@@ -32,7 +32,7 @@
                       <h2>{{ getDetail?.name }}</h2>
 
                       <h4 v-if="getDetail?.nodeType === 'bundleProduct'" class="text-danger">Request for detail pricing</h4>
-                      <h3 v-else>£{{ Number(selectedPlan?.price?.toFixed(2)) ?? 0 }}</h3>
+                      <h3 v-else>£{{ Number(calculatedPrice?.toFixed(2)) ?? 0 }}</h3>
                       
                       <div class="product-description border-product">
                         <h6 class="product-title size-text">select plan</h6>
@@ -53,7 +53,7 @@
                                 href="javascript:void(0)"
                                 @click="changeSizeVariant(price)"
                               >
-                                {{ price?.pricingModel?.frequency ?? 'One Time' }}
+                                {{ getPlanLabel(price) }}
                               </a>
                             </li>
                           </ul>
@@ -73,7 +73,7 @@
                                 href="javascript:void(0)"
                                 @click="changeSizeVariant(price)"
                               >
-                                {{ price?.pricingModel?.frequency ?? 'One Time' }}
+                                {{ getPlanLabel(price) }}
                               </a>
                             </li>
                           </ul>
@@ -82,18 +82,18 @@
                         <div v-if="getDetail?.attributes" class="my-3 w-50">
                           <div v-for="(item, index) in getDetail?.attributes" :key="index">
                             <div v-if="item.dataType === 'PICKLIST'">
-                              <h6 class="product-title size-text">Select {{ item.name }}</h6>
+                              <h6 class="product-title size-text">Select {{ item.attributeNameOverride || item.name }}</h6>
                               <select
                                 class="form-select"
                                 aria-label="Default select example"
-                                v-model="selectedOption"
-                                @change="updateSelect"
+                                v-model="selectedAttribute"
+                                @change="updateSelect(item)"
                               >
-                              <option selected value="select" hidden>Please select</option>
+                                <option :value="null" hidden>Please select {{ item.attributeNameOverride || item.name }}</option>
                                 <option
                                   v-for="(option, i) in item?.attributePickList?.values"
-                                  :kye="i"
-                                  :value="option?.id"
+                                  :key="i"
+                                  :value="option?.code"
                                 >
                                   {{ option?.displayValue }}
                                 </option>
@@ -381,22 +381,27 @@
 
 <script setup>
 import "swiper/css";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useProductStore } from "~~/store/products";
 import { useRoute } from "vue-router";
 import { useCartStore } from "~~/store/cart";
+import { useAuthStore } from '~~/store/auth';
 import pkg from 'lodash';
 
 const { find } = pkg;
+const { $showToast } = useNuxtApp();
 
 const getDetail = ref(null);
 const route = useRoute();
 const counter = ref(1);
-const selectedPlan = ref("");
+const selectedPlan = ref(null);
 const image = ref('');
 const showQuoteModal = ref(false);
-const selectedOption = ref('select');
 
+const selectedAttribute = ref(null);
+const calculatedPrice = ref(0);
+const userInfo = useCookie('userInfo');
+const picklistAttributeDef = ref(null);
 const handleGetQuote = () => {
   showQuoteModal.value = true;
 };
@@ -405,17 +410,77 @@ const closeQuoteModal = () => {
   showQuoteModal.value = false;
 }
 
+const calculateAttributePrice = async () => {
+  if (!selectedPlan.value) {
+    calculatedPrice.value = 0;
+    return;
+  }
+
+  const basePrice = selectedPlan.value.price;
+  calculatedPrice.value = basePrice;
+
+  if (selectedAttribute.value && picklistAttributeDef.value?.isPriceImpacting) {
+    
+    if (selectedPlan.value?.pricingModel) {
+        
+        try {
+            const pricingBody = {
+                accessToken: userInfo.value?.accessToken, 
+                productId: getDetail.value.id,
+                productSellingModelId: selectedPlan.value.pricingModel?.id, 
+                sellingModelType: selectedPlan.value.pricingModel?.pricingModelType,
+                attributeName: picklistAttributeDef.value.name,
+                attributeValue: selectedAttribute.value,
+                basePrice: basePrice
+            };
+            
+             const response = await useAuthStore().attributePricing(pricingBody);
+
+            if (response.success) {
+                calculatedPrice.value = response.finalPrice;
+                $showToast({ msg: `Price updated to: £${response.finalPrice.toFixed(2)}`, type: "success" });
+            } else {
+                console.warn('Attribute pricing API returned no adjusted price. Keeping base price.');
+            }
+
+        } catch (error) {
+            console.error('Error during attribute pricing calculation:', error);
+            //$showToast({ msg: "Error calculating attribute price. Reverting to list price.", type: "error" });
+            calculatedPrice.value = basePrice; 
+        }
+    }
+  } else {
+    calculatedPrice.value = basePrice;
+  }
+};
+
 onMounted(async () => {
   getDetail.value = await useProductStore().getProductById(route.params.id);
   image.value = getDetail.value?.displayUrl?.replace(/&amp;/g, '&') ?? '/images/6.jpg';
 
-  if (!find(getDetail?.value?.prices, { isDefault: true }) && getDetail?.value?.prices) {
-    selectedPlan.value = getDetail?.value?.prices[0];
-  } else {
-    selectedPlan.value =
-      find(getDetail?.value?.prices, { isDefault: true }) ?? "";
+  if (getDetail?.value?.prices) {
+    const defaultPlan = find(getDetail.value.prices, { isDefault: true });
+    selectedPlan.value = defaultPlan || getDetail.value.prices[0];
   }
+
+  const picklistDef = getDetail.value?.attributes?.find(attr => attr.dataType === 'PICKLIST');
+  if (picklistDef) {
+    picklistAttributeDef.value = picklistDef;
+    
+    selectedAttribute.value = null; 
+    /*
+    const defaultValueCode = picklistDef.defaultValue;
+    const defaultOption = picklistDef.attributePickList?.values.find(v => v.code === defaultValueCode);
+    if (defaultOption) {
+        selectedAttribute.value = defaultOption.code;
+    } else if (picklistDef.attributePickList?.values?.length > 0) {
+        selectedAttribute.value = picklistDef.attributePickList.values[0].code;
+    }
+    */
+  }
+  calculateAttributePrice();
 });
+
 
 const increment = () => {
   counter.value++;
@@ -427,29 +492,52 @@ const decrement = () => {
 
 const changeSizeVariant = (variant) => {
   selectedPlan.value = variant;
+  calculateAttributePrice(); 
 };
 
-const updateSelect = () => {}
+const updateSelect = (attributeDef) => {
+  console.log('Selected attribute value changed to:', selectedAttribute.value);
+  calculateAttributePrice();
+};
+
 
 const addToCart = (product, qty) => {
-  product.price = selectedPlan?.value?.price;
-  product.priceBookEntryId = selectedPlan?.value?.priceBookEntryId;
-  product.priceBookId = selectedPlan?.value?.priceBookId;
-  product.priceModelId = selectedPlan?.value?.pricingModel?.id;
+
+  product.price = calculatedPrice.value; 
+  product.listPrice = selectedPlan.value.price;
+  product.priceBookEntryId = selectedPlan.value.priceBookEntryId;
+  product.priceBookId = selectedPlan.value.priceBookId;
+  product.priceModelId = selectedPlan.value.pricingModel?.id;
+  product.pricingModelType = selectedPlan.value.pricingModel?.pricingModelType;
   product.quantity = qty || 1;
-  product.periodBoundary = selectedPlan?.value?.pricingModel?.frequency ?? 'OneTime';
+  product.periodBoundary = selectedPlan.value.pricingModel?.frequency ?? 'OneTime';
+  
+  if (selectedAttribute.value && picklistAttributeDef.value) {
+      const selectedOptionDetails = picklistAttributeDef.value.attributePickList.values.find(v => v.code === selectedAttribute.value);
+      product.selectedAttribute = {
+          name: picklistAttributeDef.value.name,
+          code: selectedAttribute.value,
+          displayValue: selectedOptionDetails?.displayValue,
+          definitionId: picklistAttributeDef.value.id,
+          picklistValueId: selectedOptionDetails?.id
+      };
+  } else {
+    delete product.selectedAttribute;
+  }
   useCartStore().addToCart(product);
-  useNuxtApp().$showToast({ msg: "Product Is successfully added to the cart.", type:"info" })
+  $showToast({ msg: "Product is successfully added to the cart.", type:"info" })
 };
 
 const buyNow = (product, qty) => {
-  product.price = selectedPlan?.value?.price;
-  product.priceBookEntryId = selectedPlan?.value?.priceBookEntryId;
-  product.priceBookId = selectedPlan?.value?.priceBookId;
-  product.priceModelId = selectedPlan?.value?.pricingModel?.id;
-  product.quantity = qty || 1;
-  product.periodBoundary = selectedPlan?.value?.pricingModel?.frequency ?? 'OneTime';
-  useCartStore().addToCart(product);
+  addToCart(product, qty);
 };
 
+const getPlanLabel = (price) => {
+  const frequency = price?.pricingModel?.frequency ?? 'One Time';
+  const type = price?.pricingModel?.pricingModelType;
+  if (type === 'Evergreen') {
+    return `${frequency} (Evergreen)`;
+  }
+  return frequency;
+};
 </script>
