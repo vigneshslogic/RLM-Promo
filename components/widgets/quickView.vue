@@ -43,7 +43,7 @@
                 <div class="product-right">
                   <h2>{{ productData?.name }}</h2>
 
-                  <h3>£{{ Number(selectedPlan?.price?.toFixed(2)) ?? 0 }}</h3>
+                  <PromoPrice :product="productData" :price="selectedPlan?.price" />
 
                   <div class="product-description border-product">
                     <h6 class="product-title size-text">select plan</h6>
@@ -115,6 +115,8 @@ import "swiper/css";
 import { useProductStore } from "~~/store/products";
 import { useCartStore } from "~~/store/cart";
 import pkg from "lodash";
+import PromoPrice from '~/components/PromoPrice.vue';
+import { usePromo } from '~/composables/usePromo';
 
 const { find } = pkg;
 
@@ -122,6 +124,7 @@ export default {
   components: {
     SwiperSlide,
     Swiper,
+    PromoPrice,
   },
   props: ["openModal", "productData"],
   data() {

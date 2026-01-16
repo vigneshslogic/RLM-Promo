@@ -71,7 +71,7 @@
         <h6>{{ product.name }}</h6>
       </nuxt-link>
       <p>{{ product.description }}</p>
-      <h4 v-if="getProductPrice">£ {{ getProductPrice }}</h4>
+      <PromoPrice :product="product" />
     </div>
   </div>
 </template>
@@ -82,8 +82,13 @@ import { useProductStore } from "~~/store/products";
 import { mapState } from "pinia";
 import pkg from "lodash";
 const { find } = pkg;
+import PromoPrice from '~/components/PromoPrice.vue';
+import { usePromo } from '~/composables/usePromo';
 
 export default {
+  components: {
+    PromoPrice,
+  },
   props: ["product", "index"],
   data() {
     return {
@@ -104,13 +109,6 @@ export default {
     }),
     curr() {
       return useProductStore().changeCurrency;
-    },
-    getProductPrice() {
-      const exists = find(this.product.prices, { isDefault: true });
-      if (exists) {
-        return Number(exists?.price?.toFixed(2)) ?? 0;
-      }
-      return Number(this.product?.prices[0]?.price.toFixed(2)) ?? 0;
     },
   },
   methods: {

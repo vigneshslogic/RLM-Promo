@@ -46,7 +46,7 @@
                             <nuxt-link :to="{ path: '/product/sidebar/'+product.id}">
                               <h6>{{ product.title }}</h6>
                             </nuxt-link>
-                            <h4>{{curr.symbol}}{{ (product.price * curr.curr).toFixed(2) }}</h4>
+                            <PromoPrice :product="product" />
                           </div>
                         </li>
                       </ul>
@@ -109,7 +109,7 @@
                     <h4>{{item.name}}</h4>
                   </nuxt-link>
                   <h4>
-                    <span>{{item.quantity}} x £&nbsp;{{ item.price || currency }}</span>
+                    <span>{{item.quantity}} x £&nbsp;{{ getItemPrice(item).toFixed(2) }}</span>
                   </h4>
                 </div>
               </div>
@@ -123,7 +123,14 @@
               <div class="total">
                 <h5>
                   subtotal :
-                  <span>£&nbsp;{{ cartTotal || currency }}</span>
+                  <span v-if="cartSavings > 0">
+                    <del>£&nbsp;{{ cartOriginalTotal.toFixed(2) }}</del>
+                    £&nbsp;{{ cartTotal.toFixed(2) }}
+                    <span class="savings-badge">(Save £{{ cartSavings.toFixed(2) }})</span>
+                  </span>
+                  <span v-else>
+                    £&nbsp;{{ cartTotal.toFixed(2) }}
+                  </span>
                 </h5>
               </div>
             </li>
@@ -147,7 +154,12 @@
 import { useProductStore } from '~/store/products'
 import {useCartStore} from '~/store/cart'
 import { mapState } from 'pinia'
+import PromoPrice from '~/components/PromoPrice.vue'
+import { usePromo } from '~/composables/usePromo'
 export default {
+  components: {
+    PromoPrice,
+  },
   data() {
     return {
       currencyChange: {},
@@ -175,6 +187,8 @@ export default {
     ...mapState(useCartStore,{
       // cart:(store)=> store.cartItems,
       cartTotal:(store)=> store.cartTotalAmount,
+      cartOriginalTotal:(store)=> store.cartOriginalTotal,
+      cartSavings:(store)=> store.cartSavings,
     }),
     cart(){
       return useCartStore().cartItems
@@ -195,6 +209,11 @@ export default {
   methods: {
     getImage(img) {
       return img?.replace(/&amp;/g, '&') ?? '/images/6.jpg'
+    },
+    getItemPrice(item) {
+      const { getPromoInfo } = usePromo();
+      const promoInfo = getPromoInfo(item);
+      return promoInfo.hasPromo ? promoInfo.promoPrice : item.price;
     },
     openSearch() {
       this.search = true
@@ -220,3 +239,10 @@ export default {
   },
 }
 </script>
+<style scoped>
+.savings-badge {
+  color: #e74c3c;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+</style>

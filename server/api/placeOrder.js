@@ -34,9 +34,9 @@ export default defineEventHandler(async (event) => {
                             Name: `${body?.userName} - ${productNames}`, // make it with {{user}}-{{product_name}}
                             EffectiveDate: today.toISOString().split('T')[0],
                             Pricebook2Id: `${config?.pricebook_id}`,
-                            Source__c: "WebStore",
+                            //Source__c: "WebStore",
                             Status: "Draft",
-                            AutoRenewal__c: body?.user?.autoRenewal?.value,
+                            //AutoRenewal__c: body?.user?.autoRenewal?.value,
                             BillingCity: body?.user?.city?.value,          // Billing city
                             BillingCountry: body?.user?.state?.value,                 // Billing country
                             BillingState: body?.user?.state?.value,                    // Billing state
@@ -103,6 +103,8 @@ export default defineEventHandler(async (event) => {
                     ServiceDate: today.toISOString().split('T')[0],
                 },
             };
+
+            console.log('Processing product:', product.name, 'with periodBoundary:', product.periodBoundary, 'and pricingModelType:', product.pricingModelType);
 
             if (product?.periodBoundary !== 'OneTime') {
               if (product?.pricingModelType !== 'Evergreen') {

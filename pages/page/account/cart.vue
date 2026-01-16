@@ -32,7 +32,17 @@
                     {{ getFrequencies(item?.periodBoundary) }}
                   </td>
                   <td>
-                    <h3>£{{ Number(item?.price?.toFixed(2)) ?? 0 }}</h3>
+                    <div class="promo-price">
+                      <span v-if="getPromoInfo(item).hasPromo" class="original-price">
+                        <del>£{{ Number(item?.price?.toFixed(2)) ?? 0 }}</del>
+                      </span>
+                      <span class="current-price">
+                        £{{ Number(getItemPrice(item)?.toFixed(2)) ?? 0 }}
+                      </span>
+                      <span v-if="getPromoInfo(item).hasPromo" class="discount-badge">
+                        ({{ getPromoInfo(item).discountPercent }}% OFF)
+                      </span>
+                    </div>
                   </td>
                   <td>
                     <div class="qty-box">
@@ -61,7 +71,7 @@
                   </td>
                   <td>
                     <h3 class="td-color">
-                      £ {{ (item.price * curr.curr) * item.quantity }}</h3>
+                      £ {{ (getItemPrice(item) * curr.curr * item.quantity).toFixed(2) }}</h3>
                   </td>
                 </tr>
               </tbody>
@@ -114,6 +124,7 @@
 <script>
 import { useProductStore } from '~~/store/products'
 import { useCartStore } from '~~/store/cart'
+import { usePromo } from '~/composables/usePromo'
 export default {
   data() {
     return {
@@ -137,6 +148,15 @@ export default {
   methods: {
     getImage(img) {
       return img?.replace(/&amp;/g, '&') ?? '/images/6.jpg'
+    },
+    getItemPrice(item) {
+      const { getPromoInfo } = usePromo();
+      const promoInfo = getPromoInfo(item);
+      return promoInfo.hasPromo ? promoInfo.promoPrice : item.price;
+    },
+    getPromoInfo(item) {
+      const { getPromoInfo } = usePromo();
+      return getPromoInfo(item);
     },
     removeCartItem(product) {
       useCartStore().removeCartItem(product)
@@ -186,5 +206,31 @@ export default {
 <style scoped>
 .product-tle {
   font-size: large;
+}
+
+.promo-price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.original-price {
+  color: #888;
+  font-size: 0.9em;
+}
+
+.current-price {
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+.discount-badge {
+  background-color: #27ae60;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: bold;
 }
 </style>

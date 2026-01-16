@@ -71,7 +71,14 @@
                   <ul class="qty" v-if="cart.length">
                     <li v-for="(item, index) in cart" :key="index">
                       {{ item.name || uppercase }} X {{ item.quantity }} ( {{ getFrequency(item?.periodBoundary) }} )
-                      <span>£ {{ item.price * item.quantity }}</span>
+                      <span v-if="getPromoInfo(item).hasPromo">
+                        <del>£ {{ item.price * item.quantity }}</del>
+                        £ {{ getItemPrice(item) * item.quantity }}
+                        <span class="discount-badge">({{ getPromoInfo(item).discountPercent }}% OFF)</span>
+                      </span>
+                      <span v-else>
+                        £ {{ item.price * item.quantity }}
+                      </span>
                     </li>
                   </ul>
                   <ul class="sub-total">
@@ -79,7 +86,7 @@
                       Subtotal
                       <span class="count">£ {{ cartTotal }}</span>
                     </li>
-                    <li class="promotion-code">
+                    <!-- <li class="promotion-code">
                       <div class="promo-row">
                         <span class="promo-label">Promotion Code</span>
                         <div class="promo-input">
@@ -106,7 +113,7 @@
                         <span class="count">-£{{ discountAmount }}</span>
                         <button @click="removeCoupon">✕</button>
                       </div>
-                    </li>
+                    </li> -->
                     <li>
                       Shipping
                       <div class="shipping">
@@ -236,6 +243,7 @@
 import { useCartStore } from "~~/store/cart";
 import { useAuthStore } from "~~/store/auth";
 import { useProductStore } from "~~/store/products";
+import { usePromo } from '~/composables/usePromo';
 export default {
   props: ["userInfo"],
   computed: {
@@ -391,7 +399,7 @@ export default {
               };
 
               try {
-                await useAuthStore().createPayment(payload);
+                //await useAuthStore().createPayment(payload);
               } catch (err) {
                 console.warn("createPaymentMethod failed", err);
               }
@@ -569,6 +577,17 @@ export default {
       return (item.price * item.quantity).toFixed(2);
     },
 
+    getItemPrice(item) {
+      const { getPromoInfo } = usePromo();
+      const promoInfo = getPromoInfo(item);
+      return promoInfo.hasPromo ? promoInfo.promoPrice : item.price;
+    },
+
+    getPromoInfo(item) {
+      const { getPromoInfo } = usePromo();
+      return getPromoInfo(item);
+    },
+
     detectCardType(number) {
       const re = {
         visa: /^4[0-9]{6,}$/,
@@ -715,5 +734,15 @@ export default {
   color: #000;
   border-color: #999;
   background-color: #f5f5f5;
+}
+
+.discount-badge {
+  background-color: #27ae60;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: bold;
+  margin-left: 8px;
 }
 </style>

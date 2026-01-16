@@ -75,9 +75,48 @@ export const useCartStore = defineStore({
       return state.cart;
     },
     cartTotalAmount: (state) => {
+      const promotions = {
+        "Business Insider": 15,
+        "AD Digital": 10,
+        "VK Saturday Plus": 10,
+        "National Geographic": 12,
+      };
+
+      const getPromoDiscount = (product) => {
+        const title = product?.name || '';
+        const brand = product?.brand || '';
+        const key = Object.keys(promotions).find(k =>
+          title.toLowerCase().includes(k.toLowerCase()) ||
+          brand.toLowerCase().includes(k.toLowerCase())
+        );
+        return key ? promotions[key] : 0;
+      };
+
+      const calculatePromoPrice = (originalPrice, discountPercent) => {
+        if (!discountPercent || discountPercent <= 0) return originalPrice;
+        const discount = (originalPrice * discountPercent) / 100;
+        return Number((originalPrice - discount).toFixed(2));
+      };
+
       return state.cart.reduce((total, product) => {
+        const discountPercent = getPromoDiscount(product);
+        const priceToUse = discountPercent > 0 ? calculatePromoPrice(product.price, discountPercent) : product.price;
+        return total + priceToUse * product.quantity;
+      }, 0);
+    },
+    cartOriginalTotal: (state) => {
+      return state.cart.reduce((total, product) => {
+        return total + (product.listPrice || product.price) * product.quantity;
+      }, 0);
+    },
+    cartSavings: (state) => {
+      const original = state.cart.reduce((total, product) => {
+        return total + (product.listPrice || product.price) * product.quantity;
+      }, 0);
+      const discounted = state.cart.reduce((total, product) => {
         return total + product.price * product.quantity;
       }, 0);
+      return original - discounted;
     },
     getQuote: (state) => {
       return async (description) => {

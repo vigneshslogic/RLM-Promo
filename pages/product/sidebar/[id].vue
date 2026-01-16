@@ -32,7 +32,7 @@
                       <h2>{{ getDetail?.name }}</h2>
 
                       <h4 v-if="getDetail?.nodeType === 'bundleProduct'" class="text-danger">Request for detail pricing</h4>
-                      <h3 v-else>£{{ Number(calculatedPrice?.toFixed(2)) ?? 0 }}</h3>
+                      <PromoPrice v-else :product="getDetail" :price="calculatedPrice" />
                       
                       <div class="product-description border-product">
                         <h6 class="product-title size-text">select plan</h6>
@@ -387,6 +387,8 @@ import { useRoute } from "vue-router";
 import { useCartStore } from "~~/store/cart";
 import { useAuthStore } from '~~/store/auth';
 import pkg from 'lodash';
+import PromoPrice from '~/components/PromoPrice.vue';
+import { usePromo } from '~/composables/usePromo';
 
 const { find } = pkg;
 const { $showToast } = useNuxtApp();
@@ -505,6 +507,8 @@ const addToCart = (product, qty) => {
 
   product.price = calculatedPrice.value; 
   product.listPrice = selectedPlan.value.price;
+
+  product.priceBookEntryId = selectedPlan.value.priceBookEntryId;
   product.priceBookEntryId = selectedPlan.value.priceBookEntryId;
   product.priceBookId = selectedPlan.value.priceBookId;
   product.priceModelId = selectedPlan.value.pricingModel?.id;
