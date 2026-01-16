@@ -29,24 +29,22 @@ export default defineEventHandler(async (event) => {
                                 type: "Order",
                                 method: "POST",
                             },
-                            AccountId: body?.accountId, // define user accountId here
+                            AccountId: body?.accountId,
                             BillToContactId: body?.contactId,
-                            Name: `${body?.userName} - ${productNames}`, // make it with {{user}}-{{product_name}}
+                            Name: `${body?.userName} - ${productNames}`,
                             EffectiveDate: today.toISOString().split('T')[0],
                             Pricebook2Id: `${config?.pricebook_id}`,
-                            //Source__c: "WebStore",
                             Status: "Draft",
-                            //AutoRenewal__c: body?.user?.autoRenewal?.value,
-                            BillingCity: body?.user?.city?.value,          // Billing city
-                            BillingCountry: body?.user?.state?.value,                 // Billing country
-                            BillingState: body?.user?.state?.value,                    // Billing state
-                            BillingStreet: body?.user?.address?.value,        // Billing street
-                            BillingPostalCode: body?.user?.pincode?.value,            // Billing postal code
-                            ShippingCity: body?.user?.city?.value,          // Shipping city
-                            ShippingCountry: body?.user?.state?.value,                 // Shipping country
-                            ShippingState: body?.user?.state?.value,                    // Shipping state
-                            ShippingStreet: body?.user?.address?.value,        // Shipping street
-                            ShippingPostalCode: body?.user?.pincode?.value,            // Shipping postal code
+                            BillingCity: body?.user?.city?.value,
+                            BillingCountry: body?.user?.state?.value,
+                            BillingState: body?.user?.state?.value,
+                            BillingStreet: body?.user?.address?.value,
+                            BillingPostalCode: body?.user?.pincode?.value,
+                            ShippingCity: body?.user?.city?.value,
+                            ShippingCountry: body?.user?.state?.value,
+                            ShippingState: body?.user?.state?.value,
+                            ShippingStreet: body?.user?.address?.value,
+                            ShippingPostalCode: body?.user?.pincode?.value,
                         },
                     },
                     {
@@ -78,78 +76,129 @@ export default defineEventHandler(async (event) => {
         const productRecords = [];
         let attributeRefCounter = 0;
 
+        // 1. Define products eligible for splitting
+        const SPLIT_PRODUCTS = [
+            "Business Insider", 
+            "AD Digital", 
+            "VK Saturday Plus", 
+            "National Geographic"
+        ];
+
         body.products?.forEach((product, index) => {
-            const orderItemRefId = `refOrderItem${index > 0 ? index : ''}`;
+            // 2. Determine if this specific product should be split
+            const isSplitProduct = SPLIT_PRODUCTS.includes(product?.name);
             
-            let orderItem = {
-                referenceId: orderItemRefId,
-                record: {
-                    attributes: {
-                        type: "OrderItem",
-                        method: "POST",
-                    },
-                    OrderId: "@{refOrder.id}",
-                    OrderActionId: "@{refOrderAction.id}",
-                    Quantity: product?.quantity,
-                    priceBookEntryId: product?.priceBookEntryId, 
-                    Product2Id: product?.id,
-                    ListPrice: product?.listPrice || product?.price,
-                    UnitPrice: product?.price,
-                    NetUnitPrice: product?.price,
-                    Discount: parseFloat(
-                                    ((body?.user?.discount || 0) / (body?.products?.length || 1)).toFixed(2)
-                                ),
-                    PeriodBoundary: "Anniversary", 
-                    ServiceDate: today.toISOString().split('T')[0],
-                },
-            };
+            // If split product: iterate twice (0, 1). If regular: iterate once (0).
+            const iterations = isSplitProduct ? [0, 1] : [0];
 
-            console.log('Processing product:', product.name, 'with periodBoundary:', product.periodBoundary, 'and pricingModelType:', product.pricingModelType);
-
-            if (product?.periodBoundary !== 'OneTime') {
-              if (product?.pricingModelType !== 'Evergreen') {
-                const date = new Date(`${today.toISOString().split('T')[0]}`); 
-                date.setMonth(date.getMonth() + 12);
-                date.setDate(date.getDate() - 1);
-                const endDate = date.toISOString().split('T')[0];
-                orderItem.record = {
-                        ...orderItem.record,
-                        EndDate: endDate,
-                    }
-              }
-
-                orderItem.record = {
-                    ...orderItem.record,
-                    PricingTermCount: 12.0,
-                    TotalLineAmount: 12 * (product?.price),
-                    BillingFrequency2: product?.periodBoundary === 'Months' ? 'Monthly' : product?.periodBoundary,
-                }
-            }
-            
-            productRecords.push(orderItem);
-
-            if (product.selectedAttribute && product.selectedAttribute != null) {
-                const attributeRefId = `refOrderItemAttribute${attributeRefCounter++}`;
+            iterations.forEach((splitIndex) => {
+                // Generate unique reference ID depending on split status
+                // If regular: refOrderItem0. If split: refOrderItem0_0, refOrderItem0_1
+                const suffix = isSplitProduct ? `_${splitIndex}` : '';
+                const orderItemRefId = `refOrderItem${index}${suffix}`;
                 
-                const attributeRecord = {
-                    referenceId: attributeRefId,
+                let orderItem = {
+                    referenceId: orderItemRefId,
                     record: {
                         attributes: {
-                            type: "OrderItemAttribute",
+                            type: "OrderItem",
                             method: "POST",
                         },
-                        OrderItemId: `@{${orderItemRefId}.id}`,
-                        AttributeValue: product.selectedAttribute.code, 
-                        AttributeDefinitionId: product.selectedAttribute.definitionId, 
-                        AttributePicklistValueId: product.selectedAttribute.picklistValueId, 
+                        OrderId: "@{refOrder.id}",
+                        OrderActionId: "@{refOrderAction.id}",
+                        Quantity: product?.quantity,
+                        priceBookEntryId: product?.priceBookEntryId, 
+                        Product2Id: product?.id,
+                        ListPrice: product?.listPrice || product?.price,
+                        UnitPrice: product?.price,
+                        NetUnitPrice: product?.price,
+                        Discount: parseFloat(
+                                    ((body?.user?.discount || 0) / (body?.products?.length || 1)).toFixed(2)
+                                ),
+                        PeriodBoundary: "Anniversary", 
+                        ServiceDate: today.toISOString().split('T')[0],
                     },
                 };
-                productRecords.push(attributeRecord);
-            }
+
+                // --- 3. Date Logic ---
+
+                if (isSplitProduct) {
+                    // Logic for SPLIT PRODUCTS
+                    const startDate = new Date(today);
+                    const endDate = new Date(today);
+
+                    if (splitIndex === 0) {
+                        // PART 1: Today to 6 Months
+                        orderItem.record.ServiceDate = startDate.toISOString().split('T')[0];
+                        
+                        // Add EndDate if NOT Evergreen
+                        if (product?.pricingModelType !== 'Evergreen') {
+                            endDate.setMonth(endDate.getMonth() + 6);
+                            // endDate.setDate(endDate.getDate() - 1); // Optional: Standard -1 day logic, enable if needed
+                            //orderItem.record.EndDate = endDate.toISOString().split('T')[0];
+                        }
+                    } else {
+                        // PART 2: 6 Months to 12 Months (or indefinite)
+                        startDate.setMonth(startDate.getMonth() + 6);
+                        orderItem.record.ServiceDate = startDate.toISOString().split('T')[0];
+
+                        // Add EndDate if NOT Evergreen
+                        if (product?.pricingModelType !== 'Evergreen') {
+                            endDate.setMonth(endDate.getMonth() + 12);
+                            // endDate.setDate(endDate.getDate() - 1); // Optional: Standard -1 day logic
+                            //orderItem.record.EndDate = endDate.toISOString().split('T')[0];
+                        }
+                    }
+                } else {
+                    // Logic for REGULAR PRODUCTS (Existing Logic)
+                    if (product?.periodBoundary !== 'OneTime') {
+                        if (product?.pricingModelType !== 'Evergreen') {
+                            const date = new Date(today); 
+                            date.setMonth(date.getMonth() + 12);
+                            date.setDate(date.getDate() - 1);
+                            orderItem.record.EndDate = date.toISOString().split('T')[0];
+                        }
+                    }
+                }
+
+                // --- 4. Term & Amount Logic (Applied to all items that are not OneTime) ---
+                if (product?.periodBoundary !== 'OneTime') {
+                    orderItem.record = {
+                        ...orderItem.record,
+                        PricingTermCount: 12.0,
+                        TotalLineAmount: 12 * (product?.price),
+                        BillingFrequency2: product?.periodBoundary === 'Months' ? 'Monthly' : product?.periodBoundary,
+                    };
+                }
+                
+                productRecords.push(orderItem);
+
+                // --- 5. Attribute Logic (Duplicated for split items) ---
+                if (product.selectedAttribute && product.selectedAttribute != null) {
+                    const attributeRefId = `refOrderItemAttribute${attributeRefCounter++}`;
+                    
+                    const attributeRecord = {
+                        referenceId: attributeRefId,
+                        record: {
+                            attributes: {
+                                type: "OrderItemAttribute",
+                                method: "POST",
+                            },
+                            // Dynamically link to the current OrderItem (split or regular)
+                            OrderItemId: `@{${orderItemRefId}.id}`,
+                            AttributeValue: product.selectedAttribute.code, 
+                            AttributeDefinitionId: product.selectedAttribute.definitionId, 
+                            AttributePicklistValueId: product.selectedAttribute.picklistValueId, 
+                        },
+                    };
+                    productRecords.push(attributeRecord);
+                }
+            });
         });
 
         if (productRecords?.length) {
             rawPayload.graph.records = rawPayload?.graph?.records.concat(productRecords);
+            //console.log("Final Payload Records:", rawPayload.graph.records);
 
             const response = await axios.post(url, rawPayload, {
                 headers: {
@@ -160,7 +209,7 @@ export default defineEventHandler(async (event) => {
 
             if (response.status === 201 || response.status === 200) {
                 try {
-                    // store user billing/ shipping addresses
+                    // Update user billing/shipping addresses
                     const addressURL = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/sobjects/Account/${body?.accountId}`;
                     await axios.patch(addressURL, {
                         BillingCity: body?.user?.city?.value,
@@ -180,7 +229,7 @@ export default defineEventHandler(async (event) => {
                         },
                     });
                 } catch (error) {
-                    console.error("Error updating account address:", error); //continue with the execution
+                    console.error("Error updating account address:", error);
                 }
 
                 try {
@@ -197,14 +246,7 @@ export default defineEventHandler(async (event) => {
                         response.data.OrderNumber = orderRecord.OrderNumber;
                         response.data.Status = orderRecord.Status;
                     }
-                    // make order activate after the order place immediately
-                    const activeUrl = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/sobjects/Order/${response.data?.orderId}`;
-                    await axios.patch(activeUrl, { Status: "Activated" }, {
-                        headers: {
-                            Authorization: `Bearer ${body.accessToken}`,
-                            "Content-Type": "application/json",
-                        },
-                    });
+                    
                 } catch (error) {
                     if (error.response && error.response.status === 400) {
                         console.error("Order activation failed (400):", JSON.stringify(error.response.data, null, 2));
