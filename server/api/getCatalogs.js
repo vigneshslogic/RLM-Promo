@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
 
   try {
-    const url = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/query/?q=SELECT Id, Name, Show_in_Webshop__c FROM ProductCatalog WHERE Show_in_Webshop__c = true ORDER BY Name ASC LIMIT 50`;
+    const url = `${config?.api_endpoint}/services/data/v${parseFloat(config?.api_version).toFixed(1)}/query/?q=SELECT Id, Name FROM ProductCatalog ORDER BY Name ASC LIMIT 50`;
     const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${body.accessToken}`,

@@ -3,28 +3,22 @@ import axios from 'axios';
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
 
-  
-  const tokenUrl = `${config?.api_endpoint}/services/oauth2/token`;
-  
-  const clientId = config.salesforceClientId;
-  const clientSecret = config.salesforceClientSecret;
-  const username = config.username;
-  const password = config.password;
+  const tokenUrl = `${config.api_endpoint}/services/oauth2/token`;
 
-  console.log('Data-->',tokenUrl);
-  console.log('Data-->',clientId);
-  console.log('Data-->',clientSecret);
-  console.log('Data-->',username);
-  console.log('Data-->',password);
-  
   try {
-    const response = await axios.post(tokenUrl, new URLSearchParams({
-      grant_type: 'password',
-      client_id: clientId,
-      client_secret: clientSecret,
-      username: username,
-      password: password,
-    }));
+    const response = await axios.post(
+      tokenUrl,
+      new URLSearchParams({
+        grant_type: 'client_credentials',
+        client_id: config.salesforceClientId,
+        client_secret: config.salesforceClientSecret,
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
 
     return response.data;
   } catch (error) {

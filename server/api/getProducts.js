@@ -8,13 +8,14 @@ export default defineEventHandler(async (event) => {
     const url = `${config?.api_endpoint}/services/data/v${parseFloat(
       config?.api_version
     ).toFixed(1)}/connect/cpq/products`;
+    console.log('URL:', url);
     
     let payload = {
       correlationId: 'corrId',
       priceBookId: `${config?.pricebook_id}`,
       additionalFields: {
         Product2: {
-          fields: ["IsActive", "Show_in_Webshop__c"]
+          fields: ["IsActive"]
         }
       }
     };
@@ -25,6 +26,8 @@ export default defineEventHandler(async (event) => {
     } else if (body?.isCategory && body?.catalogId) {
       payload.categoryId = body.catalogId;
     }
+    console.log('Payload:', payload);
+    console.log('Access Token:', body.accessToken);
 
     const response = await axios.post(url, payload, {
       headers: {
@@ -36,8 +39,7 @@ export default defineEventHandler(async (event) => {
     if (response.status === 200) {
       response.data.result = response.data.result.filter(
           (prod) =>
-            prod?.additionalFields?.IsActive === true &&
-            prod?.additionalFields?.Show_in_Webshop__c === true
+            prod?.additionalFields?.IsActive === true
         );
       return response.data;
     }
